@@ -1,3 +1,4 @@
+// schemaTypes/guideType.ts
 import {defineField, defineType} from 'sanity'
 
 export const guideType = defineType({

@@ -1,3 +1,4 @@
+// schemaTypes/experienceType.ts
 import {defineField, defineType} from 'sanity'
 
 export const experienceType = defineType({
@@ -19,7 +20,7 @@ export const experienceType = defineType({
     defineField({
       name: 'category',
       type: 'string',
-      options: {list: ['Hiking', 'Rafting', 'Climbing', 'Diving', 'Wildlife', 'Cultural']},
+      options: {list: ['Hiking', 'Rafting', 'Canyoning', 'Abseiling', 'Kayaking', 'Caving', 'River Expedition']},
       validation: (rule) => rule.required(),
     }),
     defineField({

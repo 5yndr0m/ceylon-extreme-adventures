@@ -1,3 +1,4 @@
+// schemaTypes/bookingType.ts
 import {defineField, defineType} from 'sanity'
 
 export const bookingType = defineType({

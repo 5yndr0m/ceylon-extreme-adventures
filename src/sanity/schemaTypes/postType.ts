@@ -1,3 +1,4 @@
+// schemaTypes/postType.ts
 import {defineField, defineType} from 'sanity'
 
 export const postType = defineType({
