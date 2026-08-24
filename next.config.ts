@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: ['stickless-paxton-topographically.ngrok-free.dev'],
 }
 
 export default nextConfig
