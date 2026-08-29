@@ -2,6 +2,7 @@
 'use client'
 
 import {useState} from 'react'
+import {useRouter} from 'next/navigation'
 
 export default function BookingForm({
   experienceId,
@@ -10,9 +11,8 @@ export default function BookingForm({
   experienceId: string
   experienceTitle: string
 }) {
+  const router = useRouter()
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
-  const [bookingId, setBookingId] = useState<string | null>(null)
-  const [paying, setPaying] = useState(false)
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -34,62 +34,14 @@ export default function BookingForm({
       })
       if (!res.ok) throw new Error('Request failed')
       const data = await res.json()
-      setBookingId(data.bookingId)
-      setStatus('success')
+
+      // Send the customer to the review/payment page instead of going straight to
+      // PayHere — lets them double-check details before paying, and reuses the
+      // summary UI already built there rather than skipping it
+      router.push(`/payment?booking_id=${data.bookingId}`)
     } catch {
       setStatus('error')
     }
-  }
-
-  async function payWithPayHere() {
-    if (!bookingId) return
-    setPaying(true)
-    const res = await fetch('/api/checkout/payhere', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({bookingId}),
-    })
-    const {checkoutUrl, fields} = await res.json()
-
-    // PayHere requires an actual HTML form POST, not a redirect to a URL with query params —
-    // so we build one dynamically and submit it, rather than window.location.href like Stripe
-    const form = document.createElement('form')
-    form.method = 'POST'
-    form.action = checkoutUrl
-    for (const [key, value] of Object.entries(fields)) {
-      const input = document.createElement('input')
-      input.type = 'hidden'
-      input.name = key
-      input.value = value as string
-      form.appendChild(input)
-    }
-    document.body.appendChild(form)
-    form.submit()
-  }
-
-  if (status === 'success') {
-    return (
-      <div className="py-4">
-        <p className="font-semibold mb-1">Almost there!</p>
-        <p className="text-sm text-gray-500 mb-5">
-          Complete payment to confirm your booking for {experienceTitle}.
-        </p>
-        <button
-          onClick={payWithPayHere}
-          disabled={paying}
-          className="w-full bg-orange-600 text-white rounded-full py-3 font-semibold disabled:opacity-50"
-        >
-          {paying ? 'Redirecting…' : 'Pay Now'}
-        </button>
-        {/* PayHere accepts Visa/Mastercard/Amex/Discover/Diners for both local (LKR) and
-            international (USD/GBP/EUR/AUD) cards — one gateway covers both customer types,
-            so a separate international provider isn't needed. Stripe was ruled out: Sri Lanka
-            isn't a supported country for merchant accounts. */}
-        <p className="text-xs text-gray-400 mt-4">
-          Your enquiry is saved — you can also complete payment later from the confirmation email.
-        </p>
-      </div>
-    )
   }
 
   return (
@@ -143,7 +95,7 @@ export default function BookingForm({
         disabled={status === 'submitting'}
         className="w-full bg-orange-600 text-white rounded-full py-3 font-semibold disabled:opacity-50"
       >
-        {status === 'submitting' ? 'Sending…' : 'Send Enquiry'}
+        {status === 'submitting' ? 'Continuing…' : `Continue to Payment`}
       </button>
       {status === 'error' && (
         <p className="text-red-600 text-sm">Something went wrong — please try again.</p>
