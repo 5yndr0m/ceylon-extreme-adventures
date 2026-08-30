@@ -324,17 +324,23 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 .booking-grid{ display:grid; gap:44px; }
 .booking-info p{ color:rgba(255,255,255,.8); margin-top:16px; }
 .booking-info .contact-line{ margin-top:26px; display:flex; align-items:center; gap:10px; font-weight:600; }
-form{ display:grid; gap:16px; background:rgba(247,245,240,.06); padding:28px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.12); }
+.booking-form form{ display:grid; gap:16px; background:rgba(247,245,240,.06); padding:28px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.12); }
 .field-row{ display:grid; gap:16px; }
-label{ display:block; font-size:12px; font-weight:600; letter-spacing:.4px; text-transform:uppercase; margin-bottom:6px; color:rgba(255,255,255,.75); }
-input, select, textarea{
+label{ display:block; font-size:13px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; margin-bottom:8px; color:var(--basalt-black); }
+/* The .booking-form (contact/enquiry form) sits on a dark green section and needs
+   light-on-dark styling. Everything below this line is scoped to it — this global
+   input/select/textarea/label block must NOT leak white-on-transparent styling into
+   other forms on the site (e.g. the booking form on a white card on /experiences/[slug],
+   which was rendering as an invisible white-on-white form before this fix). */
+.booking-form label{ color:#fff; }
+.booking-form input, .booking-form select, .booking-form textarea{
   width:100%; padding:13px 14px; border-radius:8px; border:1px solid rgba(255,255,255,.2);
   background:rgba(255,255,255,.08); color:#fff; font-family:inherit; font-size:15px;
 }
-input::placeholder, textarea::placeholder{ color:rgba(255,255,255,.45); }
-input:focus, select:focus, textarea:focus{ outline:2px solid var(--adrenaline-orange); outline-offset:2px; background:rgba(255,255,255,.12); }
-textarea{ resize:vertical; min-height:100px; }
-select option{ color:#000; }
+.booking-form input::placeholder, .booking-form textarea::placeholder{ color:rgba(255,255,255,.45); }
+.booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus{ outline:2px solid var(--adrenaline-orange); outline-offset:2px; background:rgba(255,255,255,.12); }
+.booking-form textarea{ resize:vertical; min-height:100px; }
+.booking-form select option{ color:#000; }
 @media(min-width:768px){
   .booking-grid{ grid-template-columns:1fr 1.1fr; }
   .field-row.two{ grid-template-columns:1fr 1fr; }
