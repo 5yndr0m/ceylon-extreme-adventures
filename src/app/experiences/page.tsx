@@ -5,8 +5,31 @@ import {getAllExperiences, urlFor} from '@/lib/sanity'
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
 
-export default async function ExperiencesPage() {
-  const experiences = await getAllExperiences()
+// Matches the real activity taxonomy confirmed during migration (see migrate-experiences.ts)
+const CATEGORIES = ['Hiking', 'Rafting', 'Canyoning', 'Abseiling', 'Kayaking', 'Caving', 'River Expedition']
+
+type ExperienceSummary = {
+  _id: string
+  title: string
+  slug: {current: string}
+  category?: string
+  difficulty?: string
+  durationHours?: number
+  price?: number
+  locationName?: string
+  heroImage?: any
+}
+
+export default async function ExperiencesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{category?: string}>
+}) {
+  const {category} = await searchParams
+  const experiences: ExperienceSummary[] = await getAllExperiences()
+  const filtered = category
+    ? experiences.filter((exp) => exp.category === category)
+    : experiences
 
   return (
     <main className="bg-[#f5f2ea] min-h-screen">
@@ -14,13 +37,36 @@ export default async function ExperiencesPage() {
         <p className="text-orange-600 text-sm font-semibold tracking-wide uppercase mb-2">
           What We Run
         </p>
-        <h1 className="text-4xl font-bold mb-10">All Experiences</h1>
+        <h1 className="text-4xl font-bold mb-6">All Experiences</h1>
 
-        {/* Filters can be added here later (category/difficulty) once you have a client component
-            wrapping this list — kept server-rendered for now since it's the fastest path to "working" */}
+        <div className="flex flex-wrap gap-2 mb-10">
+          <Link
+            href="/experiences"
+            className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
+              !category ? 'bg-orange-600 text-white border-orange-600' : 'border-gray-300 text-gray-700 hover:border-orange-400'
+            }`}
+          >
+            All
+          </Link>
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat}
+              href={`/experiences?category=${encodeURIComponent(cat)}`}
+              className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
+                category === cat ? 'bg-orange-600 text-white border-orange-600' : 'border-gray-300 text-gray-700 hover:border-orange-400'
+              }`}
+            >
+              {cat}
+            </Link>
+          ))}
+        </div>
+
+        {filtered.length === 0 && (
+          <p className="text-gray-500 mb-10">No experiences in this category yet — check back soon or browse all experiences.</p>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {experiences.map((exp: any) => (
+          {filtered.map((exp) => (
             <Link
               key={exp._id}
               href={`/experiences/${exp.slug.current}`}
