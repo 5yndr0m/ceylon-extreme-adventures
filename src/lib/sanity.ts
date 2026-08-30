@@ -43,11 +43,47 @@ export async function getExperienceBySlug(slug: string) {
       durationHours,
       price,
       locationName,
+      maxGroupSize,
+      activityTags,
       shortDescription,
       fullDescription,
       heroImage,
       gallery,
       guide->{name, photo, bio, phone}
+    }
+  `,
+    {slug}
+  )
+}
+
+// One row per blog card — publishedAt drives sort order, newest first
+export async function getAllPosts() {
+  return client.fetch(`
+    *[_type == "post"] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      category,
+      excerpt,
+      publishedAt,
+      image
+    }
+  `)
+}
+
+// Full detail for a single blog post, plus the linked experience card (if any)
+export async function getPostBySlug(slug: string) {
+  return client.fetch(
+    `
+    *[_type == "post" && slug.current == $slug][0] {
+      _id,
+      title,
+      category,
+      excerpt,
+      publishedAt,
+      image,
+      body,
+      relatedExperience->{title, slug, heroImage, price, category}
     }
   `,
     {slug}

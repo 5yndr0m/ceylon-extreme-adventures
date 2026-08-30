@@ -53,6 +53,21 @@ export const experienceType = defineType({
       type: 'number',
     }),
     defineField({
+      name: 'maxGroupSize',
+      title: 'Max Group Size',
+      type: 'number',
+      description: 'Largest group this experience can safely run for. Leave blank if there is no hard cap.',
+      validation: (rule) => rule.positive().integer(),
+    }),
+    defineField({
+      name: 'activityTags',
+      title: 'Activity Tags',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Free-form tags (e.g. "beginner-friendly", "night-hike") for search/filtering beyond the main category.',
+      options: {layout: 'tags'},
+    }),
+    defineField({
       name: 'price',
       title: 'Price (LKR)',
       type: 'number',

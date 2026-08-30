@@ -23,20 +23,23 @@ export default function Footer() {
             </div>
             <div className='footer-col'>
               <h4>Experiences</h4>
-              <Link href='/#activities'>Waterfall Abseiling</Link>
-              <Link href='/#activities'>Canyoning</Link>
-              <Link href='/#activities'>White-Water Rafting</Link>
-              <Link href='/#activities'>Hiking &amp; Trekking</Link>
+              <Link href='/experiences?category=Abseiling'>Waterfall Abseiling</Link>
+              <Link href='/experiences?category=Canyoning'>Canyoning</Link>
+              <Link href='/experiences?category=Rafting'>White-Water Rafting</Link>
+              <Link href='/experiences?category=Hiking'>Hiking &amp; Trekking</Link>
             </div>
             <div className='footer-col'>
               <h4>Support</h4>
-              <Link href='/contact-us#faq'>FAQ</Link>
-              <Link href='#'>Safety Policy</Link>
-              <Link href='#'>Terms &amp; Conditions</Link>
+              <Link href='/contact#faq'>FAQ</Link>
+              <Link href='/blog'>Trip Planning Guides</Link>
+              {/* No standalone Safety Policy / Terms pages exist yet — routing to Contact
+                  rather than leaving a dead href="#" until those pages are written */}
+              <Link href='/contact'>Safety Policy</Link>
+              <Link href='/contact'>Terms &amp; Conditions</Link>
             </div>
             <div className='footer-col'>
               <h4>Contact</h4>
-              <Link href='/contact-us#location'>Nugegoda, Sri Lanka</Link>
+              <Link href='/contact#location'>Nugegoda, Sri Lanka</Link>
               <a href='mailto:info@extremeadventure.lk'>info@extremeadventure.lk</a>
               <a href='tel:+94707900700'>+94 70 790 0700</a>
             </div>

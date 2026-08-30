@@ -1,4 +1,5 @@
 
+import Link from 'next/link';
 import Reveal2 from '../components/Reveal';
 
 export default function Home() {
@@ -75,7 +76,10 @@ export default function Home() {
               <li>🍽️ Lunch</li>
               <li>📸 Photography</li>
             </ul>
-            <a href="/payment" className="btn btn-primary">Reserve Spot →</a>
+            {/* These fixed departures are hardcoded marketing content, not real Sanity
+                bookings, so they route to the enquiry form rather than straight to
+                /payment (which needs a real booking_id and would otherwise 404-equivalent) */}
+            <a href="/contact" className="btn btn-primary">Reserve Spot →</a>
           </div>
         </article>
 
@@ -122,7 +126,7 @@ export default function Home() {
           <span className="tag">Waterfall</span>
           <h3>Abseiling</h3>
           <p>Descend cascading falls with full safety gear and expert guides.</p>
-          <div className="card-footer"><span className="price-tag">From LKR 6,500</span><a href="#" className="view-link">View Details →</a></div>
+          <div className="card-footer"><span className="price-tag">From LKR 6,500</span><Link href="/experiences?category=Abseiling" className="view-link">View Details →</Link></div>
         </div>
       </Reveal2>
       <Reveal2 className="activity-card">
@@ -131,7 +135,7 @@ export default function Home() {
           <span className="tag">Gorge</span>
           <h3>Canyoning</h3>
           <p>Navigate river gorges through jumps, slides, and swims.</p>
-          <div className="card-footer"><span className="price-tag">From LKR 7,500</span><a href="#" className="view-link">View Details →</a></div>
+          <div className="card-footer"><span className="price-tag">From LKR 7,500</span><Link href="/experiences?category=Canyoning" className="view-link">View Details →</Link></div>
         </div>
       </Reveal2>
       <Reveal2 className="activity-card">
@@ -140,12 +144,12 @@ export default function Home() {
           <span className="tag">Kelani River</span>
           <h3>White-Water Rafting</h3>
           <p>Ride the rapids of Kelani River — beginner to advanced grades.</p>
-          <div className="card-footer"><span className="price-tag">From LKR 5,000</span><a href="#" className="view-link">View Details →</a></div>
+          <div className="card-footer"><span className="price-tag">From LKR 5,000</span><Link href="/experiences?category=Rafting" className="view-link">View Details →</Link></div>
         </div>
       </Reveal2>
     </div>
 
-    <Reveal2 className="activities-cta"><a href="#">See All Experiences →</a></Reveal2>
+    <Reveal2 className="activities-cta"><Link href="/experiences">See All Experiences →</Link></Reveal2>
   </div>
 </section>
 
