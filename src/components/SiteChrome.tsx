@@ -7,12 +7,14 @@ import Footer from './Footer';
 export default function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isPayment = pathname === '/payment';
+  const isStudio = pathname?.startsWith('/studio');
+  const hideChrome = isPayment || isStudio;
 
   return (
     <>
-      {!isPayment && <Header />}
+      {!hideChrome && <Header />}
       {children}
-      {!isPayment && <Footer />}
+      {!hideChrome && <Footer />}
     </>
   );
 }

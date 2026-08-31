@@ -56,7 +56,23 @@ export default async function ExperienceDetailPage({
                 <span className="font-semibold">{exp.locationName}</span>
               </div>
             )}
+            {exp.maxGroupSize && (
+              <div>
+                <span className="text-gray-500 block">Max Group Size</span>
+                <span className="font-semibold">{exp.maxGroupSize} people</span>
+              </div>
+            )}
           </div>
+
+          {exp.activityTags && exp.activityTags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {exp.activityTags.map((tag: string) => (
+                <span key={tag} className="text-xs uppercase tracking-wide bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
 
           <div className="prose max-w-none">
             {exp.fullDescription ? (

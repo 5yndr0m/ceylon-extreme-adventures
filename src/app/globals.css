@@ -324,17 +324,23 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 .booking-grid{ display:grid; gap:44px; }
 .booking-info p{ color:rgba(255,255,255,.8); margin-top:16px; }
 .booking-info .contact-line{ margin-top:26px; display:flex; align-items:center; gap:10px; font-weight:600; }
-form{ display:grid; gap:16px; background:rgba(247,245,240,.06); padding:28px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.12); }
+.booking-form form{ display:grid; gap:16px; background:rgba(247,245,240,.06); padding:28px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.12); }
 .field-row{ display:grid; gap:16px; }
-label{ display:block; font-size:12px; font-weight:600; letter-spacing:.4px; text-transform:uppercase; margin-bottom:6px; color:rgba(255,255,255,.75); }
-input, select, textarea{
+label{ display:block; font-size:13px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; margin-bottom:8px; color:var(--basalt-black); }
+/* The .booking-form (contact/enquiry form) sits on a dark green section and needs
+   light-on-dark styling. Everything below this line is scoped to it — this global
+   input/select/textarea/label block must NOT leak white-on-transparent styling into
+   other forms on the site (e.g. the booking form on a white card on /experiences/[slug],
+   which was rendering as an invisible white-on-white form before this fix). */
+.booking-form label{ color:#fff; }
+.booking-form input, .booking-form select, .booking-form textarea{
   width:100%; padding:13px 14px; border-radius:8px; border:1px solid rgba(255,255,255,.2);
   background:rgba(255,255,255,.08); color:#fff; font-family:inherit; font-size:15px;
 }
-input::placeholder, textarea::placeholder{ color:rgba(255,255,255,.45); }
-input:focus, select:focus, textarea:focus{ outline:2px solid var(--adrenaline-orange); outline-offset:2px; background:rgba(255,255,255,.12); }
-textarea{ resize:vertical; min-height:100px; }
-select option{ color:#000; }
+.booking-form input::placeholder, .booking-form textarea::placeholder{ color:rgba(255,255,255,.45); }
+.booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus{ outline:2px solid var(--adrenaline-orange); outline-offset:2px; background:rgba(255,255,255,.12); }
+.booking-form textarea{ resize:vertical; min-height:100px; }
+.booking-form select option{ color:#000; }
 @media(min-width:768px){
   .booking-grid{ grid-template-columns:1fr 1.1fr; }
   .field-row.two{ grid-template-columns:1fr 1fr; }
@@ -461,6 +467,45 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s var(--ease); }
 .faq-a p{ padding:0 22px 20px; color:var(--stone-gray); font-size:14px; }
 .faq-item.open .faq-a{ max-height:220px; }
+
+/* ============ BLOG ============ */
+.blog-list{ background:var(--mist-white); }
+.blog-grid{ display:grid; gap:24px; grid-template-columns:1fr; }
+@media(min-width:768px){ .blog-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(min-width:1280px){ .blog-grid{ grid-template-columns:repeat(3,1fr); } }
+
+.blog-card{
+  display:block; background:#fff; border-radius:var(--radius-md); overflow:hidden;
+  box-shadow:0 16px 40px -28px rgba(20,24,26,.3); transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.blog-card:hover{ transform:translateY(-4px); box-shadow:0 22px 46px -24px rgba(20,24,26,.35); }
+.blog-card-img{ position:relative; aspect-ratio:16/10.5; overflow:hidden; background:var(--cloud-gray); }
+.blog-card-img-fallback{ width:100%; height:100%; background:var(--cloud-gray); }
+.blog-card-body{ padding:22px; display:flex; flex-direction:column; gap:8px; }
+.blog-card-body .tag{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--adrenaline-orange); }
+.blog-card-body h3{ color:var(--basalt-black); }
+.blog-card-body p{ font-size:14px; color:var(--stone-gray); }
+.blog-card-date{ font-size:12px; color:var(--stone-gray); margin-top:4px; }
+
+.blog-detail{ background:#fff; }
+.blog-detail-grid{ display:grid; gap:44px; max-width:920px; }
+@media(min-width:960px){ .blog-detail-grid{ grid-template-columns:1fr 280px; max-width:none; align-items:start; } }
+.blog-detail-grid .prose{ color:var(--basalt-black); line-height:1.75; font-size:16px; }
+.blog-detail-grid .prose p{ margin-bottom:1.1em; color:var(--stone-gray); }
+.blog-detail-grid .prose h2,
+.blog-detail-grid .prose h3{ margin:1.4em 0 .6em; color:var(--basalt-black); }
+.blog-detail-grid .prose img{ border-radius:var(--radius-md); margin:1.2em 0; }
+
+.blog-related-card{
+  background:var(--mist-white); border-radius:var(--radius-md); padding:20px;
+  border:1px solid var(--cloud-gray); position:sticky; top:96px;
+}
+.blog-related-label{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-gray); margin-bottom:12px; }
+.blog-related-link{ display:block; }
+.blog-related-img{ position:relative; aspect-ratio:4/3; border-radius:var(--radius-sm); overflow:hidden; margin-bottom:12px; }
+.blog-related-link h3{ font-size:17px; color:var(--basalt-black); margin-bottom:4px; }
+.blog-related-price{ font-size:14px; color:var(--stone-gray); margin-bottom:10px; }
+.blog-related-cta{ font-size:13px; font-weight:700; color:var(--adrenaline-orange); }
 
 /* Hours list for booking */
 .hours-list{ margin-top:30px; display:grid; gap:8px; }
