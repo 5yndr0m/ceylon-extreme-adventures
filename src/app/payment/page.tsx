@@ -1,47 +1,227 @@
+// src/app/payment/page.tsx
 'use client';
 
-import { useRef, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Reveal from '../../components/Reveal';
+import { client, urlFor } from '../../lib/sanity';
+import { redirectToPayHere } from '../../lib/payhere';
 
-type Method = 'card' | 'bank';
-
-export default function PaymentPortal() {
-  const [method, setMethod] = useState<Method>('card');
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardExpiry, setCardExpiry] = useState('');
-  const [cardCvv, setCardCvv] = useState('');
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  const formatCardNumber = (raw: string) => raw.replace(/\D/g, '').slice(0, 16).replace(/(.{4})/g, '$1 ').trim();
-  const formatExpiry = (raw: string) => {
-    let digits = raw.replace(/\D/g, '').slice(0, 4);
-    if (digits.length > 2) digits = `${digits.slice(0, 2)} / ${digits.slice(2)}`;
-    return digits;
+type Booking = {
+  _id: string;
+  fullName: string;
+  preferredDate: string;
+  groupSize: number;
+  experience: {
+    title: string;
+    category: string;
+    price: number;
+    heroImage: any;
   };
-  const showSuccess = (event?: React.FormEvent) => {
-    event?.preventDefault();
-    dialogRef.current?.showModal();
-  };
+};
+
+function PaymentPortalInner() {
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('booking_id');
+
+  const [booking, setBooking] = useState<Booking | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [redirecting, setRedirecting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!bookingId) {
+      setLoading(false);
+      return;
+    }
+    client
+      .fetch(
+        `*[_type == "booking" && _id == $id][0]{
+          _id, fullName, preferredDate, groupSize,
+          experience->{title, category, price, heroImage}
+        }`,
+        { id: bookingId }
+      )
+      .then((data) => {
+        setBooking(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('Could not load your booking.');
+        setLoading(false);
+      });
+  }, [bookingId]);
+
+  async function proceedToPayment() {
+    if (!bookingId) return;
+    setRedirecting(true);
+    const result = await redirectToPayHere(bookingId);
+    if (result.error) {
+      setError(result.error);
+      setRedirecting(false);
+    }
+    // On success, redirectToPayHere() has already submitted the form and the
+    // browser is navigating away — nothing more to do here
+  }
+
+  if (!bookingId) {
+    return (
+      <main className="payment-page">
+        <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
+          <p>No booking selected. Please start from an experience page.</p>
+          <Link href="/experiences" className="btn btn-primary" style={{ marginTop: 20 }}>
+            Browse Experiences
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  if (loading) {
+    return (
+      <main className="payment-page">
+        <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
+          <p>Loading your booking…</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error || !booking) {
+    return (
+      <main className="payment-page">
+        <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
+          <p>{error || 'Booking not found.'}</p>
+        </div>
+      </main>
+    );
+  }
+
+  const total = booking.experience.price * booking.groupSize;
 
   return (
     <main className="payment-page">
-      <div className="secure-header"><div className="container secure-header-inner"><Link href="/" className="logo">Ceylon<span>X</span>treme</Link><span className="secure-pill">🔒 256-bit SSL Encrypted</span></div></div>
-      <section className="payment-hero"><div className="container page-hero-inner"><div className="breadcrumb"><Link href="/">Home</Link> / <Link href="/booking">Booking</Link> / <span>Payment</span></div><span className="eyebrow">Almost there</span><h1>Complete Your Payment</h1><p className="page-hero-sub body-lg">Securely pay your booking balance below. Your spot is held for 15 minutes while you check out.</p><div className="steps"><div className="step done"><span className="step-num">✓</span> Trip Details</div><i /><div className="step active"><span className="step-num">2</span> Payment</div><i /><div className="step"><span className="step-num">3</span> Confirmation</div></div></div></section>
+      <div className="secure-header">
+        <div className="container secure-header-inner">
+          <Link href="/" className="logo">Ceylon<span>X</span>treme</Link>
+          <span className="secure-pill">🔒 Secure Checkout via PayHere</span>
+        </div>
+      </div>
 
-      <section className="payment-portal"><div className="container pay-grid">
-        <Reveal className="summary-card"><div className="summary-img"><img src="https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="White-water rafting group on the Kelani River" /><span className="summary-ref">REF: CEA-24816</span></div><div className="summary-body"><span className="summary-tag">Rafting</span><h3>Kitulgala Rapids Run</h3><div className="summary-meta"><span>📅 29 Aug 2026, 7:00 AM</span><span>👥 4 travellers</span></div><div className="promo-row"><input type="text" placeholder="Promo code" /><button type="button" className="btn btn-outline">Apply</button></div><div className="price-lines"><div><span>Package (4 × LKR 9,800)</span><span>39,200 LKR</span></div><div><span>Safety gear &amp; transport</span><span>Included</span></div><div><span>Service fee</span><span>1,200 LKR</span></div><div className="discount"><span>Early-bird discount</span><span>−2,000 LKR</span></div></div><div className="price-total"><strong>Total due</strong><strong>38,400 <small>LKR</small></strong></div><p className="guarantee-note">🛡 Full refund if we reschedule due to weather. Guide-verified safety checks on every departure.</p></div></Reveal>
+      <section className="payment-hero">
+        <div className="container page-hero-inner">
+          <div className="breadcrumb"><Link href="/">Home</Link> / <Link href="/experiences">Experiences</Link> / <span>Payment</span></div>
+          <span className="eyebrow">Almost there</span>
+          <h1>Review &amp; Pay</h1>
+          <p className="page-hero-sub body-lg">
+            Confirm your booking details below, then you'll be securely redirected to PayHere to complete payment.
+          </p>
+          <div className="steps">
+            <div className="step done"><span className="step-num">✓</span> Trip Details</div>
+            <i />
+            <div className="step active"><span className="step-num">2</span> Payment</div>
+            <i />
+            <div className="step"><span className="step-num">3</span> Confirmation</div>
+          </div>
+        </div>
+      </section>
 
-        <Reveal className="pay-panel"><div className="method-tabs" role="tablist"><button type="button" className={method === 'card' ? 'active' : ''} role="tab" aria-selected={method === 'card'} onClick={() => setMethod('card')}>▣ Credit / Debit Card</button><button type="button" className={method === 'bank' ? 'active' : ''} role="tab" aria-selected={method === 'bank'} onClick={() => setMethod('bank')}>▤ Bank Transfer</button></div>
-          {method === 'card' ? <form className="card-form" onSubmit={showSuccess}><div className="form-section-label">Contact</div><div className="field-row two"><div><label htmlFor="pname">Full Name</label><input id="pname" type="text" placeholder="As shown on ID" required /></div><div><label htmlFor="pemail">Email</label><input id="pemail" type="email" placeholder="you@email.com" required /></div></div><div className="form-section-label">Card details</div><div><label htmlFor="cardname">Name on Card</label><input id="cardname" type="text" placeholder="e.g. Nuwan Perera" required /></div><div><label htmlFor="cardnum">Card Number</label><input id="cardnum" inputMode="numeric" type="text" placeholder="1234 5678 9012 3456" maxLength={19} value={cardNumber} onChange={(e) => setCardNumber(formatCardNumber(e.target.value))} required /><div className="cardtype-row"><span>VISA</span><span>MC</span><span>AMEX</span></div></div><div className="field-row three"><div><label htmlFor="cardexp">Expiry</label><input id="cardexp" type="text" placeholder="MM / YY" maxLength={7} value={cardExpiry} onChange={(e) => setCardExpiry(formatExpiry(e.target.value))} required /></div><div><label htmlFor="cardcvv">CVV</label><input id="cardcvv" inputMode="numeric" type="text" placeholder="123" maxLength={4} value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, '').slice(0, 4))} required /></div><div><label htmlFor="cardzip">Postal Code</label><input id="cardzip" type="text" placeholder="00500" /></div></div><div className="terms-row"><input type="checkbox" id="terms" required /><label htmlFor="terms">I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Cancellation Policy</a>, and confirm my payment details are correct.</label></div><button type="submit" className="btn btn-primary pay-cta">🔒 Pay 38,400 LKR Securely</button><div className="lock-note">✓ Your payment is encrypted and processed securely. We never store your full card number.</div></form> : <div className="bank-details"><div className="form-section-label">Transfer to</div>{[['Bank', 'Commercial Bank of Ceylon'], ['Account Name', 'Ceylon Extreme Adventures (Pvt) Ltd'], ['Account Number', '8001 234 567 9'], ['Branch', 'Nugegoda — 095'], ['Reference', 'CEA-24816']].map(([label, value]) => <div className="bank-row" key={label}><span>{label}</span><strong>{value}</strong></div>)}<div className="form-section-label">Upload proof of payment</div><div className="bank-upload"><strong>Click to upload</strong> or drag a screenshot / receipt here — PDF, JPG or PNG.</div><button type="button" className="btn btn-primary pay-cta" onClick={() => showSuccess()}>Confirm Bank Transfer</button><div className="lock-note">✓ Bookings are confirmed once our team verifies your transfer, usually within a few hours.</div></div>}
-        </Reveal>
-      </div></section>
+      <section className="payment-portal">
+        <div className="container pay-grid">
+          <Reveal className="summary-card">
+            <div className="summary-img">
+              {booking.experience.heroImage && (
+                <img
+                  src={urlFor(booking.experience.heroImage).width(900).height(506).url()}
+                  alt={booking.experience.title}
+                />
+              )}
+              <span className="summary-ref">REF: {booking._id.slice(-8).toUpperCase()}</span>
+            </div>
+            <div className="summary-body">
+              <span className="summary-tag">{booking.experience.category}</span>
+              <h3>{booking.experience.title}</h3>
+              <div className="summary-meta">
+                <span>📅 {booking.preferredDate}</span>
+                <span>👥 {booking.groupSize} {booking.groupSize === 1 ? 'traveller' : 'travellers'}</span>
+              </div>
+              <div className="price-lines">
+                <div>
+                  <span>Package ({booking.groupSize} × LKR {booking.experience.price.toLocaleString()})</span>
+                  <span>{total.toLocaleString()} LKR</span>
+                </div>
+              </div>
+              <div className="price-total">
+                <strong>Total due</strong>
+                <strong>{total.toLocaleString()} <small>LKR</small></strong>
+              </div>
+              <p className="guarantee-note">
+                🛡 Full refund if we reschedule due to weather. Guide-verified safety checks on every departure.
+              </p>
+            </div>
+          </Reveal>
 
-      <section className="trust-strip"><div className="container trust-grid">{[['🔒', '256-bit SSL', 'All data encrypted in transit'], ['🛡', 'PCI-DSS Aligned', 'We never store card numbers'], ['✓', 'Weather Guarantee', 'Full refund on cancelled routes'], ['☎', '24/7 Support', '+94 70 790 0700']].map(([icon, title, text]) => <div className="trust-item" key={title}><div className="trust-icon">{icon}</div><h3>{title}</h3><p>{text}</p></div>)}</div></section><footer className="payment-footer"><div className="container footer-row"><span>© 2026 Ceylon Extreme Adventures (Pvt) Ltd.</span><div className="footer-links"><a href="#">Refund Policy</a><a href="#">Terms &amp; Conditions</a><a href="mailto:info@extremeadventure.lk">info@extremeadventure.lk</a></div></div></footer>
-      <dialog ref={dialogRef} className="pay-success-dialog"><div className="pay-success-body"><div className="pay-success-icon">✓</div><h2>Payment Received</h2><p>This is a demo checkout — no real payment was processed. Booking CEA-24816 would now show as confirmed.</p><button className="btn btn-primary" onClick={() => dialogRef.current?.close()}>Close</button></div></dialog>
+          <Reveal className="pay-panel">
+            <div className="form-section-label">Ready to confirm</div>
+            <p style={{ color: 'var(--stone-gray)', fontSize: 14, marginBottom: 24 }}>
+              Payment is processed securely by PayHere — we never see or store your card details.
+              You'll be redirected to complete payment, then brought back here automatically.
+            </p>
+            <button
+              type="button"
+              className="btn btn-primary pay-cta"
+              onClick={proceedToPayment}
+              disabled={redirecting}
+            >
+              {redirecting ? 'Redirecting…' : `🔒 Proceed to Pay ${total.toLocaleString()} LKR`}
+            </button>
+            {error && <p style={{ color: 'crimson', fontSize: 13, marginTop: 10 }}>{error}</p>}
+            <div className="lock-note">✓ Accepts Visa, Mastercard, Amex — LKR and international cards.</div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="trust-strip">
+        <div className="container trust-grid">
+          {[
+            ['🔒', 'Secure Checkout', 'Handled entirely by PayHere'],
+            ['🛡', 'PCI-DSS Compliant', 'We never see your card details'],
+            ['✓', 'Weather Guarantee', 'Full refund on cancelled routes'],
+            ['☎', '24/7 Support', '+94 70 790 0700'],
+          ].map(([icon, title, text]) => (
+            <div className="trust-item" key={title}>
+              <div className="trust-icon">{icon}</div>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer className="payment-footer">
+        <div className="container footer-row">
+          <span>© 2026 Ceylon Extreme Adventures (Pvt) Ltd.</span>
+          <div className="footer-links">
+            <a href="#">Refund Policy</a>
+            <a href="#">Terms &amp; Conditions</a>
+            <a href="mailto:info@extremeadventure.lk">info@extremeadventure.lk</a>
+          </div>
+        </div>
+      </footer>
+
       <style jsx>{`
-        .secure-header{background:rgba(20,24,26,.96);padding:16px 0;box-shadow:0 2px 20px rgba(0,0,0,.15)}.secure-header-inner{display:flex;align-items:center;justify-content:space-between}.secure-pill{color:rgba(255,255,255,.85);font-size:12px;font-weight:600}.payment-hero{background:var(--jungle-green-dark);padding:70px 0 52px}.payment-hero h1{color:#fff}.payment-hero .eyebrow{display:block;margin-bottom:10px}.steps{display:flex;align-items:center;gap:8px;margin-top:28px;flex-wrap:wrap}.step{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;text-transform:uppercase;color:rgba(255,255,255,.45)}.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12)}.step.done{color:rgba(255,255,255,.85)}.step.done .step-num{background:var(--success-green);color:#fff}.step.active{color:#fff}.step.active .step-num{background:var(--adrenaline-orange);color:#fff}.steps i{width:20px;height:1px;background:rgba(255,255,255,.25)}.pay-grid{display:grid;gap:28px;align-items:start}@media(min-width:960px){.pay-grid{grid-template-columns:1fr 1.35fr;gap:36px}.summary-card{position:sticky;top:96px}}.summary-card,.pay-panel{background:#fff;border:1px solid var(--cloud-gray);border-radius:var(--radius-md);overflow:hidden;box-shadow:0 18px 44px -28px rgba(20,24,26,.3)}.summary-img{position:relative;aspect-ratio:16/9;overflow:hidden}.summary-img img{width:100%;height:100%;object-fit:cover}.summary-ref{position:absolute;top:12px;left:12px;background:rgba(20,24,26,.85);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:var(--radius-pill)}.summary-body{padding:24px}.summary-tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--adrenaline-orange)}.summary-meta{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;color:var(--stone-gray);font-size:13px}.promo-row{display:flex;gap:8px;margin-top:20px}.promo-row input{flex:1}.promo-row input,.card-form input{width:100%;padding:13px 14px;border-radius:8px;border:1.5px solid var(--cloud-gray);background:var(--mist-white);color:var(--basalt-black);font:inherit}.promo-row button{padding:11px 16px;font-size:12px}.price-lines{margin-top:22px;padding-top:18px;border-top:1px dashed var(--cloud-gray);display:grid;gap:10px}.price-lines div,.price-total{display:flex;justify-content:space-between;font-size:14px;color:var(--stone-gray)}.price-lines .discount{color:var(--success-green)}.price-total{align-items:baseline;margin-top:8px;padding-top:14px;border-top:2px solid var(--jungle-green);color:var(--basalt-black)}.price-total strong:last-child{font-family:var(--font-display);font-size:26px;color:var(--jungle-green)}.price-total small{font-family:var(--font-body);font-size:13px;color:var(--stone-gray)}.guarantee-note{margin-top:20px;padding:14px;background:var(--mist-white);border-radius:var(--radius-sm);font-size:12.5px;color:var(--stone-gray);line-height:1.5}.pay-panel{padding:28px}@media(min-width:768px){.pay-panel{padding:36px}}.method-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px}.method-tabs button{padding:14px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--cloud-gray);background:#fff;font-size:13px;font-weight:600;color:var(--stone-gray)}.method-tabs button.active{border-color:var(--jungle-green);background:var(--jungle-green);color:#fff}.card-form,.bank-details{display:grid;gap:18px}.form-section-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--jungle-green);margin:6px 0 -4px;border-bottom:1px solid var(--cloud-gray);padding-bottom:4px}.field-row{display:grid;gap:16px}@media(min-width:560px){.field-row.two{grid-template-columns:1fr 1fr}.field-row.three{grid-template-columns:1.6fr 1fr 1fr}}.card-form label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;margin-bottom:6px;color:var(--stone-gray)}.card-form input:focus,.promo-row input:focus{outline:none;border-color:var(--rapids-blue);background:#fff}.cardtype-row{display:flex;gap:8px;margin-top:6px}.cardtype-row span{padding:4px 8px;border:1px solid var(--cloud-gray);border-radius:4px;font-size:9px;color:var(--stone-gray)}.terms-row{display:flex;gap:10px;align-items:flex-start;margin-top:4px}.terms-row input{width:18px;flex-shrink:0;accent-color:var(--jungle-green)}.terms-row label{font-size:13px!important;text-transform:none!important;font-weight:500!important}.terms-row a{color:var(--jungle-green);font-weight:600;text-decoration:underline}.pay-cta{width:100%;margin-top:6px;padding:17px 24px;font-size:15px}.lock-note{text-align:center;font-size:12px;color:var(--stone-gray);margin-top:14px}.bank-row{display:flex;justify-content:space-between;gap:12px;padding:13px 14px;background:var(--mist-white);border-radius:8px;font-size:14px}.bank-row span{color:var(--stone-gray)}.bank-row strong{text-align:right}.bank-upload{border:1.5px dashed var(--cloud-gray);border-radius:var(--radius-sm);padding:26px;text-align:center;color:var(--stone-gray);font-size:13.5px}.bank-upload strong{color:var(--jungle-green)}.trust-strip{background:var(--mist-white);border-top:1px solid var(--cloud-gray)}.trust-grid{display:grid;gap:22px;grid-template-columns:repeat(2,1fr)}@media(min-width:768px){.trust-grid{grid-template-columns:repeat(4,1fr)}}.trust-item{text-align:center}.trust-icon{margin:0 auto 10px;width:48px;height:48px;border-radius:50%;background:#fff;border:1.5px solid var(--cloud-gray);display:flex;align-items:center;justify-content:center;color:var(--jungle-green)}.trust-item h3{font-size:14px}.trust-item p{font-size:12.5px;color:var(--stone-gray)}.payment-footer{background:var(--basalt-black);color:rgba(255,255,255,.6);padding:32px 0}.footer-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;font-size:13px}.footer-links{display:flex;gap:18px;flex-wrap:wrap}.pay-success-dialog{border:none;border-radius:14px;padding:0;max-width:380px;width:90%}.pay-success-dialog::backdrop{background:rgba(20,24,26,.55)}.pay-success-body{padding:32px;text-align:center}.pay-success-icon{width:56px;height:56px;border-radius:50%;background:var(--success-green);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px}.pay-success-body p{margin-top:10px;color:var(--stone-gray)}.pay-success-body .btn{margin-top:22px;width:100%}
+        .secure-header{background:rgba(20,24,26,.96);padding:16px 0;box-shadow:0 2px 20px rgba(0,0,0,.15)}.secure-header-inner{display:flex;align-items:center;justify-content:space-between}.secure-pill{color:rgba(255,255,255,.85);font-size:12px;font-weight:600}.payment-hero{background:var(--jungle-green-dark);padding:70px 0 52px}.payment-hero h1{color:#fff}.payment-hero .eyebrow{display:block;margin-bottom:10px}.steps{display:flex;align-items:center;gap:8px;margin-top:28px;flex-wrap:wrap}.step{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;text-transform:uppercase;color:rgba(255,255,255,.45)}.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12)}.step.done{color:rgba(255,255,255,.85)}.step.done .step-num{background:var(--success-green);color:#fff}.step.active{color:#fff}.step.active .step-num{background:var(--adrenaline-orange);color:#fff}.steps i{width:20px;height:1px;background:rgba(255,255,255,.25)}.pay-grid{display:grid;gap:28px;align-items:start}@media(min-width:960px){.pay-grid{grid-template-columns:1fr 1.35fr;gap:36px}.summary-card{position:sticky;top:96px}}.summary-card,.pay-panel{background:#fff;border:1px solid var(--cloud-gray);border-radius:var(--radius-md);overflow:hidden;box-shadow:0 18px 44px -28px rgba(20,24,26,.3)}.summary-img{position:relative;aspect-ratio:16/9;overflow:hidden}.summary-img img{width:100%;height:100%;object-fit:cover}.summary-ref{position:absolute;top:12px;left:12px;background:rgba(20,24,26,.85);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:var(--radius-pill)}.summary-body{padding:24px}.summary-tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--adrenaline-orange)}.summary-meta{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;color:var(--stone-gray);font-size:13px}.price-lines{margin-top:22px;padding-top:18px;border-top:1px dashed var(--cloud-gray);display:grid;gap:10px}.price-lines div,.price-total{display:flex;justify-content:space-between;font-size:14px;color:var(--stone-gray)}.price-total{align-items:baseline;margin-top:8px;padding-top:14px;border-top:2px solid var(--jungle-green);color:var(--basalt-black)}.price-total strong:last-child{font-family:var(--font-display);font-size:26px;color:var(--jungle-green)}.price-total small{font-family:var(--font-body);font-size:13px;color:var(--stone-gray)}.guarantee-note{margin-top:20px;padding:14px;background:var(--mist-white);border-radius:var(--radius-sm);font-size:12.5px;color:var(--stone-gray);line-height:1.5}.pay-panel{padding:28px}@media(min-width:768px){.pay-panel{padding:36px}}.form-section-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--jungle-green);margin:6px 0 -4px;border-bottom:1px solid var(--cloud-gray);padding-bottom:4px}.pay-cta{width:100%;margin-top:20px;padding:17px 24px;font-size:15px}.lock-note{text-align:center;font-size:12px;color:var(--stone-gray);margin-top:14px}.trust-strip{background:var(--mist-white);border-top:1px solid var(--cloud-gray)}.trust-grid{display:grid;gap:22px;grid-template-columns:repeat(2,1fr)}@media(min-width:768px){.trust-grid{grid-template-columns:repeat(4,1fr)}}.trust-item{text-align:center}.trust-icon{margin:0 auto 10px;width:48px;height:48px;border-radius:50%;background:#fff;border:1.5px solid var(--cloud-gray);display:flex;align-items:center;justify-content:center;color:var(--jungle-green)}.trust-item h3{font-size:14px}.trust-item p{font-size:12.5px;color:var(--stone-gray)}.payment-footer{background:var(--basalt-black);color:rgba(255,255,255,.6);padding:32px 0}.footer-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;font-size:13px}.footer-links{display:flex;gap:18px;flex-wrap:wrap}
       `}</style>
     </main>
+  );
+}
+
+// useSearchParams requires a Suspense boundary in the App Router
+export default function PaymentPortal() {
+  return (
+    <Suspense fallback={<main className="payment-page" />}>
+      <PaymentPortalInner />
+    </Suspense>
   );
 }

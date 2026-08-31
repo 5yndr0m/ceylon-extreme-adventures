@@ -124,9 +124,11 @@ async function run() {
       durationRaw: meta['duration'], // keep raw string too; normalize to hours manually later
       price: parsePrice(meta['price_in_lkr']),
       locationName: locations[0] || undefined,
-      // Not in current schema yet — flagging for schema update:
-      // maxGroupSize: meta['max_group_size'],
-      // activityTags: activities,
+      // Both fields are now in the schema (see experienceType.ts) — backfilled below.
+      // meta['max_group_size'] is a raw string in WP; coerce to a number and drop if unparseable
+      // rather than writing NaN into Sanity.
+      maxGroupSize: meta['max_group_size'] ? parseInt(meta['max_group_size'], 10) || undefined : undefined,
+      activityTags: activities.length > 0 ? activities : undefined,
       heroImageSourceUrl: heroImageUrl, // temp field: re-upload to Sanity assets in a follow-up pass
       migratedFromWpId: post.ID,
     }

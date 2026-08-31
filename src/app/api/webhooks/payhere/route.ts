@@ -69,8 +69,8 @@ export async function POST(req: NextRequest) {
 
     if (booking) {
       // Customer-facing confirmation
-      await resend.emails.send({
-        from: 'Ceylon Extreme Adventures <bookings@ceylonextremeadventures.com>', // update once the client's real sending domain is verified in Resend
+      const customerResult = await resend.emails.send({
+        from: 'Ceylon Extreme Adventures <bookings@test.dilanjana.me>', // swap to the client's real domain once verified in Resend
         to: booking.email,
         subject: `Booking Confirmed — ${booking.experience.title}`,
         html: `
@@ -80,10 +80,17 @@ export async function POST(req: NextRequest) {
           <p>Our team will call you within 24 hours to confirm logistics.</p>
         `,
       })
+      // Resend's SDK returns {data, error} rather than throwing on API-level failures
+      // (unverified domain, sandbox restrictions, etc.) — log both explicitly or failures go silent
+      if (customerResult.error) {
+        console.error('❌ Resend failed (customer email):', customerResult.error)
+      } else {
+        console.log('✅ Customer email sent:', customerResult.data?.id)
+      }
 
       // Internal notification — client's team needs to know a new paid booking came in
-      await resend.emails.send({
-        from: 'Ceylon Extreme Adventures Site <bookings@ceylonextremeadventures.com>',
+      const internalResult = await resend.emails.send({
+        from: 'Ceylon Extreme Adventures Site <bookings@test.dilanjana.me>',
         to: process.env.CLIENT_NOTIFICATION_EMAIL!, // set this in env, not hardcoded — client's inbox may change
         subject: `New Paid Booking — ${booking.experience.title}`,
         html: `
@@ -93,6 +100,11 @@ export async function POST(req: NextRequest) {
           <p>Payment reference: ${data.payment_id}</p>
         `,
       })
+      if (internalResult.error) {
+        console.error('❌ Resend failed (internal notification):', internalResult.error)
+      } else {
+        console.log('✅ Internal notification sent:', internalResult.data?.id)
+      }
     }
 
     console.log(`✅ Booking ${order_id} marked Paid via PayHere, emails sent`)
