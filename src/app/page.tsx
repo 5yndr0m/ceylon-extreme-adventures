@@ -33,51 +33,63 @@ export default function Home() {
 
           <div className="card-scroller">
             <Reveal2 className="activity-card">
-              <img src="https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Hikers on a misty mountain trail in Sri Lanka" />
-              <div className="activity-card-content">
-                <h3>Hiking</h3>
-                <p>Trek scenic ridgelines and misty peaks with guides who know every hidden trail.</p>
-              </div>
+              <a href="/experiences?category=Hiking" className="activity-card-link">
+                <img src="https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Hikers on a misty mountain trail in Sri Lanka" />
+                <div className="activity-card-content glass">
+                  <h3>Hiking</h3>
+                  <p>Trek scenic ridgelines and misty peaks with guides who know every hidden trail.</p>
+                </div>
+              </a>
             </Reveal2>
 
             <Reveal2 className="activity-card">
-              <img src="https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Traveler abseiling down a waterfall in Sri Lanka" />
-              <div className="activity-card-content">
-                <h3>Abseiling</h3>
-                <p>Descend cascading waterfalls with full safety gear and expert instruction.</p>
-              </div>
+              <a href="/experiences?category=Abseiling" className="activity-card-link">
+                <img src="https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Traveler abseiling down a waterfall in Sri Lanka" />
+                <div className="activity-card-content glass">
+                  <h3>Abseiling</h3>
+                  <p>Descend cascading waterfalls with full safety gear and expert instruction.</p>
+                </div>
+              </a>
             </Reveal2>
 
             <Reveal2 className="activity-card">
-              <img src="https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Group rafting and kayaking down the Kelani River" />
-              <div className="activity-card-content">
-                <h3>Rafting &amp; Kayaking</h3>
-                <p>Paddle through rapids and calm stretches alike on Sri Lanka's best rivers.</p>
-              </div>
+              <a href="/experiences?category=Rafting" className="activity-card-link">
+                <img src="https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Group rafting and kayaking down the Kelani River" />
+                <div className="activity-card-content glass">
+                  <h3>Rafting &amp; Kayaking</h3>
+                  <p>Paddle through rapids and calm stretches alike on Sri Lanka's best rivers.</p>
+                </div>
+              </a>
             </Reveal2>
 
             <Reveal2 className="activity-card">
-              <img src="https://images.unsplash.com/photo-1508873699372-7aeab60b44ab?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Campers with tents under the stars in the mountains" />
-              <div className="activity-card-content">
-                <h3>Trekking &amp; Camping</h3>
-                <p>Multi-day treks with camp nights under the stars, far from the crowds.</p>
-              </div>
+              <a href="/experiences?category=Hiking" className="activity-card-link">
+                <img src="https://images.unsplash.com/photo-1508873699372-7aeab60b44ab?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Campers with tents under the stars in the mountains" />
+                <div className="activity-card-content glass">
+                  <h3>Trekking &amp; Camping</h3>
+                  <p>Multi-day treks with camp nights under the stars, far from the crowds.</p>
+                </div>
+              </a>
             </Reveal2>
 
             <Reveal2 className="activity-card">
-              <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Adventurers on a multi-day river expedition" />
-              <div className="activity-card-content">
-                <h3>River Expedition</h3>
-                <p>Multi-day river journeys blending rapids, camping, and remote scenery.</p>
-              </div>
+              <a href="/experiences?category=River%20Expedition" className="activity-card-link">
+                <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Adventurers on a multi-day river expedition" />
+                <div className="activity-card-content glass">
+                  <h3>River Expedition</h3>
+                  <p>Multi-day river journeys blending rapids, camping, and remote scenery.</p>
+                </div>
+              </a>
             </Reveal2>
 
             <Reveal2 className="activity-card">
-              <img src="https://images.unsplash.com/photo-1520962880247-cfaf541c8724?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Explorer navigating a dark cave with headlamp" />
-              <div className="activity-card-content">
-                <h3>Caving</h3>
-                <p>Explore underground chambers and passages lit only by your headlamp.</p>
-              </div>
+              <a href="/experiences?category=Caving" className="activity-card-link">
+                <img src="https://images.unsplash.com/photo-1520962880247-cfaf541c8724?fm=jpg&q=70&w=900&auto=format&fit=crop" alt="Explorer navigating a dark cave with headlamp" />
+                <div className="activity-card-content glass">
+                  <h3>Caving</h3>
+                  <p>Explore underground chambers and passages lit only by your headlamp.</p>
+                </div>
+              </a>
             </Reveal2>
           </div>
 
