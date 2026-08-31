@@ -182,6 +182,7 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
   aspect-ratio:4/5; background:var(--cloud-gray);
   box-shadow:0 20px 40px -20px rgba(0,0,0,.5);
 }
+.activity-card-link{ display:block; position:relative; width:100%; height:100%; }
 .activity-card img{ width:100%; height:100%; object-fit:cover; transition:transform .5s var(--ease); }
 .activity-card:hover img{ transform:scale(1.06); }
 .activity-card::after{
@@ -190,6 +191,14 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 }
 .activity-card-content{
   position:absolute; left:0; right:0; bottom:0; z-index:1; padding:22px; color:#fff;
+}
+.activity-card-content.glass{
+  left:14px; right:14px; bottom:14px; padding:18px 18px 16px;
+  background:rgba(18, 25, 30, 0.26);
+  border-radius:16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 28px rgba(0,0,0,0.18);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
 .activity-card-content .tag{
   font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--adrenaline-orange);
