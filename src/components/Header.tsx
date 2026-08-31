@@ -26,7 +26,7 @@ export default function Header() {
         <div className='container nav-row'>
           <Link href='/' className='logo'>Ceylon<span>X</span>treme</Link>
           <nav className='nav-links'>
-            <Link href={isHome ? '#activities' : '/#activities'}>Experiences</Link>
+            <Link href={isHome ? '/experiences' : '/experiences'}>Experiences</Link>
             <Link href='/about' className={pathname === '/about' ? 'active' : ''}>About Us</Link>
             <Link href={isHome ? '#gallery' : '/#gallery'}>Gallery</Link>
             <Link href='/contact' className={pathname === '/contact' ? 'active' : ''}>Contact</Link>
