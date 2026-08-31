@@ -51,14 +51,18 @@ function decodeEntities(str: string): string {
     .replace(/&ldquo;/g, '\u201c')
     .replace(/&mdash;/g, '\u2014')
     .replace(/&ndash;/g, '\u2013')
+    .replace(/\u200b/g, '') // zero-width space — TinyMCE leaves these behind constantly
 }
 
 function htmlToParagraphs(html: string): string[] {
   if (!html) return []
   const withBreaksAsNewlines = html.replace(/<br\s*\/?>/gi, '\n')
-  // Split on block-level closing tags so list items and paragraphs each become their own block
+  // Split on block-level closing tags so list items and paragraphs each become their own
+  // block. IMPORTANT: the group must be non-capturing — String.split() with a *capturing*
+  // group (the original bug here) inserts the captured text itself into the result array,
+  // so every closing </p> or </h4> left a stray "p"/"h4" string in the output.
   const chunks = withBreaksAsNewlines
-    .split(/<\/(p|li|h[1-6])>/i)
+    .split(/<\/(?:p|li|h[1-6])>/gi)
     .map((chunk) => chunk.replace(/<[^>]+>/g, '')) // strip remaining tags (opening tags, spans, etc.)
     .map((chunk) => decodeEntities(chunk).replace(/\s+/g, ' ').trim())
     .filter(Boolean)
@@ -88,7 +92,10 @@ function extractTextFromElementorTree(nodes: any[], out: string[]) {
           out.push(...htmlToParagraphs(settings.editor ?? ''))
           break
         case 'heading':
-          if (settings.title) out.push(decodeEntities(String(settings.title)).trim())
+          if (settings.title) {
+            const heading = decodeEntities(String(settings.title).replace(/<[^>]+>/g, '')).trim()
+            if (heading) out.push(heading)
+          }
           break
         // Some Elementor exports use a generic 'theme-post-content' or 'shortcode' widget,
         // or nest text in settings.text / settings.content — catch those too rather than
@@ -124,7 +131,43 @@ function parseElementorData(raw: string): string[] {
   extractTextFromElementorTree(Array.isArray(tree) ? tree : [tree], out)
   // De-dupe consecutive identical paragraphs — Elementor templates sometimes repeat a
   // heading in both a hidden mobile and desktop variant of the same section
-  return out.filter((p, i) => p !== out[i - 1])
+  const deduped = out.filter((p, i) => p !== out[i - 1])
+  return trimToNarrativeContent(deduped)
+}
+
+// ---- Trim widget chrome from around the real narrative content ----------------------
+// Every page on this site is built from the same Elementor template: a repeated
+// pricing/quick-info widget block (activity, price, difficulty, group size — duplicated
+// 2-3x for responsive breakpoints) at the top, then the real title + body copy, then a
+// "QUICK FACTS" sidebar (distances, coordinates, a WhatsApp CTA, related-adventure links,
+// and an Instagram feed shortcode) at the bottom. None of that surrounding chrome belongs
+// in a narrative `fullDescription`. Rather than maintaining a brittle blocklist of every
+// possible label string, this uses two markers that showed up consistently across every
+// page in a --dry-run of the real data:
+//   - A literal "Divider" widget (a labelled section divider) is the last thing before
+//     the real page title. Trim everything up to and including the last one.
+//   - A "QUICK" heading (the start of "QUICK FACTS") marks where the sidebar begins.
+//     Trim everything from there onward.
+function trimToNarrativeContent(paragraphs: string[]): string[] {
+  let start = 0
+  for (let i = 0; i < paragraphs.length; i++) {
+    if (paragraphs[i].trim().toLowerCase() === 'divider') start = i + 1
+  }
+
+  let end = paragraphs.length
+  for (let i = start; i < paragraphs.length; i++) {
+    if (paragraphs[i].trim().toLowerCase() === 'quick') {
+      end = i
+      break
+    }
+  }
+
+  const trimmed = paragraphs.slice(start, end).filter((p) => !/^\[.*\]$/.test(p.trim())) // strip any leftover WP shortcodes, e.g. [instagram-feed feed=3]
+
+  // Fallback: if a page doesn't follow the usual template (no "Divider"/"QUICK" markers
+  // found) trimming could accidentally return nothing. Better to keep the raw extraction
+  // and let a human clean it up in Studio than to silently produce an empty description.
+  return trimmed.length > 0 ? trimmed : paragraphs
 }
 
 async function run() {
