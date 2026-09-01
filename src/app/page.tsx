@@ -18,7 +18,7 @@ export default function Home() {
           <p className="hero-sub body-lg">Abseil untouched waterfalls, raft wild rivers, and trek hidden trails across Sri Lanka — guided by experts who put your safety first.</p>
           <div className="hero-ctas">
             <a href="#activities" className="btn btn-primary">Explore Adventures</a>
-            <a href="#" className="btn btn-ghost" id="showreelBtn">▶ Watch Showreel</a>
+            <a href="#" className="btn btn-ghost" id="showreelBtn">Watch Showreel</a>
           </div>
         </div>
       </section>
@@ -104,9 +104,7 @@ export default function Home() {
             <h2>This Month&apos;s Adventures</h2>
             <p>Join a scheduled group departure — grab a seat, meet fellow adventurers, and let us handle the logistics.</p>
           </Reveal2>
-
-          <Reveal2 className="events-month">August</Reveal2>
-
+          
           <Reveal2 className="events-carousel-wrap">
             <button className="event-nav prev" id="eventPrev" aria-label="Previous event">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
