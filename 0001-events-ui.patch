@@ -1,0 +1,751 @@
+From 53e02bf8daf886d07ad67a55f09733d805e69dfb Mon Sep 17 00:00:00 2001
+From: 5yndr0m <sdilanjana21@gmail.com>
+Date: Fri, 4 Sep 2026 09:06:37 +0000
+Subject: [PATCH] Build events UI: homepage month grid, month listing, event
+ booking page
+
+Wires the Sanity-backed events/monthly-banner data layer into real
+pages, matching the client's spec:
+
+Homepage (src/app/page.tsx):
+- The events section was a static hardcoded 3-card carousel (and had
+  regressed back to the old /payment-with-no-booking-id bug on one
+  card after the Frontend branch merge). Replaced with a real
+  3-column grid fetched from getUpcomingMonthlyBanners(3): banner
+  poster on top, month name/tagline/departure count/"See More" link
+  below each -- the "3 flyers in one row, details below each, 2 rows
+  3 columns" layout from the brief. Empty state included for before
+  any monthlyEventBanner docs exist in Studio.
+
+/events/[month] (new):
+- The "See More" destination. Hero banner (reusing the site's
+  existing .page-hero pattern from About/Blog/etc for visual
+  consistency) followed by a grid of that month's event flyers, each
+  showing the flyer image, date, price, includes icons, short
+  description, a "Know about the experience" link to the matching
+  /experiences/[slug] page (reviews/gallery live there, not here --
+  per the brief), and a "Reserve Spot" button. Handles a valid month
+  with zero events (empty state) separately from a malformed slug
+  (404).
+
+/events/[month]/[eventSlug] (new):
+- The booking destination. Mirrors the existing /experiences/[slug]
+  detail page's layout (hero image, sticky price/booking panel) but
+  for a specific scheduled departure: fixed date instead of a picker,
+  spots-remaining shown when the event has a maxParticipants cap, and
+  registration-closed/fully-booked states that hide the form instead
+  of letting someone book into a full or closed departure.
+- New EventBookingForm.tsx: same shape as the existing BookingForm.tsx
+  (explicit light-theme styling, not dependent on globals.css's
+  .booking-form-scoped dark rules) but posts eventId instead of
+  experienceId, and has no date field since the event fixes it.
+
+Also fixed two more instances of the "Book Now" button linking
+straight to /payment with no booking_id (Header's nav-cta + mobile
+menu, Footer's sticky mobile CTA) -- now point at the events section/
+page, which is the actual primary booking entry point per the brief.
+Updated payment page's no-booking-id empty state copy/links to match.
+
+Added an "Events" link to the header nav (desktop + mobile) so the
+new pages are reachable outside of the homepage grid.
+
+Not touched: ActivitiesCarousel.tsx and the old
+MonthlyEventFlyers.tsx/monthlyEvents.ts static data files no longer
+exist in the repo (removed by the Frontend branch merge before this
+work started) -- nothing to reconcile there.
+
+Verified: tsc --noEmit clean across the whole project. eslint clean
+on every new/touched file except two "any" types in
+events/[month]/page.tsx for loosely-typed Sanity image fields,
+matching the same convention already used throughout this codebase
+(e.g. heroImage?: any elsewhere). next build compiles all routes;
+only failure is the sandbox's Google Fonts network block, same as
+every previous build attempt in this environment, unrelated to this
+change.
+---
+ .../[month]/[eventSlug]/EventBookingForm.tsx  | 124 +++++++++++++++++
+ src/app/events/[month]/[eventSlug]/page.tsx   | 113 ++++++++++++++++
+ src/app/events/[month]/page.tsx               | 125 ++++++++++++++++++
+ src/app/globals.css                           |  68 +++++-----
+ src/app/page.tsx                              | 113 ++++++----------
+ src/app/payment/page.tsx                      |  13 +-
+ src/components/Footer.tsx                     |   2 +-
+ src/components/Header.tsx                     |   6 +-
+ 8 files changed, 447 insertions(+), 117 deletions(-)
+ create mode 100644 src/app/events/[month]/[eventSlug]/EventBookingForm.tsx
+ create mode 100644 src/app/events/[month]/[eventSlug]/page.tsx
+ create mode 100644 src/app/events/[month]/page.tsx
+
+diff --git a/src/app/events/[month]/[eventSlug]/EventBookingForm.tsx b/src/app/events/[month]/[eventSlug]/EventBookingForm.tsx
+new file mode 100644
+index 0000000..2177612
+--- /dev/null
++++ b/src/app/events/[month]/[eventSlug]/EventBookingForm.tsx
+@@ -0,0 +1,124 @@
++// src/app/events/[month]/[eventSlug]/EventBookingForm.tsx
++'use client'
++
++import {useState} from 'react'
++import {useRouter} from 'next/navigation'
++
++// Mirrors BookingForm.tsx's light-theme field styling (same reasoning: this sits on a
++// white card, and globals.css's dark-theme label/input rules are scoped to .booking-form
++// on /contact, not this form — see BookingForm.tsx for the fuller explanation). The date
++// isn't a field here at all: it's fixed by the event, not chosen by the customer.
++const labelClass = 'block text-sm font-semibold text-gray-700 mb-1'
++const inputClass =
++  'w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500'
++
++export default function EventBookingForm({eventId}: {eventId: string}) {
++  const router = useRouter()
++  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle')
++  const [errorMessage, setErrorMessage] = useState<string | null>(null)
++  const [form, setForm] = useState({
++    fullName: '',
++    email: '',
++    phone: '',
++    groupSize: 1,
++    message: '',
++  })
++
++  async function handleSubmit(e: React.FormEvent) {
++    e.preventDefault()
++    setStatus('submitting')
++    setErrorMessage(null)
++
++    try {
++      const res = await fetch('/api/bookings', {
++        method: 'POST',
++        headers: {'Content-Type': 'application/json'},
++        body: JSON.stringify({eventId, ...form}),
++      })
++      const data = await res.json()
++      if (!res.ok) throw new Error(data.error || 'Request failed')
++
++      router.push(`/payment?booking_id=${data.bookingId}`)
++    } catch (err) {
++      setStatus('error')
++      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong — please try again.')
++    }
++  }
++
++  return (
++    <form onSubmit={handleSubmit} className="space-y-4">
++      <div>
++        <label htmlFor="ebf-fullName" className={labelClass}>Full Name</label>
++        <input
++          id="ebf-fullName"
++          required
++          placeholder="Your full name"
++          className={inputClass}
++          value={form.fullName}
++          onChange={(e) => setForm({...form, fullName: e.target.value})}
++        />
++      </div>
++
++      <div>
++        <label htmlFor="ebf-email" className={labelClass}>Email</label>
++        <input
++          id="ebf-email"
++          required
++          type="email"
++          placeholder="you@email.com"
++          className={inputClass}
++          value={form.email}
++          onChange={(e) => setForm({...form, email: e.target.value})}
++        />
++      </div>
++
++      <div>
++        <label htmlFor="ebf-phone" className={labelClass}>Phone</label>
++        <input
++          id="ebf-phone"
++          placeholder="+94 7X XXX XXXX"
++          className={inputClass}
++          value={form.phone}
++          onChange={(e) => setForm({...form, phone: e.target.value})}
++        />
++      </div>
++
++      <div>
++        <label htmlFor="ebf-group" className={labelClass}>Group Size</label>
++        <input
++          id="ebf-group"
++          required
++          type="number"
++          min={1}
++          placeholder="e.g. 2"
++          className={inputClass}
++          value={form.groupSize}
++          onChange={(e) => setForm({...form, groupSize: Number(e.target.value)})}
++        />
++      </div>
++
++      <div>
++        <label htmlFor="ebf-message" className={labelClass}>Message</label>
++        <textarea
++          id="ebf-message"
++          placeholder="Anything we should know?"
++          className={inputClass}
++          rows={3}
++          value={form.message}
++          onChange={(e) => setForm({...form, message: e.target.value})}
++        />
++      </div>
++
++      <button
++        type="submit"
++        disabled={status === 'submitting'}
++        className="w-full bg-orange-600 text-white rounded-full py-3 font-semibold disabled:opacity-50"
++      >
++        {status === 'submitting' ? 'Continuing…' : 'Continue to Payment'}
++      </button>
++      {status === 'error' && (
++        <p className="text-red-600 text-sm">{errorMessage}</p>
++      )}
++    </form>
++  )
++}
+diff --git a/src/app/events/[month]/[eventSlug]/page.tsx b/src/app/events/[month]/[eventSlug]/page.tsx
+new file mode 100644
+index 0000000..9e9d43c
+--- /dev/null
++++ b/src/app/events/[month]/[eventSlug]/page.tsx
+@@ -0,0 +1,113 @@
++// src/app/events/[month]/[eventSlug]/page.tsx
++import Image from 'next/image'
++import Link from 'next/link'
++import {notFound} from 'next/navigation'
++import {getEventBySlug, getEventSpotsRemaining, urlFor} from '@/lib/sanity'
++import EventBookingForm from './EventBookingForm'
++
++export const revalidate = 60
++
++export default async function EventDetailPage({
++  params,
++}: {
++  params: Promise<{month: string; eventSlug: string}>
++}) {
++  const {month, eventSlug} = await params
++  const event = await getEventBySlug(eventSlug)
++  if (!event) return notFound()
++
++  const spotsRemaining = await getEventSpotsRemaining(event._id, event.maxParticipants)
++  const isFull = spotsRemaining !== null && spotsRemaining <= 0
++  const canBook = event.registrationOpen !== false && !isFull
++
++  const dateLabel = new Date(event.date).toLocaleDateString('en-GB', {
++    weekday: 'long',
++    day: 'numeric',
++    month: 'long',
++    year: 'numeric',
++  })
++
++  return (
++    <main className="bg-white min-h-screen">
++      <div className="relative h-[45vh] w-full">
++        {event.flyerImage && (
++          <Image
++            src={urlFor(event.flyerImage).width(1600).height(900).url()}
++            alt={event.title}
++            fill
++            className="object-cover"
++            priority
++          />
++        )}
++        <div className="absolute inset-0 bg-black/40" />
++        <div className="absolute bottom-0 left-0 right-0 p-8 text-white max-w-7xl mx-auto">
++          <p className="text-sm text-white/80 mb-2">
++            <Link href="/" className="underline">Home</Link>
++            {' / '}
++            <Link href={`/events/${month}`} className="underline">Events</Link>
++            {' / '}
++            {event.title}
++          </p>
++          {event.experience?.category && (
++            <p className="text-orange-400 text-sm uppercase tracking-wide mb-2">{event.experience.category}</p>
++          )}
++          <h1 className="text-4xl md:text-5xl font-bold">{event.title}</h1>
++          <p className="mt-2 text-white/90">{dateLabel}</p>
++        </div>
++      </div>
++
++      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
++        <div className="lg:col-span-2 space-y-6">
++          {event.shortDescription && <p className="text-gray-700 text-lg">{event.shortDescription}</p>}
++
++          {event.includes && event.includes.length > 0 && (
++            <div className="flex flex-wrap gap-2">
++              {event.includes.map((item: string) => (
++                <span key={item} className="text-xs uppercase tracking-wide bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
++                  {item}
++                </span>
++              ))}
++            </div>
++          )}
++
++          {event.experience?.slug?.current && (
++            <div className="border-t pt-6">
++              <p className="text-sm text-gray-500 mb-2">
++                Want to read more about this experience — reviews, photo gallery, and full details?
++              </p>
++              <Link
++                href={`/experiences/${event.experience.slug.current}`}
++                className="text-orange-600 font-semibold underline"
++              >
++                Know about the experience →
++              </Link>
++            </div>
++          )}
++        </div>
++
++        <div className="lg:sticky lg:top-8 lg:self-start">
++          <div className="border rounded-xl p-6 shadow-sm">
++            <p className="text-2xl font-bold mb-1">LKR {event.price?.toLocaleString()}</p>
++            <p className="text-sm text-gray-500 mb-1">per person</p>
++            <p className="text-sm text-gray-500 mb-6">{dateLabel}</p>
++
++            {!canBook ? (
++              <p className="text-center bg-gray-100 text-gray-600 rounded-full py-3 font-semibold">
++                {isFull ? 'Fully booked' : 'Registration closed'}
++              </p>
++            ) : (
++              <>
++                {spotsRemaining !== null && (
++                  <p className="text-sm text-orange-600 font-semibold mb-4">
++                    {spotsRemaining} {spotsRemaining === 1 ? 'spot' : 'spots'} left
++                  </p>
++                )}
++                <EventBookingForm eventId={event._id} />
++              </>
++            )}
++          </div>
++        </div>
++      </div>
++    </main>
++  )
++}
+diff --git a/src/app/events/[month]/page.tsx b/src/app/events/[month]/page.tsx
+new file mode 100644
+index 0000000..4c69d32
+--- /dev/null
++++ b/src/app/events/[month]/page.tsx
+@@ -0,0 +1,125 @@
++// src/app/events/[month]/page.tsx
++import Link from 'next/link'
++import {notFound} from 'next/navigation'
++import {getEventsForMonthSlug, urlFor} from '@/lib/sanity'
++
++export const revalidate = 60
++
++function formatDate(iso: string) {
++  return new Date(iso).toLocaleDateString('en-GB', {day: 'numeric', month: 'short'})
++}
++
++type MonthEvent = {
++  _id: string
++  title: string
++  slug: {current: string}
++  date: string
++  price: number
++  flyerImage?: any
++  includes?: string[]
++  shortDescription?: string
++  maxParticipants?: number
++  registrationOpen?: boolean
++  experience?: {title: string; slug: {current: string}; category?: string}
++}
++
++export default async function MonthEventsPage({
++  params,
++}: {
++  params: Promise<{month: string}>
++}) {
++  const {month} = await params
++  const {banner, events}: {banner: any; events: MonthEvent[]} = await getEventsForMonthSlug(month)
++
++  // A malformed slug (not "YYYY-MM") gets nothing back from either query — that's a
++  // genuine 404. A valid slug with no banner/events yet is just an empty month, not
++  // a broken URL, so that renders an empty state below instead.
++  if (!/^\d{4}-\d{2}$/.test(month)) return notFound()
++
++  const monthLabel = banner
++    ? new Date(banner.month).toLocaleDateString('en-GB', {month: 'long', year: 'numeric'})
++    : (() => {
++        const [year, m] = month.split('-')
++        return new Date(Number(year), Number(m) - 1, 1).toLocaleDateString('en-GB', {month: 'long', year: 'numeric'})
++      })()
++
++  return (
++    <main>
++      <section className="page-hero">
++        <div className="page-hero-bg">
++          {banner?.bannerImage ? (
++            <img src={urlFor(banner.bannerImage).width(2200).height(1400).url()} alt={`${monthLabel} events`} />
++          ) : (
++            <img
++              src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?fm=jpg&q=70&w=2200&auto=format&fit=crop"
++              alt=""
++            />
++          )}
++          <div className="overlay"></div>
++        </div>
++        <div className="container page-hero-inner">
++          <div className="breadcrumb">
++            <Link href="/">Home</Link> / <Link href="/#events">Upcoming Adventures</Link> / <span>{monthLabel}</span>
++          </div>
++          <span className="eyebrow" style={{color: 'var(--adrenaline-orange)'}}>{events.length} scheduled {events.length === 1 ? 'departure' : 'departures'}</span>
++          <h1>{monthLabel}</h1>
++          {banner?.tagline && <p className="page-hero-sub body-lg">{banner.tagline}</p>}
++        </div>
++      </section>
++
++      <section className="events">
++        <div className="container">
++          {events.length === 0 ? (
++            <p className="events-empty">
++              No departures scheduled for {monthLabel} yet — check <Link href="/#events">upcoming months</Link>, or{' '}
++              <Link href="/contact">get in touch</Link> to arrange a custom date.
++            </p>
++          ) : (
++            <div className="month-events-grid">
++              {events.map((event) => (
++                <article className="event-card" key={event._id}>
++                  <div className="event-card-img">
++                    {event.flyerImage && (
++                      <img src={urlFor(event.flyerImage).width(700).height(525).url()} alt={event.title} />
++                    )}
++                    <span className="event-date">
++                      <span className="event-date-mon">{formatDate(event.date).split(' ')[1]}</span>
++                      <span className="event-date-day">{formatDate(event.date).split(' ')[0]}</span>
++                    </span>
++                  </div>
++                  <div className="event-card-body">
++                    {event.experience?.category && <span className="tag">{event.experience.category}</span>}
++                    <h3>{event.title}</h3>
++                    <div className="event-price">LKR {event.price?.toLocaleString()} <small>/ person</small></div>
++                    {event.includes && event.includes.length > 0 && (
++                      <ul className="event-includes">
++                        {event.includes.map((item: string) => (
++                          <li key={item}>{item}</li>
++                        ))}
++                      </ul>
++                    )}
++                    {event.shortDescription && <p style={{fontSize: 13, color: 'var(--stone-gray)'}}>{event.shortDescription}</p>}
++                    <div className="event-card-links">
++                      {event.experience?.slug?.current && (
++                        <Link href={`/experiences/${event.experience.slug.current}`} className="view-link">
++                          Know about the experience →
++                        </Link>
++                      )}
++                      {event.registrationOpen !== false ? (
++                        <Link href={`/events/${month}/${event.slug.current}`} className="btn btn-primary">
++                          Reserve Spot →
++                        </Link>
++                      ) : (
++                        <span className="view-link" style={{color: 'var(--stone-gray)'}}>Fully booked</span>
++                      )}
++                    </div>
++                  </div>
++                </article>
++              ))}
++            </div>
++          )}
++        </div>
++      </section>
++    </main>
++  )
++}
+diff --git a/src/app/globals.css b/src/app/globals.css
+index d0b4d46..b0f7d3b 100644
+--- a/src/app/globals.css
++++ b/src/app/globals.css
+@@ -225,29 +225,29 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
+ 
+ /* ============ EVENTS ============ */
+ .events{ background:var(--mist-white); }
+-.events-month{
+-  font-family:var(--font-display); letter-spacing:.5px; color:var(--jungle-green);
+-  font-size:clamp(1.5rem, 1.3rem + 1vw, 2.1rem); margin-bottom:22px;
+-}
+-.events-carousel-wrap{ position:relative; display:flex; align-items:center; gap:12px; }
+-.event-nav{
+-  flex:0 0 auto; width:42px; height:42px; border-radius:50%; border:1.5px solid var(--cloud-gray);
+-  background:#fff; color:var(--jungle-green); display:flex; align-items:center; justify-content:center;
+-  box-shadow:0 6px 16px -8px rgba(20,24,26,.25);
+-  transition:border-color .2s var(--ease), background .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+-}
+-.event-nav:hover{ border-color:var(--adrenaline-orange); background:var(--adrenaline-orange); color:#fff; transform:translateY(-2px); }
+-.event-nav:disabled{ opacity:.35; pointer-events:none; }
+-.event-nav svg{ pointer-events:none; }
+-
+-.events-carousel{
+-  flex:1; display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory;
+-  -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:6px 2px 10px;
+-}
+-.events-carousel::-webkit-scrollbar{ display:none; }
+-
++.events-empty{ color:var(--stone-gray); }
++.events-empty a{ text-decoration:underline; color:var(--jungle-green); }
++
++/* Homepage: 3-month grid — banner image on top, details row underneath, 3 columns */
++.months-grid{ display:grid; gap:28px; grid-template-columns:1fr; }
++@media(min-width:768px){ .months-grid{ grid-template-columns:repeat(3,1fr); } }
++
++.month-card{ display:flex; flex-direction:column; }
++.month-banner{
++  display:block; position:relative; aspect-ratio:4/5; border-radius:var(--radius-md);
++  overflow:hidden; box-shadow:0 20px 44px -26px rgba(20,24,26,.35);
++}
++.month-banner img{ width:100%; height:100%; object-fit:cover; transition:transform .5s var(--ease); }
++.month-card:hover .month-banner img{ transform:scale(1.05); }
++.month-details{ padding-top:16px; }
++.month-details h3{ color:var(--basalt-black); margin-bottom:4px; }
++.month-tagline{ font-family:var(--font-accent); font-size:20px; color:var(--adrenaline-orange); margin-bottom:6px; }
++.month-count{ font-size:13px; color:var(--stone-gray); margin-bottom:10px; }
++
++/* Shared event-card visuals — used both on the homepage-adjacent month grid and on the
++   dedicated /events/[month] listing page's event grid */
+ .event-card{
+-  flex:0 0 80%; scroll-snap-align:start; background:#fff; border-radius:var(--radius-md);
++  background:#fff; border-radius:var(--radius-md);
+   overflow:hidden; display:flex; flex-direction:column; box-shadow:0 18px 40px -26px rgba(20,24,26,.35);
+ }
+ .event-card-img{ position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--cloud-gray); }
+@@ -266,22 +266,14 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
+ .event-price small{ font-weight:500; color:var(--stone-gray); }
+ .event-includes{ display:flex; flex-wrap:wrap; gap:7px 14px; font-size:12px; color:var(--stone-gray); margin:2px 0 4px; }
+ .event-includes li{ display:flex; align-items:center; gap:5px; }
+-.event-card-body .btn{ margin-top:auto; align-self:flex-start; padding:11px 22px; font-size:13px; }
+-
+-.event-dots{ display:flex; justify-content:center; gap:8px; margin-top:24px; }
+-.event-dots button{
+-  width:8px; height:8px; padding:0; border:none; border-radius:50%; background:var(--cloud-gray);
+-  transition:background .2s var(--ease), transform .2s var(--ease);
+-}
+-.event-dots button.active{ background:var(--adrenaline-orange); transform:scale(1.3); }
+-
+-@media(min-width:768px){
+-  .event-card{ flex:0 0 45%; }
+-}
+-@media(min-width:1280px){
+-  .event-card{ flex:0 0 31%; }
+-  .event-nav{ width:52px; height:52px; }
+-}
++.event-card-links{ margin-top:auto; display:flex; flex-wrap:wrap; align-items:center; gap:14px 18px; padding-top:6px; }
++.event-card-links .btn{ padding:11px 22px; font-size:13px; }
++
++/* /events/[month] listing page — the hero banner reuses .page-hero (see e.g. About/Blog),
++   this just adds the grid of that month's individual event flyers below it */
++.month-events-grid{ display:grid; gap:28px; grid-template-columns:1fr; }
++@media(min-width:640px){ .month-events-grid{ grid-template-columns:repeat(2,1fr); } }
++@media(min-width:1024px){ .month-events-grid{ grid-template-columns:repeat(3,1fr); } }
+ 
+ /* ============ ABOUT ============ */
+ .about-grid{ display:grid; gap:40px; align-items:center; }
+diff --git a/src/app/page.tsx b/src/app/page.tsx
+index b5e50f5..1d3e03e 100644
+--- a/src/app/page.tsx
++++ b/src/app/page.tsx
+@@ -1,6 +1,19 @@
++import Link from 'next/link';
+ import Reveal2 from '../components/Reveal';
++import {getUpcomingMonthlyBanners, urlFor} from '../lib/sanity';
++
++type MonthlyBannerCard = {
++  _id: string
++  month: string
++  monthSlug: string
++  bannerImage?: any
++  tagline?: string
++  events: {_id: string; title: string; slug: {current: string}; date: string; price: number}[]
++}
++
++export default async function Home() {
++  const monthlyBanners: MonthlyBannerCard[] = await getUpcomingMonthlyBanners(3);
+ 
+-export default function Home() {
+   return (
+     <main>
+ 
+@@ -101,80 +114,36 @@ export default function Home() {
+         <div className="container">
+           <Reveal2 className="section-head">
+             <span className="eyebrow">Fixed departures</span>
+-            <h2>This Month&apos;s Adventures</h2>
+-            <p>Join a scheduled group departure — grab a seat, meet fellow adventurers, and let us handle the logistics.</p>
++            <h2>Upcoming Adventures</h2>
++            <p>Browse scheduled group departures over the next few months — pick a date, reserve your spot, and let us handle the logistics.</p>
+           </Reveal2>
+ 
+-          <Reveal2 className="events-month">August</Reveal2>
+-
+-          <Reveal2 className="events-carousel-wrap">
+-            <button className="event-nav prev" id="eventPrev" aria-label="Previous event">
+-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+-            </button>
+-
+-            <div className="events-carousel" id="eventsCarousel">
+-              <article className="event-card">
+-                <div className="event-card-img">
+-                  <img src="https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Hikers on the misty trail up Sri Pada" />
+-                  <span className="event-date"><span className="event-date-mon">AUG</span><span className="event-date-day">22</span></span>
+-                </div>
+-                <div className="event-card-body">
+-                  <span className="tag">Hiking</span>
+-                  <h3>Sri Pada Night Hike</h3>
+-                  <div className="event-price">25,100 LKR <small>/ person</small></div>
+-                  <ul className="event-includes">
+-                    <li>🍽️ Meals</li>
+-                    <li>🚐 Transport</li>
+-                    <li>📸 Photography</li>
+-                    <li>🎥 Drone Coverage</li>
+-                  </ul>
+-                  <a href="/contact" className="btn btn-primary">Reserve Spot →</a>
+-                </div>
+-              </article>
+-
+-              <article className="event-card">
+-                <div className="event-card-img">
+-                  <img src="https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Group white-water rafting on the Kelani River" />
+-                  <span className="event-date"><span className="event-date-mon">AUG</span><span className="event-date-day">29</span></span>
+-                </div>
+-                <div className="event-card-body">
+-                  <span className="tag">Rafting</span>
+-                  <h3>Kitulgala Rapids Run</h3>
+-                  <div className="event-price">9,800 LKR <small>/ person</small></div>
+-                  <ul className="event-includes">
+-                    <li>🦺 Safety Gear</li>
+-                    <li>🚐 Transport</li>
+-                    <li>🍽️ Lunch</li>
+-                    <li>📸 Photography</li>
+-                  </ul>
+-                  <a href="/payment" className="btn btn-primary">Reserve Spot →</a>
+-                </div>
+-              </article>
+-
+-              <article className="event-card">
+-                <div className="event-card-img">
+-                  <img src="https://images.unsplash.com/photo-1650911563224-0c843a6d843e?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Adventurer canyoning through a gorge in Ella" />
+-                  <span className="event-date"><span className="event-date-mon">SEP</span><span className="event-date-day">05</span></span>
+-                </div>
+-                <div className="event-card-body">
+-                  <span className="tag">Canyoning</span>
+-                  <h3>Ella Gorge Canyoning</h3>
+-                  <div className="event-price">12,500 LKR <small>/ person</small></div>
+-                  <ul className="event-includes">
+-                    <li>🦺 Safety Gear</li>
+-                    <li>🚐 Transport</li>
+-                    <li>🍽️ Snacks</li>
+-                    <li>🎥 Drone Coverage</li>
+-                  </ul>
+-                  <a href="/contact" className="btn btn-primary">Reserve Spot →</a>
+-                </div>
+-              </article>
++          {monthlyBanners.length === 0 ? (
++            <p className="events-empty">No upcoming departures posted yet — check back soon, or browse our <Link href="/experiences">experiences</Link> to plan your own dates.</p>
++          ) : (
++            <div className="months-grid">
++              {monthlyBanners.map((banner) => {
++                const monthLabel = new Date(banner.month).toLocaleDateString('en-GB', {month: 'long', year: 'numeric'});
++                const eventCount = banner.events?.length ?? 0;
++                return (
++                  <Reveal2 className="month-card" key={banner._id}>
++                    <Link href={`/events/${banner.monthSlug}`} className="month-banner">
++                      <img
++                        src={urlFor(banner.bannerImage).width(700).height(875).url()}
++                        alt={`${monthLabel} events`}
++                      />
++                    </Link>
++                    <div className="month-details">
++                      <h3>{monthLabel}</h3>
++                      {banner.tagline && <p className="month-tagline">{banner.tagline}</p>}
++                      <p className="month-count">{eventCount} {eventCount === 1 ? 'departure' : 'departures'} scheduled</p>
++                      <Link href={`/events/${banner.monthSlug}`} className="view-link">See More →</Link>
++                    </div>
++                  </Reveal2>
++                );
++              })}
+             </div>
+-
+-            <button className="event-nav next" id="eventNext" aria-label="Next event">
+-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+-            </button>
+-          </Reveal2>
++          )}
+         </div>
+       </section>
+ 
+diff --git a/src/app/payment/page.tsx b/src/app/payment/page.tsx
+index 644acdc..77ba4f1 100644
+--- a/src/app/payment/page.tsx
++++ b/src/app/payment/page.tsx
+@@ -69,10 +69,15 @@ function PaymentPortalInner() {
+     return (
+       <main className="payment-page">
+         <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
+-          <p>No booking selected. Please start from an experience page.</p>
+-          <Link href="/experiences" className="btn btn-primary" style={{ marginTop: 20 }}>
+-            Browse Experiences
+-          </Link>
++          <p>No booking selected. Please start from an event or experience page.</p>
++          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 20 }}>
++            <Link href="/#events" className="btn btn-primary">
++              Browse Upcoming Events
++            </Link>
++            <Link href="/experiences" className="btn btn-ghost" style={{ color: 'var(--jungle-green)', borderColor: 'var(--jungle-green)' }}>
++              Browse Experiences
++            </Link>
++          </div>
+         </div>
+       </main>
+     );
+diff --git a/src/components/Footer.tsx b/src/components/Footer.tsx
+index 6244586..7c89c62 100644
+--- a/src/components/Footer.tsx
++++ b/src/components/Footer.tsx
+@@ -50,7 +50,7 @@ export default function Footer() {
+           </div>
+         </div>
+       </footer>
+-      <div className='sticky-cta'><Link href='/payment' className='btn btn-primary'>Book Now</Link></div>
++      <div className='sticky-cta'><Link href='/#events' className='btn btn-primary'>Book Now</Link></div>
+     </>
+   );
+ }
+diff --git a/src/components/Header.tsx b/src/components/Header.tsx
+index 37f113c..31c6ac5 100644
+--- a/src/components/Header.tsx
++++ b/src/components/Header.tsx
+@@ -27,12 +27,13 @@ export default function Header() {
+           <Link href='/' className='logo'>Ceylon<span>X</span>treme</Link>
+           <nav className='nav-links'>
+             <Link href='/experiences' className={pathname === '/experiences' ? 'active' : ''}>Experiences</Link>
++            <Link href={isHome ? '#events' : '/#events'} className={pathname?.startsWith('/events') ? 'active' : ''}>Events</Link>
+             <Link href='/about' className={pathname === '/about' ? 'active' : ''}>About Us</Link>
+             <Link href='/blog' className={pathname?.startsWith('/blog') ? 'active' : ''}>Blog</Link>
+             <Link href={isHome ? '#gallery' : '/#gallery'}>Gallery</Link>
+             <Link href='/contact' className={pathname === '/contact' ? 'active' : ''}>Contact</Link>
+           </nav>
+-          <Link href='/payment' className='btn btn-primary nav-cta'>Book Now</Link>
++          <Link href={isHome ? '#events' : '/#events'} className='btn btn-primary nav-cta'>Book Now</Link>
+           <button 
+             className={`hamburger ${isOpen ? 'open' : ''}`}
+             onClick={() => setIsOpen(!isOpen)}
+@@ -46,11 +47,12 @@ export default function Header() {
+ 
+       <div className={`mobile-menu ${isOpen ? 'open' : ''}`} id='mobileMenu'>
+         <Link href='/experiences' onClick={() => setIsOpen(false)}>Experiences</Link>
++        <Link href={isHome ? '#events' : '/#events'} onClick={() => setIsOpen(false)}>Events</Link>
+         <Link href='/about' onClick={() => setIsOpen(false)}>About Us</Link>
+         <Link href='/blog' onClick={() => setIsOpen(false)}>Blog</Link>
+         <Link href={isHome ? '#gallery' : '/#gallery'} onClick={() => setIsOpen(false)}>Gallery</Link>
+         <Link href='/contact' onClick={() => setIsOpen(false)}>Contact</Link>
+-        <Link href='/payment' className='btn btn-primary' style={{ marginTop: '10px' }} onClick={() => setIsOpen(false)}>Book Now</Link>
++        <Link href={isHome ? '#events' : '/#events'} className='btn btn-primary' style={{ marginTop: '10px' }} onClick={() => setIsOpen(false)}>Book Now</Link>
+       </div>
+     </>
+   );
+-- 
+2.43.0
+
