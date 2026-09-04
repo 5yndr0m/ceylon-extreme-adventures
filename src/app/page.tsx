@@ -3,6 +3,10 @@ import Reveal2 from '../components/Reveal';
 import ActivitiesCarousel from '../components/ActivitiesCarousel';
 import {getUpcomingMonthlyBanners, urlFor} from '../lib/sanity';
 
+export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute — without this,
+// the homepage was fully static after the first deploy and never picked up new events/banners
+// added in Studio afterward, which is exactly the bug this line fixes.
+
 type MonthlyBannerCard = {
   _id: string
   month: string
