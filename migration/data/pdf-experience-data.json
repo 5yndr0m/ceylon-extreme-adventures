@@ -1,0 +1,2048 @@
+{
+  "bambarakanda-falls": {
+    "title": "Bambarakanda Falls",
+    "category": "Abseiling",
+    "difficulty": "Extreme",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Extreme"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "650 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Belihul Oya / Haputhale"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Bambarakanda Waterfall"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 175
+      },
+      {
+        "location": "Ella",
+        "km": 43
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "worst",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "ok",
+      "aug": "ok",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "diyaluma-falls": {
+    "title": "Diyaluma Falls",
+    "category": "Abseiling",
+    "difficulty": "Extreme",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Extreme"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "625 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "1.5 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "250 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Koslanda, Ella, Haputhale"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Diyaluma Waterfall"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 218
+      },
+      {
+        "location": "Ella",
+        "km": 39
+      }
+    ],
+    "suitableMonths": {
+      "jan": "ok",
+      "feb": "best",
+      "mar": "best",
+      "apr": "ok",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "worst",
+      "nov": "worst",
+      "dec": "ok"
+    },
+    "matchSlug": "diyaluma"
+  },
+  "laxapana-falls": {
+    "title": "Laxapana Falls",
+    "category": "Abseiling",
+    "difficulty": "Extreme",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Extreme"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "415 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Ginigathhena / Hatton"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Laxapana Waterfall"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 125
+      },
+      {
+        "location": "Kandy",
+        "km": 70
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "ok",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "ok",
+      "aug": "ok",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "ok"
+    },
+    "matchSlug": "laxapana"
+  },
+  "gartmore-falls": {
+    "title": "Gartmore Falls",
+    "category": "Abseiling",
+    "difficulty": "Extreme",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Extreme"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "400 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "1.5 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Maskeliya / Hatton"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Laxapana Waterfall"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 150
+      },
+      {
+        "location": "Kandy",
+        "km": 100
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "ok"
+    },
+    "matchSlug": "gartmore"
+  },
+  "gerandi-ella-falls": {
+    "title": "Gerandi Ella Falls",
+    "category": "Abseiling",
+    "difficulty": "Challenging",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Tough"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "200 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "7 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "450 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy / Ududumbara"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Gerandi Ella Junction"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "7 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 200
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    },
+    "matchSlug": "gerandi-ella"
+  },
+  "kotaganga-ella-falls": {
+    "title": "Kotaganga Ella Falls",
+    "category": "Abseiling",
+    "difficulty": "Easy",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Chill"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "70 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "6 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "300 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Thangappuwa"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "7 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 180
+      },
+      {
+        "location": "Kandy",
+        "km": 50
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    },
+    "matchSlug": "kotaganga-ella"
+  },
+  "rikili-ella-falls": {
+    "title": "Rikili Ella Falls",
+    "category": "Abseiling",
+    "difficulty": "Challenging",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Tough"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "330 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "1.5 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "200 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Bulathkohupitiya"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Rikili Ella Falls"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 90
+      },
+      {
+        "location": "Kandy",
+        "km": 65
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "best",
+      "dec": "best"
+    },
+    "matchSlug": "rikili-ella"
+  },
+  "lanka-ella": {
+    "title": "Lanka Ella",
+    "category": "Abseiling",
+    "difficulty": "Easy",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Chill"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "100 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "6 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "300 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Belihul Oya / Haputhale"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Bambarakanda Falls Viewpoint"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 175
+      },
+      {
+        "location": "Ella",
+        "km": 43
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "ok",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "kithal-ella": {
+    "title": "Kithal Ella",
+    "category": "Abseiling",
+    "difficulty": "Easy",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Chill"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "265 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "100 m"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Ella"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kithal Ella Station"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 221
+      },
+      {
+        "location": "Ella",
+        "km": 6
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "ok",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "sandun-ella-falls": {
+    "title": "Sandun Ella Falls",
+    "category": "Abseiling",
+    "difficulty": "Easy",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Chill"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "70 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "500 m"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 100
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "ok",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "ok",
+      "dec": "best"
+    },
+    "matchSlug": "sandun-ella"
+  },
+  "dolukanda": {
+    "title": "Dolukanda",
+    "category": "Abseiling",
+    "difficulty": "Extreme",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Extreme"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "350 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "7.4 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "350 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kurunegala"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Dolukanda"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "8 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 125
+      },
+      {
+        "location": "Kandy",
+        "km": 62
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "ok"
+    }
+  },
+  "kuwenigala": {
+    "title": "Kuwenigala",
+    "category": "Abseiling",
+    "difficulty": "Extreme",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Extreme"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Abseiling / Rock Climbing"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "220 ft"
+      },
+      {
+        "label": "Climbing Height",
+        "value": "220 ft"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kurunegala"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kuwenigala"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "8 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 180
+      },
+      {
+        "location": "Kandy",
+        "km": 50
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "worst",
+      "nov": "worst",
+      "dec": "ok"
+    },
+    "matchSlug": "kuvenigala"
+  },
+  "govinda-hela": {
+    "title": "Govinda Hela",
+    "category": "Abseiling",
+    "difficulty": "Extreme",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Extreme"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "615 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "6 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "480 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Siyambalanduwa"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Siyambalanduwa"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Arugam Bay",
+        "km": 63
+      },
+      {
+        "location": "Colombo",
+        "km": 380
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "ok",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "ok",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "lakegala": {
+    "title": "Lakegala",
+    "category": "Hiking",
+    "difficulty": "Extreme",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Extreme"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Hiking / Scrambling / Abseiling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "100 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "10.5 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "852 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy / Hunnasgiriya"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Meemure Village"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "5 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 195
+      },
+      {
+        "location": "Kandy",
+        "km": 72
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "ok",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "ok",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "sphinx-ii-hike": {
+    "title": "Sphinx II Hike",
+    "category": "Hiking",
+    "difficulty": "Challenging",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Tough"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Hiking / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "8 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "400 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy / Hunnasgiriya"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Corbett's Gap"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "7 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 182
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "worst",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "worst",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "yahangala": {
+    "title": "Yahangala",
+    "category": "Hiking",
+    "difficulty": "Challenging",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Tough"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Hiking / Rock Scrambling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "6 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "450 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy / Ududumbara"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kalugala Village"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "7 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 183
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "manigala": {
+    "title": "Manigala",
+    "category": "Hiking",
+    "difficulty": "Moderate",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Moderate"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Waterfall Abseiling / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "11 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "600 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Matale / Raththota"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Atanwala Village"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "7 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 186
+      },
+      {
+        "location": "Kandy",
+        "km": 63
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "kanawiddagala": {
+    "title": "Kanawiddagala",
+    "category": "Hiking",
+    "difficulty": "Challenging",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Tough"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Hiking / Rock Scrambling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "8 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "600 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy / Ududumbara"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kalugala Village"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "7 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 182
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "ok",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "kurullangala": {
+    "title": "Kurullangala",
+    "category": "Hiking",
+    "difficulty": "Challenging",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Tough"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Hiking / Scrambling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "7 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "480 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Ella"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Pallewela / Ella"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "8 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 240
+      },
+      {
+        "location": "Ella",
+        "km": 15
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "ok",
+      "may": "worst",
+      "jun": "ok",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "kodi-ara-kanda": {
+    "title": "Kodi Ara Kanda",
+    "category": "Hiking",
+    "difficulty": "Challenging",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Tough"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "7 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "600 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Gerandi Ella Junction"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "7 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 180
+      },
+      {
+        "location": "Kandy",
+        "km": 58
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "katusukonda": {
+    "title": "Katusukonda",
+    "category": "Hiking",
+    "difficulty": "Moderate",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Moderate"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "5 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "400 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy / Hanthana"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Hanthana"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "8 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 136
+      },
+      {
+        "location": "Kandy",
+        "km": 15
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "ok"
+    }
+  },
+  "alagalla": {
+    "title": "Alagalla",
+    "category": "Hiking",
+    "difficulty": "Moderate",
+    "isNew": false,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Moderate"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "7.6 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "520 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kandy / Pilimathalawa"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Poththapitiya"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "8 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 100
+      },
+      {
+        "location": "Kandy",
+        "km": 25
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "ok",
+      "dec": "ok"
+    }
+  },
+  "devils-staircase": {
+    "title": "Devil's Staircase",
+    "category": "Camping & Trekking",
+    "difficulty": "Moderate",
+    "isNew": true,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Night / 2 Days"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Moderate"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Trekking / Camping / Waterfall Abseiling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "100 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "17 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "240 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Ohiya / Kalupahana"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Ohiya Railway Station"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "6 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 200
+      },
+      {
+        "location": "Kandy",
+        "km": 115
+      }
+    ],
+    "suitableMonths": {
+      "jan": "ok",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "ok",
+      "jul": "best",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    },
+    "matchSlug": "devil-s-staircase"
+  },
+  "bakers-bend": {
+    "title": "Baker's Bend",
+    "category": "Camping & Trekking",
+    "difficulty": "Challenging",
+    "isNew": true,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Night / 2 Days"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Tough"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Trekking / Camping / Waterfall Abseiling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "20 ft - 200 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "12 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "900 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Belihul Oya"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Belihul Oya"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "8 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 165
+      },
+      {
+        "location": "Kandy",
+        "km": 160
+      }
+    ],
+    "suitableMonths": {
+      "jan": "ok",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "ok",
+      "jul": "best",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    },
+    "matchSlug": "baker-s-bend"
+  },
+  "mannakethi-ella": {
+    "title": "Mannakethi Ella",
+    "category": "Canyoning",
+    "difficulty": "Moderate",
+    "isNew": true,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Moderate"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Abseiling / Canyoning / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "70 ft"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "1 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "8 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 100
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "ok",
+      "may": "worst",
+      "jun": "worst",
+      "jul": "worst",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "ok",
+      "dec": "best"
+    }
+  },
+  "katarang-oya": {
+    "title": "Katarang Oya",
+    "category": "Canyoning",
+    "difficulty": "Easy",
+    "isNew": true,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Chill"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Canyoning / Hiking"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "N/A"
+      },
+      {
+        "label": "Hiking Distance",
+        "value": "1 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "50 m"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "2 pm"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 100
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "best",
+      "jun": "best",
+      "jul": "best",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "best",
+      "dec": "best"
+    }
+  },
+  "nonpareil-falls": {
+    "title": "Nonpareil Falls Canyoning",
+    "category": "Canyoning",
+    "difficulty": "Moderate",
+    "isNew": true,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Moderate"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Canyoning / Waterfall Abseiling"
+      },
+      {
+        "label": "Abseiling Height",
+        "value": "65 ft, 195 ft, 98 ft, 32 ft"
+      },
+      {
+        "label": "No of Waterfalls",
+        "value": "4"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Belihul Oya"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Nonpareil Waterfall"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "10 am"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 150
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "worst",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "worst",
+      "jun": "ok",
+      "jul": "ok",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "worst",
+      "dec": "worst"
+    }
+  },
+  "kithulgala-rafting-adventure": {
+    "title": "Kithulgala Rafting Adventure",
+    "category": "Rafting",
+    "difficulty": "Easy",
+    "isNew": true,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Chill"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Whitewater Rafting"
+      },
+      {
+        "label": "Rafting Distance (km)",
+        "value": "3.5"
+      },
+      {
+        "label": "Rapids",
+        "value": "7"
+      },
+      {
+        "label": "Rapid Classes",
+        "value": "I, II, III"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "4 pm"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 100
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "best",
+      "mar": "best",
+      "apr": "best",
+      "may": "best",
+      "jun": "best",
+      "jul": "best",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "best",
+      "dec": "best"
+    }
+  },
+  "full-day-rafting-kelani-river": {
+    "title": "Full Day Rafting - Kelani River",
+    "category": "Rafting",
+    "difficulty": "Easy",
+    "isNew": true,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Chill"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Whitewater Rafting"
+      },
+      {
+        "label": "Rafting Distance (km)",
+        "value": "12"
+      },
+      {
+        "label": "Rapids",
+        "value": "7"
+      },
+      {
+        "label": "Rapid Classes",
+        "value": "I, II, III"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Kithulgala"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "4 pm"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 100
+      },
+      {
+        "location": "Kandy",
+        "km": 60
+      }
+    ],
+    "suitableMonths": {
+      "jan": "best",
+      "feb": "ok",
+      "mar": "ok",
+      "apr": "best",
+      "may": "best",
+      "jun": "best",
+      "jul": "best",
+      "aug": "best",
+      "sep": "ok",
+      "oct": "ok",
+      "nov": "best",
+      "dec": "best"
+    }
+  },
+  "kala-wewa-kayaking": {
+    "title": "Kala Wewa Kayaking",
+    "category": "Kayaking",
+    "difficulty": "Easy",
+    "isNew": true,
+    "quickFacts": [
+      {
+        "label": "Duration (Days)",
+        "value": "1 Day"
+      },
+      {
+        "label": "Difficulty",
+        "value": "Chill"
+      },
+      {
+        "label": "Included Activities",
+        "value": "Kayaking"
+      },
+      {
+        "label": "Kayaking Distance",
+        "value": "6 - 10 km"
+      },
+      {
+        "label": "Hiking Elevation Gain",
+        "value": "N/A"
+      },
+      {
+        "label": "Location (Nearest Town/s)",
+        "value": "Dambulla / Anuradhapura"
+      },
+      {
+        "label": "Activity Starting Point",
+        "value": "Mahaweli Circuit Bungalow"
+      },
+      {
+        "label": "Activity Starting Time (Latest)",
+        "value": "3 pm"
+      }
+    ],
+    "distancesFrom": [
+      {
+        "location": "Colombo",
+        "km": 180
+      },
+      {
+        "location": "Kandy",
+        "km": 100
+      }
+    ],
+    "suitableMonths": {
+      "jan": "ok",
+      "feb": "best",
+      "mar": "best",
+      "apr": "ok",
+      "may": "ok",
+      "jun": "ok",
+      "jul": "best",
+      "aug": "best",
+      "sep": "best",
+      "oct": "best",
+      "nov": "ok",
+      "dec": "ok"
+    }
+  }
+}
