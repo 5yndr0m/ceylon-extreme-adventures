@@ -14,10 +14,13 @@ export function urlFor(source: any) {
   return builder.image(source)
 }
 
-// One row per experience card — keep this lean, listing pages don't need fullDescription
+// One row per experience card — keep this lean, listing pages don't need fullDescription.
+// Excludes retired experiences: status != "retired" also matches docs where status was
+// never set (older docs pre-dating this field), so nothing existing silently disappears —
+// only experiences explicitly marked retired are filtered out.
 export async function getAllExperiences() {
   return client.fetch(`
-    *[_type == "experience"] | order(title asc) {
+    *[_type == "experience" && status != "retired"] | order(title asc) {
       _id,
       title,
       slug,
@@ -26,6 +29,7 @@ export async function getAllExperiences() {
       durationHours,
       price,
       locationName,
+      status,
       heroImage
     }
   `)
@@ -45,10 +49,14 @@ export async function getExperienceBySlug(slug: string) {
       durationHours,
       price,
       locationName,
+      distancesFrom,
       maxGroupSize,
       activityTags,
+      status,
       shortDescription,
       fullDescription,
+      quickFacts,
+      suitableMonths,
       heroImage,
       gallery,
       guide->{name, photo, bio, phone},

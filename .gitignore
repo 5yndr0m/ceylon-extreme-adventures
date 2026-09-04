@@ -45,3 +45,6 @@ next-env.d.ts
 /migration/.env
 package-lock.json
 *.json
+# ...except checked-in migration source data (the *.json blanket rule above was
+# aimed at stray package-lock/build artifacts, not data files we actually need tracked)
+!migration/data/*.json
