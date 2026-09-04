@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
-import {getEventBySlug, getEventSpotsRemaining, urlFor} from '@/lib/sanity'
+import {getEventBySlug, isEventBookable, urlFor} from '@/lib/sanity'
 import EventBookingForm from './EventBookingForm'
 
 export const revalidate = 60
@@ -16,9 +16,7 @@ export default async function EventDetailPage({
   const event = await getEventBySlug(eventSlug)
   if (!event) return notFound()
 
-  const spotsRemaining = await getEventSpotsRemaining(event._id, event.maxParticipants)
-  const isFull = spotsRemaining !== null && spotsRemaining <= 0
-  const canBook = event.registrationOpen !== false && !isFull
+  const canBook = isEventBookable(event)
 
   const dateLabel = new Date(event.date).toLocaleDateString('en-GB', {
     weekday: 'long',
@@ -52,7 +50,10 @@ export default async function EventDetailPage({
             <p className="text-orange-400 text-sm uppercase tracking-wide mb-2">{event.experience.category}</p>
           )}
           <h1 className="text-4xl md:text-5xl font-bold">{event.title}</h1>
-          <p className="mt-2 text-white/90">{dateLabel}</p>
+          <p className="mt-2 text-white/90">
+            {dateLabel}
+            {event.durationDays && ` · ${event.durationDays} ${event.durationDays === 1 ? 'day' : 'days'}`}
+          </p>
         </div>
       </div>
 
@@ -93,17 +94,10 @@ export default async function EventDetailPage({
 
             {!canBook ? (
               <p className="text-center bg-gray-100 text-gray-600 rounded-full py-3 font-semibold">
-                {isFull ? 'Fully booked' : 'Registration closed'}
+                Registration closed
               </p>
             ) : (
-              <>
-                {spotsRemaining !== null && (
-                  <p className="text-sm text-orange-600 font-semibold mb-4">
-                    {spotsRemaining} {spotsRemaining === 1 ? 'spot' : 'spots'} left
-                  </p>
-                )}
-                <EventBookingForm eventId={event._id} />
-              </>
+              <EventBookingForm eventId={event._id} />
             )}
           </div>
         </div>

@@ -35,8 +35,16 @@ export const eventType = defineType({
     defineField({
       name: 'date',
       title: 'Departure Date',
-      type: 'datetime',
+      type: 'date',
+      description: 'Just the date — no need to specify a time',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'durationDays',
+      title: 'Duration (days)',
+      type: 'number',
+      initialValue: 1,
+      validation: (rule) => rule.required().positive().integer(),
     }),
     defineField({
       name: 'flyerImage',
@@ -48,7 +56,7 @@ export const eventType = defineType({
     }),
     defineField({
       name: 'price',
-      title: 'Price (LKR)',
+      title: 'Price per Person (LKR)',
       type: 'number',
       description: 'Price for this specific departure — can differ from the experience\'s base price (promos, group rates, etc.)',
       validation: (rule) => rule.required().positive(),
@@ -71,18 +79,11 @@ export const eventType = defineType({
       description: 'The blurb shown under the flyer, e.g. "More than adventure — a transformative journey."',
     }),
     defineField({
-      name: 'maxParticipants',
-      title: 'Max Participants',
-      type: 'number',
-      description: 'Optional capacity for this departure. Leave blank for no cap.',
-      validation: (rule) => rule.positive().integer(),
-    }),
-    defineField({
       name: 'registrationOpen',
       title: 'Registration Open',
       type: 'boolean',
       initialValue: true,
-      description: 'Turn off to hide the booking button once a departure is full or past, without deleting the event',
+      description: 'Turn off to close registration early. Note: registration also closes automatically starting the day before the departure date, regardless of this toggle.',
     }),
   ],
   preview: {
