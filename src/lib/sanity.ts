@@ -108,11 +108,24 @@ export async function getPostBySlug(slug: string) {
 // for why that's a query-time join rather than a manual reference list.
 // ---------------------------------------------------------------------------------
 
-// "2026-09" -> {start: 2026-09-01T00:00:00.000Z, end: 2026-10-01T00:00:00.000Z}
+// "2026-09" -> {start: "2026-09-01", end: "2026-10-01"}
+//
+// IMPORTANT: these are plain "YYYY-MM-DD" strings, not full ISO datetimes. GROQ compares
+// strings lexicographically (character by character), and Sanity's `date` field type
+// (used by monthlyEventBanner.month) stores just "2026-09-01" with no time component.
+// A full ISO datetime like "2026-09-01T00:00:00.000Z" is a *longer* string that shares
+// the same 10-character prefix — and in lexicographic comparison, a shorter string is
+// always "less than" a longer string it's a prefix of, regardless of what it represents.
+// That meant `month >= "2026-09-01T00:00:00.000Z"` was silently false for a banner dated
+// exactly "2026-09-01", excluding the current month's banner entirely. Plain date strings
+// compare correctly against both the date-only `month` field and the full-datetime
+// `event.date` field (a datetime value on day X is always lexicographically >= "X" and
+// < the next day's date-only boundary), so this format works for both queries below.
 function monthRangeFromDate(date: Date) {
   const start = new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1))
   const end = new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 1))
-  return {start: start.toISOString(), end: end.toISOString()}
+  const fmt = (d: Date) => `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`
+  return {start: fmt(start), end: fmt(end)}
 }
 
 // URL-friendly identifier for a month, e.g. "2026-09" — used for the /events/[month] route
