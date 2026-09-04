@@ -69,10 +69,15 @@ function PaymentPortalInner() {
     return (
       <main className="payment-page">
         <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
-          <p>No booking selected. Please start from an experience page.</p>
-          <Link href="/experiences" className="btn btn-primary" style={{ marginTop: 20 }}>
-            Browse Experiences
-          </Link>
+          <p>No booking selected. Please start from an event or experience page.</p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 20 }}>
+            <Link href="/#events" className="btn btn-primary">
+              Browse Upcoming Events
+            </Link>
+            <Link href="/experiences" className="btn btn-ghost" style={{ color: 'var(--jungle-green)', borderColor: 'var(--jungle-green)' }}>
+              Browse Experiences
+            </Link>
+          </div>
         </div>
       </main>
     );

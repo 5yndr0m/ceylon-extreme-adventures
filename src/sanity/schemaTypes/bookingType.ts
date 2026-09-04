@@ -12,6 +12,13 @@ export const bookingType = defineType({
       to: [{type: 'experience'}],
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'event',
+      title: 'Event (if booked from a scheduled departure)',
+      type: 'reference',
+      to: [{type: 'event'}],
+      description: 'Set automatically when someone books from a flyer on the events page. Left empty for a direct experience enquiry.',
+    }),
     defineField({name: 'fullName', type: 'string', validation: (rule) => rule.required()}),
     defineField({name: 'email', type: 'string', validation: (rule) => rule.required().email()}),
     defineField({name: 'phone', type: 'string'}),

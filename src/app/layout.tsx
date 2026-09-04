@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Anton, Inter, Caveat } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 import SiteChrome from '../components/SiteChrome';
 
@@ -17,6 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='en' className={`${anton.variable} ${inter.variable} ${caveat.variable}`}>
       <body>
         <SiteChrome>{children}</SiteChrome>
+        {/* Both are no-ops locally/in preview unless the Vercel project has Analytics
+            and Speed Insights enabled in its dashboard settings — safe to ship always on. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

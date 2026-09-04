@@ -1,8 +1,20 @@
+import Link from 'next/link';
 import Reveal2 from '../components/Reveal';
-import MonthlyEventFlyers from '../components/MonthlyEventFlyers';
 import ActivitiesCarousel from '../components/ActivitiesCarousel';
+import {getUpcomingMonthlyBanners, urlFor} from '../lib/sanity';
 
-export default function Home() {
+type MonthlyBannerCard = {
+  _id: string
+  month: string
+  monthSlug: string
+  bannerImage?: any
+  tagline?: string
+  events: {_id: string; title: string; slug: {current: string}; date: string; price: number}[]
+}
+
+export default async function Home() {
+  const monthlyBanners: MonthlyBannerCard[] = await getUpcomingMonthlyBanners(3);
+
   return (
     <main>
 
@@ -44,10 +56,35 @@ export default function Home() {
           <Reveal2 className="section-head">
             <span className="eyebrow">Fixed departures</span>
             <h2>Upcoming Adventures</h2>
-            <p>Tap a month to browse every scheduled departure and reserve your spot.</p>
+            <p>Browse scheduled group departures over the next few months — pick a date, reserve your spot, and let us handle the logistics.</p>
           </Reveal2>
 
-          <MonthlyEventFlyers />
+          {monthlyBanners.length === 0 ? (
+            <p className="events-empty">No upcoming departures posted yet — check back soon, or browse our <Link href="/experiences">experiences</Link> to plan your own dates.</p>
+          ) : (
+            <div className="months-grid">
+              {monthlyBanners.map((banner) => {
+                const monthLabel = new Date(banner.month).toLocaleDateString('en-GB', {month: 'long', year: 'numeric'});
+                const eventCount = banner.events?.length ?? 0;
+                return (
+                  <Reveal2 className="month-card" key={banner._id}>
+                    <Link href={`/events/${banner.monthSlug}`} className="month-banner">
+                      <img
+                        src={urlFor(banner.bannerImage).width(700).height(875).url()}
+                        alt={`${monthLabel} events`}
+                      />
+                    </Link>
+                    <div className="month-details">
+                      <h3>{monthLabel}</h3>
+                      {banner.tagline && <p className="month-tagline">{banner.tagline}</p>}
+                      <p className="month-count">{eventCount} {eventCount === 1 ? 'departure' : 'departures'} scheduled</p>
+                      <Link href={`/events/${banner.monthSlug}`} className="view-link">See More →</Link>
+                    </div>
+                  </Reveal2>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 

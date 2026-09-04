@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
   const booking = await sanity.fetch(
     `*[_type == "booking" && _id == $id][0]{
       _id, fullName, email, phone, groupSize,
-      experience->{title, price}
+      experience->{title, price},
+      event->{title, price}
     }`,
     {id: bookingId}
   )
@@ -30,7 +31,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({error: 'Booking not found'}, {status: 404})
   }
 
-  const amount = (booking.experience.price * (booking.groupSize || 1)).toFixed(2)
+  // An event-based booking uses the event's own price/title (can differ from the
+  // experience's base rate — promos, group rates, etc.) rather than the experience's.
+  const item = booking.event ?? booking.experience
+  const amount = (item.price * (booking.groupSize || 1)).toFixed(2)
   const merchantId = process.env.PAYHERE_MERCHANT_ID!
   const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET!
   const currency = 'LKR'
@@ -56,7 +60,7 @@ export async function POST(req: NextRequest) {
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/experiences`,
       notify_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/webhooks/payhere`,
       order_id: orderId,
-      items: booking.experience.title,
+      items: item.title,
       currency,
       amount,
       first_name: firstName,
