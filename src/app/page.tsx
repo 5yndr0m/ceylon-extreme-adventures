@@ -1,6 +1,19 @@
+import Link from 'next/link';
 import Reveal2 from '../components/Reveal';
+import {getUpcomingMonthlyBanners, urlFor} from '../lib/sanity';
 
-export default function Home() {
+type MonthlyBannerCard = {
+  _id: string
+  month: string
+  monthSlug: string
+  bannerImage?: any
+  tagline?: string
+  events: {_id: string; title: string; slug: {current: string}; date: string; price: number}[]
+}
+
+export default async function Home() {
+  const monthlyBanners: MonthlyBannerCard[] = await getUpcomingMonthlyBanners(3);
+
   return (
     <main>
 
@@ -101,80 +114,36 @@ export default function Home() {
         <div className="container">
           <Reveal2 className="section-head">
             <span className="eyebrow">Fixed departures</span>
-            <h2>This Month&apos;s Adventures</h2>
-            <p>Join a scheduled group departure — grab a seat, meet fellow adventurers, and let us handle the logistics.</p>
+            <h2>Upcoming Adventures</h2>
+            <p>Browse scheduled group departures over the next few months — pick a date, reserve your spot, and let us handle the logistics.</p>
           </Reveal2>
 
-          <Reveal2 className="events-month">August</Reveal2>
-
-          <Reveal2 className="events-carousel-wrap">
-            <button className="event-nav prev" id="eventPrev" aria-label="Previous event">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
-            </button>
-
-            <div className="events-carousel" id="eventsCarousel">
-              <article className="event-card">
-                <div className="event-card-img">
-                  <img src="https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Hikers on the misty trail up Sri Pada" />
-                  <span className="event-date"><span className="event-date-mon">AUG</span><span className="event-date-day">22</span></span>
-                </div>
-                <div className="event-card-body">
-                  <span className="tag">Hiking</span>
-                  <h3>Sri Pada Night Hike</h3>
-                  <div className="event-price">25,100 LKR <small>/ person</small></div>
-                  <ul className="event-includes">
-                    <li>🍽️ Meals</li>
-                    <li>🚐 Transport</li>
-                    <li>📸 Photography</li>
-                    <li>🎥 Drone Coverage</li>
-                  </ul>
-                  <a href="/contact" className="btn btn-primary">Reserve Spot →</a>
-                </div>
-              </article>
-
-              <article className="event-card">
-                <div className="event-card-img">
-                  <img src="https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Group white-water rafting on the Kelani River" />
-                  <span className="event-date"><span className="event-date-mon">AUG</span><span className="event-date-day">29</span></span>
-                </div>
-                <div className="event-card-body">
-                  <span className="tag">Rafting</span>
-                  <h3>Kitulgala Rapids Run</h3>
-                  <div className="event-price">9,800 LKR <small>/ person</small></div>
-                  <ul className="event-includes">
-                    <li>🦺 Safety Gear</li>
-                    <li>🚐 Transport</li>
-                    <li>🍽️ Lunch</li>
-                    <li>📸 Photography</li>
-                  </ul>
-                  <a href="/payment" className="btn btn-primary">Reserve Spot →</a>
-                </div>
-              </article>
-
-              <article className="event-card">
-                <div className="event-card-img">
-                  <img src="https://images.unsplash.com/photo-1650911563224-0c843a6d843e?fm=jpg&q=70&w=700&auto=format&fit=crop" alt="Adventurer canyoning through a gorge in Ella" />
-                  <span className="event-date"><span className="event-date-mon">SEP</span><span className="event-date-day">05</span></span>
-                </div>
-                <div className="event-card-body">
-                  <span className="tag">Canyoning</span>
-                  <h3>Ella Gorge Canyoning</h3>
-                  <div className="event-price">12,500 LKR <small>/ person</small></div>
-                  <ul className="event-includes">
-                    <li>🦺 Safety Gear</li>
-                    <li>🚐 Transport</li>
-                    <li>🍽️ Snacks</li>
-                    <li>🎥 Drone Coverage</li>
-                  </ul>
-                  <a href="/contact" className="btn btn-primary">Reserve Spot →</a>
-                </div>
-              </article>
+          {monthlyBanners.length === 0 ? (
+            <p className="events-empty">No upcoming departures posted yet — check back soon, or browse our <Link href="/experiences">experiences</Link> to plan your own dates.</p>
+          ) : (
+            <div className="months-grid">
+              {monthlyBanners.map((banner) => {
+                const monthLabel = new Date(banner.month).toLocaleDateString('en-GB', {month: 'long', year: 'numeric'});
+                const eventCount = banner.events?.length ?? 0;
+                return (
+                  <Reveal2 className="month-card" key={banner._id}>
+                    <Link href={`/events/${banner.monthSlug}`} className="month-banner">
+                      <img
+                        src={urlFor(banner.bannerImage).width(700).height(875).url()}
+                        alt={`${monthLabel} events`}
+                      />
+                    </Link>
+                    <div className="month-details">
+                      <h3>{monthLabel}</h3>
+                      {banner.tagline && <p className="month-tagline">{banner.tagline}</p>}
+                      <p className="month-count">{eventCount} {eventCount === 1 ? 'departure' : 'departures'} scheduled</p>
+                      <Link href={`/events/${banner.monthSlug}`} className="view-link">See More →</Link>
+                    </div>
+                  </Reveal2>
+                );
+              })}
             </div>
-
-            <button className="event-nav next" id="eventNext" aria-label="Next event">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
-            </button>
-          </Reveal2>
+          )}
         </div>
       </section>
 

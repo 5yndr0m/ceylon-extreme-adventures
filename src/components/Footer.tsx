@@ -50,7 +50,7 @@ export default function Footer() {
           </div>
         </div>
       </footer>
-      <div className='sticky-cta'><Link href='/payment' className='btn btn-primary'>Book Now</Link></div>
+      <div className='sticky-cta'><Link href='/#events' className='btn btn-primary'>Book Now</Link></div>
     </>
   );
 }
