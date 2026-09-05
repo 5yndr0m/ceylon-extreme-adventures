@@ -8,7 +8,7 @@ export default function Footer() {
           <div className='footer-grid'>
             <div className='footer-col'>
               <div className='footer-logo'>Ceylon<span>X</span>treme</div>
-              <p style={{ fontSize: '14px', maxWidth: '32ch' }}>In search of freedom... one great adventure at a time.</p>
+              <p style={{ fontSize: '14px', maxWidth: '32ch' }}>In search of freedom</p>
               <div className='social-row'>
                 <a href='https://www.facebook.com/extremeadventure.lk' target='_blank' rel='noopener' aria-label='Facebook'>
                   <svg width='16' height='16' viewBox='0 0 24 24' fill='#fff'><path d='M13.5 21v-7.5H16l.5-3H13.5V8.3c0-.87.24-1.46 1.5-1.46H16.5V4.2C16.2 4.16 15.2 4 14 4c-2.4 0-4 1.47-4 4.16v2.34H7.5v3H10V21h3.5z'/></svg>
@@ -35,18 +35,19 @@ export default function Footer() {
               {/* No standalone Safety Policy / Terms pages exist yet — routing to Contact
                   rather than leaving a dead href="#" until those pages are written */}
               <Link href='/contact'>Safety Policy</Link>
-              <Link href='/contact'>Terms &amp; Conditions</Link>
+              <Link href='/terms'>Terms &amp; Conditions</Link>
             </div>
             <div className='footer-col'>
               <h4>Contact</h4>
-              <Link href='/contact#location'>Nugegoda, Sri Lanka</Link>
-              <a href='mailto:info@extremeadventure.lk'>info@extremeadventure.lk</a>
-              <a href='tel:+94707900700'>+94 70 790 0700</a>
+              <Link href='/contact#location'>93/A, Madiwala Rd, Embuldeniya, Nugegoda</Link>
+              <a href='mailto:sales@extremeadventure.lk'>sales@extremeadventure.lk</a>
+              <a href='tel:+94707900700'>+94 707 900 700</a>
+              <a href='tel:+94707900701'>+94 707 900 701</a>
             </div>
           </div>
           <div className='footer-bottom'>
-            <span>© 2026 Ceylon Extreme Adventures (Pvt) Ltd. All rights reserved.</span>
-            <span>extremeadventure.lk</span>
+            <span>© 2026 Ceylon Extreme Adventures. All rights reserved.</span>
+            <span>www.extremeadventure.lk</span>
           </div>
         </div>
       </footer>

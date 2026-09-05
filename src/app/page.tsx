@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import Reveal2 from '../components/Reveal';
 import ActivitiesCarousel from '../components/ActivitiesCarousel';
-import {getUpcomingMonthlyBanners, urlFor} from '../lib/sanity';
+import FoundersSlider from '../components/FoundersSlider';
+import Image from 'next/image';
+import { getFeaturedTestimonials, getUpcomingMonthlyBanners, urlFor } from '../lib/sanity';
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute — without this,
 // the homepage was fully static after the first deploy and never picked up new events/banners
@@ -17,7 +19,10 @@ type MonthlyBannerCard = {
 }
 
 export default async function Home() {
-  const monthlyBanners: MonthlyBannerCard[] = await getUpcomingMonthlyBanners(3);
+  const [testimonials, monthlyBanners]: [any[], MonthlyBannerCard[]] = await Promise.all([
+    getFeaturedTestimonials(),
+    getUpcomingMonthlyBanners(3),
+  ]);
 
   return (
     <main>
@@ -49,7 +54,7 @@ export default async function Home() {
             <p>Every trip is led by certified guides with full safety briefings, gear checks, and small group sizes.</p>
           </Reveal2>
 
-          <ActivitiesCarousel/>
+          <ActivitiesCarousel />
 
           <Reveal2 className="activities-cta"><a href="/experiences">See All Experiences →</a></Reveal2>
         </div>
@@ -94,9 +99,9 @@ export default async function Home() {
 
       <section id="about">
         <div className="container about-grid">
-          <Reveal2 className="about-img">
-            <img src="https://images.unsplash.com/photo-1550486686-a496af34a2d5?fm=jpg&q=70&w=1000&auto=format&fit=crop" alt="Ceylon Extreme Adventures guide team with travelers on a mountain summit" />
-          </Reveal2>
+          <div className="about-founders">
+            <FoundersSlider />
+          </div>
           <Reveal2 className="about-text">
             <span className="eyebrow">Who we are</span>
             <h2>Adventure Is in Our Nature</h2>
@@ -117,32 +122,38 @@ export default async function Home() {
             <span className="eyebrow" style={{ color: 'var(--rapids-blue)' }}>Reviews</span>
             <h2>Stories from the Trail</h2>
           </Reveal2>
-          <div className="testi-scroller">
-            <Reveal2 className="testi-card">
-              <div className="stars">★★★★★</div>
-              <p className="testi-quote">&quot;The instructors explained everything clearly and made sure we understood every safety step. Truly unforgettable.&quot;</p>
-              <div className="testi-author">
-                <div className="avatar"><img src="https://i.pravatar.cc/88?img=47" alt="" /></div>
-                <div><div className="author-name">Anjali R.</div><div className="author-tag">Abseiling — Puna Ella</div></div>
-              </div>
-            </Reveal2>
-            <Reveal2 className="testi-card">
-              <div className="stars">★★★★★</div>
-              <p className="testi-quote">&quot;Comfortable transport, good food, excellent safety gear — I felt taken care of the entire trip.&quot;</p>
-              <div className="testi-author">
-                <div className="avatar"><img src="https://i.pravatar.cc/88?img=12" alt="" /></div>
-                <div><div className="author-name">Marc D.</div><div className="author-tag">Canyoning — Kitulgala</div></div>
-              </div>
-            </Reveal2>
-            <Reveal2 className="testi-card">
-              <div className="stars">★★★★★</div>
-              <p className="testi-quote">&quot;Professionalism, friendliness, and safety focus made every moment of the rapids enjoyable.&quot;</p>
-              <div className="testi-author">
-                <div className="avatar"><img src="https://i.pravatar.cc/88?img=33" alt="" /></div>
-                <div><div className="author-name">Sanjeewa P.</div><div className="author-tag">Rafting — Kelani River</div></div>
-              </div>
-            </Reveal2>
-          </div>
+          {testimonials.length === 0 ? (
+            <p style={{ color: 'var(--stone-gray)' }}>Reviews coming soon.</p>
+          ) : (
+            <div className="testi-scroller">
+              {testimonials.map((t: any) => (
+                <Reveal2 className="testi-card" key={t._id}>
+                  <div className="stars">{'★'.repeat(t.rating || 5)}{'☆'.repeat(5 - (t.rating || 5))}</div>
+                  <p className="testi-quote">&quot;{t.quote}&quot;</p>
+                  <div className="testi-author">
+                    <div className="avatar">
+                      {t.photo ? (
+                        <Image
+                          src={urlFor(t.photo).width(88).height(88).url()}
+                          alt={t.customerName}
+                          width={44}
+                          height={44}
+                        />
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', background: 'var(--jungle-green)' }} />
+                      )}
+                    </div>
+                    <div>
+                      <div className="author-name">{t.customerName}</div>
+                      <div className="author-tag">
+                        {t.experience ? `${t.experience.title}${t.experience.locationName ? ` — ${t.experience.locationName}` : ''}` : t.source}
+                      </div>
+                    </div>
+                  </div>
+                </Reveal2>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

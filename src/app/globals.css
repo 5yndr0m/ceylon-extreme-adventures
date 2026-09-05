@@ -580,3 +580,12 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
   .card-scroller-track{ grid-template-columns:repeat(3,1fr); gap:24px; }
   .card-scroller{ gap:24px; }
 }
+
+/* ============ TERMS ============ */
+.terms-page{ background:#fff; }
+.terms-content{ max-width:820px; display:grid; gap:36px; }
+.terms-block h3{ color:var(--jungle-green); margin-bottom:14px; }
+.terms-block ul{ display:grid; gap:10px; }
+.terms-block li{ color:var(--stone-gray); font-size:15px; line-height:1.6; padding-left:18px; position:relative; }
+.terms-block li::before{ content:'—'; position:absolute; left:0; color:var(--adrenaline-orange); font-weight:700; }
+.terms-block strong{ color:var(--basalt-black); }
