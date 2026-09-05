@@ -2,8 +2,12 @@ import Reveal2 from '../components/Reveal';
 import MonthlyEventFlyers from '../components/MonthlyEventFlyers';
 import ActivitiesCarousel from '../components/ActivitiesCarousel';
 import FoundersSlider from '../components/FoundersSlider';
+import Image from 'next/image';
+import { getFeaturedTestimonials, urlFor } from '../lib/sanity';
 
-export default function Home() {
+export default async function Home() {
+  const testimonials = await getFeaturedTestimonials();
+
   return (
     <main>
 
@@ -77,32 +81,38 @@ export default function Home() {
             <span className="eyebrow" style={{ color: 'var(--rapids-blue)' }}>Reviews</span>
             <h2>Stories from the Trail</h2>
           </Reveal2>
-          <div className="testi-scroller">
-            <Reveal2 className="testi-card">
-              <div className="stars">★★★★★</div>
-              <p className="testi-quote">&quot;The instructors explained everything clearly and made sure we understood every safety step. Truly unforgettable.&quot;</p>
-              <div className="testi-author">
-                <div className="avatar"><img src="https://i.pravatar.cc/88?img=47" alt="" /></div>
-                <div><div className="author-name">Anjali R.</div><div className="author-tag">Abseiling — Puna Ella</div></div>
-              </div>
-            </Reveal2>
-            <Reveal2 className="testi-card">
-              <div className="stars">★★★★★</div>
-              <p className="testi-quote">&quot;Comfortable transport, good food, excellent safety gear — I felt taken care of the entire trip.&quot;</p>
-              <div className="testi-author">
-                <div className="avatar"><img src="https://i.pravatar.cc/88?img=12" alt="" /></div>
-                <div><div className="author-name">Marc D.</div><div className="author-tag">Canyoning — Kitulgala</div></div>
-              </div>
-            </Reveal2>
-            <Reveal2 className="testi-card">
-              <div className="stars">★★★★★</div>
-              <p className="testi-quote">&quot;Professionalism, friendliness, and safety focus made every moment of the rapids enjoyable.&quot;</p>
-              <div className="testi-author">
-                <div className="avatar"><img src="https://i.pravatar.cc/88?img=33" alt="" /></div>
-                <div><div className="author-name">Sanjeewa P.</div><div className="author-tag">Rafting — Kelani River</div></div>
-              </div>
-            </Reveal2>
-          </div>
+          {testimonials.length === 0 ? (
+            <p style={{ color: 'var(--stone-gray)' }}>Reviews coming soon.</p>
+          ) : (
+            <div className="testi-scroller">
+              {testimonials.map((t: any) => (
+                <Reveal2 className="testi-card" key={t._id}>
+                  <div className="stars">{'★'.repeat(t.rating || 5)}{'☆'.repeat(5 - (t.rating || 5))}</div>
+                  <p className="testi-quote">&quot;{t.quote}&quot;</p>
+                  <div className="testi-author">
+                    <div className="avatar">
+                      {t.photo ? (
+                        <Image
+                          src={urlFor(t.photo).width(88).height(88).url()}
+                          alt={t.customerName}
+                          width={44}
+                          height={44}
+                        />
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', background: 'var(--jungle-green)' }} />
+                      )}
+                    </div>
+                    <div>
+                      <div className="author-name">{t.customerName}</div>
+                      <div className="author-tag">
+                        {t.experience ? `${t.experience.title}${t.experience.locationName ? ` — ${t.experience.locationName}` : ''}` : t.source}
+                      </div>
+                    </div>
+                  </div>
+                </Reveal2>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

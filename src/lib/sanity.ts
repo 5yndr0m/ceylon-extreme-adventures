@@ -89,3 +89,19 @@ export async function getPostBySlug(slug: string) {
     {slug}
   )
 }
+
+// Featured testimonials for the homepage — featured:true keeps this
+// list curated by the client in Studio rather than showing every review
+export async function getFeaturedTestimonials() {
+  return client.fetch(`
+    *[_type == "testimonial" && featured == true] | order(_createdAt desc) {
+      _id,
+      customerName,
+      quote,
+      rating,
+      source,
+      photo,
+      experience->{title, locationName}
+    }
+  `)
+}
