@@ -22,6 +22,10 @@
 //     4 listed heights (65/195/98/32 ft) only span ~10-59m. Description uses
 //     the actual range from quickFacts.
 //
+// Matches against the real Sanity slug via MATCH_SLUG_OVERRIDES below for the
+// 10 experiences where the PDF's own slug doesn't match (same list as
+// migrate-quickfacts.ts — e.g. "diyaluma-falls" -> "diyaluma").
+//
 // This finds each experience by slug and patches whichever revision is
 // currently editable (draft if one exists, published doc's own draft
 // otherwise — Sanity creates that draft automatically, exactly like the
@@ -53,6 +57,22 @@ type DescriptionEntry = {
   fullDescription: string[] // one string per paragraph
 }
 
+// The PDF's own slug for a handful of these doesn't match the real Sanity slug
+// (confirmed against live data — see migrate-quickfacts.ts for the original
+// diff). Same 10 overrides as that script, so this one finds the right doc too.
+const MATCH_SLUG_OVERRIDES: Record<string, string> = {
+  'diyaluma-falls': 'diyaluma',
+  'gartmore-falls': 'gartmore',
+  'gerandi-ella-falls': 'gerandi-ella',
+  'kotaganga-ella-falls': 'kotaganga-ella',
+  'laxapana-falls': 'laxapana',
+  'rikili-ella-falls': 'rikili-ella',
+  'sandun-ella-falls': 'sandun-ella',
+  kuwenigala: 'kuvenigala',
+  'bakers-bend': 'baker-s-bend',
+  'devils-staircase': 'devil-s-staircase',
+}
+
 function toPortableText(paragraphs: string[]) {
   return paragraphs.map((text, i) => ({
     _type: 'block',
@@ -74,17 +94,18 @@ async function run() {
   let missing = 0
 
   for (const [slug, entry] of Object.entries(data)) {
+    const lookupSlug = MATCH_SLUG_OVERRIDES[slug] ?? slug
     const existing = await sanity.fetch<{_id: string} | null>(
       `*[_type == "experience" && slug.current == $slug][0]{_id}`,
-      {slug}
+      {slug: lookupSlug}
     )
     if (!existing) {
-      console.warn(`⚠️  No experience found for slug "${slug}" — skipping.`)
+      console.warn(`⚠️  No experience found for slug "${lookupSlug}" (from "${slug}") — skipping.`)
       missing++
       continue
     }
 
-    console.log(`✏️  ${slug} — updating shortDescription + fullDescription`)
+    console.log(`✏️  ${lookupSlug} — updating shortDescription + fullDescription`)
     if (!DRY_RUN) {
       await sanity
         .patch(existing._id)
