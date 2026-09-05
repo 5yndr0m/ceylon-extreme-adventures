@@ -4,9 +4,11 @@
 // into Sanity: fills each experience's `gallery` array with alt text, and sets
 // `heroImage` from the Banners folder where one isn't already set.
 //
-// This does NOT touch anything else on the document. Idempotent: skips gallery
-// upload if the doc already has a non-empty gallery, skips hero upload if the
-// doc already has a heroImage — safe to re-run.
+// This does NOT touch anything else on the document. By default it's idempotent:
+// skips gallery upload if the doc already has a non-empty gallery, skips hero upload
+// if the doc already has a heroImage — safe to re-run. Pass --force to overwrite both
+// regardless of current state (e.g. an experience with a single leftover placeholder
+// image in its gallery, or you've re-run photo prep and want the newest set uploaded).
 //
 // ---- Folder structure this expects ----
 // PHOTOS_ROOT/
@@ -39,6 +41,10 @@
 //   PHOTOS_ROOT="/path/to/CEA Photos" npx tsx import-photos.ts --dry-run
 //   PHOTOS_ROOT="/path/to/CEA Photos" npx tsx import-photos.ts
 //
+// Optional: overwrite galleries/hero images that already have something set
+// (default is to skip those and leave them alone).
+//   PHOTOS_ROOT="/path/to/CEA Photos" npx tsx import-photos.ts --force
+//
 // Optional: cap how many gallery photos get uploaded per experience (default:
 // no cap — everything found in the chosen size folder is uploaded).
 //   MAX_GALLERY_PER_EXPERIENCE=12 PHOTOS_ROOT="..." npx tsx import-photos.ts
@@ -49,6 +55,11 @@ import path from 'path'
 import 'dotenv/config'
 
 const DRY_RUN = process.argv.includes('--dry-run')
+// By default this script never overwrites a gallery/heroImage that's already set (safe to
+// re-run without duplicating work). Pass --force to overwrite both regardless of current
+// state — useful when an experience has a leftover placeholder image, or you've re-run the
+// photo prep and want the freshest set uploaded.
+const FORCE = process.argv.includes('--force')
 const PHOTOS_ROOT = process.env.PHOTOS_ROOT!
 const MAX_GALLERY_PER_EXPERIENCE = process.env.MAX_GALLERY_PER_EXPERIENCE
   ? parseInt(process.env.MAX_GALLERY_PER_EXPERIENCE, 10)
@@ -200,8 +211,10 @@ async function run() {
       console.warn(`⚠️  "${folderName}" -> slug "${slug}" but no experience document found. Skipping.`)
       continue
     }
-    if (existing.gallery && existing.gallery.length > 0) {
-      console.log(`⏭️  ${folderName} (${slug}) — gallery already has ${existing.gallery.length} image(s), skipping.`)
+    if (!FORCE && existing.gallery && existing.gallery.length > 0) {
+      console.log(
+        `⏭️  ${folderName} (${slug}) — gallery already has ${existing.gallery.length} image(s), skipping (use --force to overwrite).`
+      )
       continue
     }
 
@@ -255,8 +268,8 @@ async function run() {
         {slug}
       )
       if (!existing) continue
-      if (existing.heroImage) {
-        console.log(`⏭️  banner for "${slug}" — heroImage already set, skipping.`)
+      if (!FORCE && existing.heroImage) {
+        console.log(`⏭️  banner for "${slug}" — heroImage already set, skipping (use --force to overwrite).`)
         continue
       }
       console.log(`🖼️  ${slug} — setting heroImage from banner`)
