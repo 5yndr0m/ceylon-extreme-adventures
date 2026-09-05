@@ -162,7 +162,7 @@ function PaymentPortalInner() {
                 <strong>{total.toLocaleString()} <small>LKR</small></strong>
               </div>
               <p className="guarantee-note">
-                🛡 Full refund if we reschedule due to weather. Guide-verified safety checks on every departure.
+                🛡 Cancel 7+ days before your event for a full refund. Guide-verified safety checks on every departure. See our cancellation policy for details.
               </p>
             </div>
           </Reveal>
@@ -192,8 +192,7 @@ function PaymentPortalInner() {
           {[
             ['🔒', 'Secure Checkout', 'Handled entirely by PayHere'],
             ['🛡', 'PCI-DSS Compliant', 'We never see your card details'],
-            ['✓', 'Weather Guarantee', 'Full refund on cancelled routes'],
-            ['☎', '24/7 Support', '+94 70 790 0700'],
+            ['✓', 'Fair Cancellation Policy', 'Full refund if you cancel 7+ days ahead'],            ['☎', '24/7 Support', '+94 707 900 700'],
           ].map(([icon, title, text]) => (
             <div className="trust-item" key={title}>
               <div className="trust-icon">{icon}</div>
@@ -210,7 +209,7 @@ function PaymentPortalInner() {
           <div className="footer-links">
             <a href="#">Refund Policy</a>
             <a href="#">Terms &amp; Conditions</a>
-            <a href="mailto:info@extremeadventure.lk">info@extremeadventure.lk</a>
+            <a href="mailto:sales@extremeadventure.lk">sales@extremeadventure.lk</a>
           </div>
         </div>
       </footer>

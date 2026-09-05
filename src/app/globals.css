@@ -233,7 +233,7 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 }
 
 /* ============ EVENTS ============ */
-.events{ background:var(--mist-white); }
+.events{ background:var(--cloud-gray); }
 .events-empty{ color:var(--stone-gray); }
 .events-empty a{ text-decoration:underline; color:var(--jungle-green); }
 
