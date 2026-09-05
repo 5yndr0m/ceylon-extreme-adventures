@@ -70,7 +70,7 @@ export default function Contact() {
                   Fastest way to reach us, especially for last-minute dates.
                 </p>
                 <a href="tel:+94707900700" className="quick-link">
-                  +94 70 790 0700 →
+                  +94 707 900 700 / +94 707 900 701 →
                 </a>
               </div>
             </Reveal>
@@ -95,10 +95,10 @@ export default function Contact() {
                   Best for group bookings, custom itineraries, and invoicing.
                 </p>
                 <a
-                  href="mailto:info@extremeadventure.lk"
+                  href="mailto:sales@extremeadventure.lk"
                   className="quick-link"
                 >
-                  info@extremeadventure.lk →
+                  sales@extremeadventure.lk →
                 </a>
               </div>
             </Reveal>
@@ -124,7 +124,7 @@ export default function Contact() {
                   person.
                 </p>
                 <a href="#location" className="quick-link">
-                  Nugegoda, Sri Lanka →
+                  93/A, Madiwala Rd, Embuldeniya, Nugegoda →
                 </a>
               </div>
             </Reveal>
@@ -151,7 +151,7 @@ export default function Contact() {
                     fill="#F2622E"
                   />
                 </svg>
-                Call +94 70 790 0700 or WhatsApp us
+                Call +94 707 900 700 / +94 707 900 701 or WhatsApp us
               </div>
 
               <div className="hours-list">
@@ -321,8 +321,8 @@ export default function Contact() {
               </button>
               <div className="faq-a">
                 <p>
-                  Both are included — let us know your pickup location and
-                  we&apos;ll build it into your quote.
+                  93/A, Madiwala Rd, Embuldeniya, Nugegoda — a short drive from central
+                  Colombo — walk-ins welcome during office hours.
                 </p>
               </div>
             </Reveal>
@@ -335,8 +335,24 @@ export default function Contact() {
               <div className="faq-a">
                 <p>
                   We reschedule rather than run a route our guides haven&apos;t
-                  cleared — we&apos;ll call you directly if that&apos;s the
-                  case.
+                  cleared. If we must cancel outright due to unforeseen
+                  circumstances after costs are already committed, a refund may
+                  not be possible — we&apos;ll always try to offer an alternative
+                  experience where we can.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal className="faq-item">
+              <button className="faq-q" onClick={handleFaqClick}>
+                What's your cancellation policy?
+                <span className="plus">+</span>
+              </button>
+              <div className="faq-a">
+                <p>
+                  Cancel in writing to sales@extremeadventure.lk at least 7 days
+                  before your event for a full refund. Cancellations within 7
+                  days, or postponements, are treated as a rebooking.
                 </p>
               </div>
             </Reveal>

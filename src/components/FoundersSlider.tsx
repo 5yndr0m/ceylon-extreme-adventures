@@ -11,22 +11,22 @@ type Founder = {
 
 const founders: Founder[] = [
   {
-    name: 'Dilani Fernando',
-    role: 'Co-Founder & Head of Safety',
-    image: 'https://i.pravatar.cc/500?img=32',
-    bio: 'Runs every guide’s rescue-drill recertification and signs off on route conditions before groups head out. Ten years of keeping every trip honest about risk.',
-  },
-  {
-    name: 'Kasun Perera',
-    role: 'Founder & Lead Guide',
+    name: 'Sanjeewa Ariyarathne',
+    role: 'Founder / Director / CEO',
     image: 'https://i.pravatar.cc/500?img=51',
-    bio: 'Started the company in 2016 with one abseil line at Puna Ella. IRATA-certified rope access technician who still leads trips most weekends.',
+    bio: 'A well-experienced all-around adventure sports guide and instructor with over a decade of experience. Holds a Hiking/Trekking Guide License from the Wayamba Development Authority and a course in Inbound Tourism from the Academy of Inbound Tourism and Foreign Languages.',
   },
   {
-    name: 'Nadun Silva',
-    role: 'Co-Founder & Rafting Lead',
-    image: 'https://i.pravatar.cc/500?img=14',
-    bio: 'Swiftwater rescue certified with 12 years reading the Kelani River’s grade II–III rapids in every season, dry or flood.',
+    name: 'Dr. Nath Dharmasena',
+    role: 'Chairman',
+    image: 'https://i.pravatar.cc/500?img=53',
+    bio: 'A seasoned entrepreneur with experience across 13 countries including Malaysia, Singapore, Norway, and the UAE. Holds a BSc in Engineering from Peradeniya, sits as director in four companies, and is the founder of Ceylon Graphene Technologies Pvt Ltd.',
+  },
+  {
+    name: 'Manju S. Gunawardana',
+    role: 'Director / Technical Advisor',
+    image: 'https://i.pravatar.cc/500?img=60',
+    bio: 'First person to abseil Sri Lanka’s highest waterfall, Bambarakanda, in 1998. 25+ years in research and innovation, holds an International Rafting Federation guide license, and is qualified in Wilderness and Occupational First Aid.',
   },
 ];
 

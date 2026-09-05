@@ -74,45 +74,44 @@ export default function About() {
   </div>
 </section>
 
-{/* ================= TEAM ================= */}
 <section id="team">
   <div className="container">
     <Reveal className="section-head">
-      <span className="eyebrow">Meet the crew</span>
-      <h2>The Guides Behind The Ropes</h2>
-      <p>A small team of certified instructors, river guides and dive masters — most of them with a decade or more on Sri Lanka&apos;s trails and rapids.</p>
+      <span className="eyebrow">Meet the leadership</span>
+      <h2>The Team Behind CEA</h2>
+      <p>A registered, structured company led by a leadership team with decades of combined experience in adventure sports, research, and enterprise.</p>
     </Reveal>
     <div className="team-scroller">
       <Reveal className="team-card">
-        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=51" alt="Founder and lead guide" /></div>
+        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=51" alt="Sanjeewa Ariyarathne, Founder, Director and CEO" /></div>
         <div className="team-info">
-          <h3>Kasun Perera</h3>
-          <span className="team-role">Founder &amp; Lead Guide</span>
-          <p>Started the company in 2016 with one abseil line at Puna Ella. IRATA-certified rope access technician.</p>
+          <h3>Sanjeewa Ariyarathne</h3>
+          <span className="team-role">Founder / Director / CEO</span>
+          <p>A well-experienced all-around adventure sports guide and instructor with over a decade of experience. Holds a Hiking/Trekking Guide License from the Wayamba Development Authority and a course in Inbound Tourism from the Academy of Inbound Tourism and Foreign Languages.</p>
         </div>
       </Reveal>
       <Reveal className="team-card">
-        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=32" alt="Head of safety and canyoning lead" /></div>
+        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=53" alt="Dr. Nath Dharmasena, Chairman" /></div>
         <div className="team-info">
-          <h3>Dilani Fernando</h3>
-          <span className="team-role">Head of Safety</span>
-          <p>Runs every guide&apos;s rescue-drill recertification and signs off on route conditions before groups head out.</p>
+          <h3>Dr. Nath Dharmasena</h3>
+          <span className="team-role">Chairman</span>
+          <p>A seasoned entrepreneur with experience across 13 countries. Holds a BSc in Engineering from Peradeniya, sits as director in four companies, and is the founder of Ceylon Graphene Technologies Pvt Ltd.</p>
         </div>
       </Reveal>
       <Reveal className="team-card">
-        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=14" alt="White-water rafting lead guide" /></div>
+        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=60" alt="Manju S. Gunawardana, Director and Technical Advisor" /></div>
         <div className="team-info">
-          <h3>Nadun Silva</h3>
-          <span className="team-role">Rafting Lead, Kelani River</span>
-          <p>Swiftwater rescue certified with 12 years reading the Kelani's grade II–III rapids in every season.</p>
+          <h3>Manju S. Gunawardana</h3>
+          <span className="team-role">Director / Technical Advisor</span>
+          <p>First person to abseil Sri Lanka's highest waterfall, Bambarakanda, in 1998. 25+ years in research and innovation, holds an International Rafting Federation guide license, and is qualified in Wilderness First Aid and Occupational First Aid.</p>
         </div>
       </Reveal>
       <Reveal className="team-card">
-        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=25" alt="Dive master" /></div>
+        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=45" alt="Priyanga Maldeniya, Sales and Reservations Manager" /></div>
         <div className="team-info">
-          <h3>Ishara Jayasuriya</h3>
-          <span className="team-role">PADI Dive Master</span>
-          <p>Leads our coastal snorkeling and diving trips, with a soft spot for training nervous first-time divers.</p>
+          <h3>Priyanga Maldeniya</h3>
+          <span className="team-role">Sales &amp; Reservations Manager</span>
+          <p>Handles bookings, reservations, and client inquiries — your first point of contact for planning an adventure with CEA.</p>
         </div>
       </Reveal>
     </div>
