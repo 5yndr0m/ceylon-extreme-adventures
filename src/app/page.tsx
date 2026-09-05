@@ -3,11 +3,7 @@ import Reveal2 from '../components/Reveal';
 import ActivitiesCarousel from '../components/ActivitiesCarousel';
 import FoundersSlider from '../components/FoundersSlider';
 import Image from 'next/image';
-import { getFeaturedTestimonials, urlFor } from '../lib/sanity';
-
-export default async function Home() {
-  const testimonials = await getFeaturedTestimonials();
-import {getUpcomingMonthlyBanners, urlFor} from '../lib/sanity';
+import { getFeaturedTestimonials, getUpcomingMonthlyBanners, urlFor } from '../lib/sanity';
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute — without this,
 // the homepage was fully static after the first deploy and never picked up new events/banners
@@ -23,7 +19,10 @@ type MonthlyBannerCard = {
 }
 
 export default async function Home() {
-  const monthlyBanners: MonthlyBannerCard[] = await getUpcomingMonthlyBanners(3);
+  const [testimonials, monthlyBanners]: [any[], MonthlyBannerCard[]] = await Promise.all([
+    getFeaturedTestimonials(),
+    getUpcomingMonthlyBanners(3),
+  ]);
 
   return (
     <main>
