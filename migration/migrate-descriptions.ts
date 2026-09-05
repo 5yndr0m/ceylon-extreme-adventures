@@ -9,7 +9,8 @@
 // Usage:
 //   npx ts-node migrate-descriptions.ts --dry-run
 //   npx ts-node migrate-descriptions.ts
-//   npx ts-node migrate-descriptions.ts --force   (overwrite experiences that already have fullDescription)
+//   npx ts-node migrate-descriptions.ts --force   (overwrite experiences that already have fullDescription —
+//                                                   needed to pick up heading styling on experiences already migrated)
 //
 import mysql from 'mysql2/promise'
 import {createClient} from '@sanity/client'
@@ -31,6 +32,8 @@ const EXPERIENCE_IDS = [
   5732, 5776, 5819, 5942, 5970, 6028, 6061, 6102, 6125, 6142, 6167, 6194,
   6218, 6242, 6259, 6280, 6307, 6329, 6352, 6389, 6420, 6447, 6467, 7540,
 ]
+
+type Paragraph = {text: string; heading: boolean}
 
 // ---- HTML -> plain paragraph text -------------------------------------------------
 // Elementor's "text-editor" widget stores rich HTML in settings.editor (WordPress's
@@ -54,25 +57,35 @@ function decodeEntities(str: string): string {
     .replace(/\u200b/g, '') // zero-width space — TinyMCE leaves these behind constantly
 }
 
-function htmlToParagraphs(html: string): string[] {
+function htmlToParagraphs(html: string): Paragraph[] {
   if (!html) return []
   const withBreaksAsNewlines = html.replace(/<br\s*\/?>/gi, '\n')
-  // Split on block-level closing tags so list items and paragraphs each become their own
-  // block. IMPORTANT: the group must be non-capturing — String.split() with a *capturing*
-  // group (the original bug here) inserts the captured text itself into the result array,
-  // so every closing </p> or </h4> left a stray "p"/"h4" string in the output.
-  const chunks = withBreaksAsNewlines
-    .split(/<\/(?:p|li|h[1-6])>/gi)
-    .map((chunk) => chunk.replace(/<[^>]+>/g, '')) // strip remaining tags (opening tags, spans, etc.)
-    .map((chunk) => decodeEntities(chunk).replace(/\s+/g, ' ').trim())
-    .filter(Boolean)
-  return chunks
+  // Walk the HTML matching "content up to the next closing block tag" pairs, so each
+  // chunk knows which tag it actually closed with — <h1>-<h6> chunks become heading
+  // blocks, <p>/<li> chunks stay normal paragraphs. (The previous version used
+  // String.split() on the closing tag, which throws away which tag it was — every real
+  // <h4> subheading in the body copy ended up styled as a plain paragraph.)
+  const results: Paragraph[] = []
+  const re = /([\s\S]*?)<\/(p|li|h[1-6])>/gi
+  let match: RegExpExecArray | null
+  let lastIndex = 0
+  while ((match = re.exec(withBreaksAsNewlines))) {
+    const [, inner, tag] = match
+    const text = decodeEntities(inner.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim()
+    if (text) results.push({text, heading: /^h[1-6]$/i.test(tag)})
+    lastIndex = re.lastIndex
+  }
+  // Anything after the last recognized closing tag (rare, but real content shouldn't
+  // silently vanish just because it wasn't wrapped in a <p>)
+  const trailing = decodeEntities(withBreaksAsNewlines.slice(lastIndex).replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim()
+  if (trailing) results.push({text: trailing, heading: false})
+  return results
 }
 
-function paragraphsToBlocks(paragraphs: string[]) {
-  return paragraphs.map((text) => ({
+function paragraphsToBlocks(paragraphs: Paragraph[]) {
+  return paragraphs.map(({text, heading}) => ({
     _type: 'block',
-    style: 'normal',
+    style: heading ? 'h4' : 'normal',
     markDefs: [],
     children: [{_type: 'span', text, marks: []}],
   }))
@@ -81,7 +94,7 @@ function paragraphsToBlocks(paragraphs: string[]) {
 // ---- Elementor tree walker ----------------------------------------------------------
 // elType is 'section' | 'column' | 'widget' | 'container' (newer Elementor) — only
 // 'widget' nodes carry real content, everything else is just layout and needs recursing into.
-function extractTextFromElementorTree(nodes: any[], out: string[]) {
+function extractTextFromElementorTree(nodes: any[], out: Paragraph[]) {
   for (const node of nodes ?? []) {
     if (!node || typeof node !== 'object') continue
 
@@ -92,9 +105,11 @@ function extractTextFromElementorTree(nodes: any[], out: string[]) {
           out.push(...htmlToParagraphs(settings.editor ?? ''))
           break
         case 'heading':
+          // A standalone Elementor "Heading" widget (as opposed to an inline <h4> inside
+          // a text-editor block) is always a real subheading, never body text.
           if (settings.title) {
             const heading = decodeEntities(String(settings.title).replace(/<[^>]+>/g, '')).trim()
-            if (heading) out.push(heading)
+            if (heading) out.push({text: heading, heading: true})
           }
           break
         // Some Elementor exports use a generic 'theme-post-content' or 'shortcode' widget,
@@ -102,7 +117,7 @@ function extractTextFromElementorTree(nodes: any[], out: string[]) {
         // silently dropping them
         default:
           if (typeof settings.editor === 'string') out.push(...htmlToParagraphs(settings.editor))
-          if (typeof settings.text === 'string' && settings.text.trim()) out.push(decodeEntities(settings.text).trim())
+          if (typeof settings.text === 'string' && settings.text.trim()) out.push({text: decodeEntities(settings.text).trim(), heading: false})
           if (typeof settings.content === 'string' && settings.content.trim()) out.push(...htmlToParagraphs(settings.content))
       }
     }
@@ -114,7 +129,7 @@ function extractTextFromElementorTree(nodes: any[], out: string[]) {
   }
 }
 
-function parseElementorData(raw: string): string[] {
+function parseElementorData(raw: string): Paragraph[] {
   let tree: any
   try {
     tree = JSON.parse(raw)
@@ -127,11 +142,11 @@ function parseElementorData(raw: string): string[] {
       return []
     }
   }
-  const out: string[] = []
+  const out: Paragraph[] = []
   extractTextFromElementorTree(Array.isArray(tree) ? tree : [tree], out)
   // De-dupe consecutive identical paragraphs — Elementor templates sometimes repeat a
   // heading in both a hidden mobile and desktop variant of the same section
-  const deduped = out.filter((p, i) => p !== out[i - 1])
+  const deduped = out.filter((p, i) => i === 0 || p.text !== out[i - 1].text)
   return trimToNarrativeContent(deduped)
 }
 
@@ -148,21 +163,21 @@ function parseElementorData(raw: string): string[] {
 //     the real page title. Trim everything up to and including the last one.
 //   - A "QUICK" heading (the start of "QUICK FACTS") marks where the sidebar begins.
 //     Trim everything from there onward.
-function trimToNarrativeContent(paragraphs: string[]): string[] {
+function trimToNarrativeContent(paragraphs: Paragraph[]): Paragraph[] {
   let start = 0
   for (let i = 0; i < paragraphs.length; i++) {
-    if (paragraphs[i].trim().toLowerCase() === 'divider') start = i + 1
+    if (paragraphs[i].text.trim().toLowerCase() === 'divider') start = i + 1
   }
 
   let end = paragraphs.length
   for (let i = start; i < paragraphs.length; i++) {
-    if (paragraphs[i].trim().toLowerCase() === 'quick') {
+    if (paragraphs[i].text.trim().toLowerCase() === 'quick') {
       end = i
       break
     }
   }
 
-  const trimmed = paragraphs.slice(start, end).filter((p) => !/^\[.*\]$/.test(p.trim())) // strip any leftover WP shortcodes, e.g. [instagram-feed feed=3]
+  const trimmed = paragraphs.slice(start, end).filter((p) => !/^\[.*\]$/.test(p.text.trim())) // strip any leftover WP shortcodes, e.g. [instagram-feed feed=3]
 
   // Fallback: if a page doesn't follow the usual template (no "Divider"/"QUICK" markers
   // found) trimming could accidentally return nothing. Better to keep the raw extraction
@@ -221,7 +236,10 @@ async function run() {
 
     if (DRY_RUN) {
       console.log(`\n=== ${post.post_title} (wp_id ${post.ID}) — ${paragraphs.length} paragraph(s) ===`)
-      paragraphs.forEach((p) => console.log(`  ${p.slice(0, 100)}${p.length > 100 ? '…' : ''}`))
+      paragraphs.forEach((p) => {
+        const preview = p.text.length > 100 ? `${p.text.slice(0, 100)}…` : p.text
+        console.log(`  ${p.heading ? '## ' : ''}${preview}`)
+      })
       continue
     }
 
