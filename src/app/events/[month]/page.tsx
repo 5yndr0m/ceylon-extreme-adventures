@@ -1,7 +1,7 @@
 // src/app/events/[month]/page.tsx
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
-import {getEventsForMonthSlug, urlFor} from '@/lib/sanity'
+import {getEventsForMonthSlug, isEventBookable, urlFor} from '@/lib/sanity'
 
 export const revalidate = 60
 
@@ -14,11 +14,11 @@ type MonthEvent = {
   title: string
   slug: {current: string}
   date: string
+  durationDays?: number
   price: number
   flyerImage?: any
   includes?: string[]
   shortDescription?: string
-  maxParticipants?: number
   registrationOpen?: boolean
   experience?: {title: string; slug: {current: string}; category?: string}
 }
@@ -90,7 +90,12 @@ export default async function MonthEventsPage({
                   <div className="event-card-body">
                     {event.experience?.category && <span className="tag">{event.experience.category}</span>}
                     <h3>{event.title}</h3>
-                    <div className="event-price">LKR {event.price?.toLocaleString()} <small>/ person</small></div>
+                    <div className="event-price">
+                      LKR {event.price?.toLocaleString()} <small>/ person</small>
+                      {event.durationDays && (
+                        <small> · {event.durationDays} {event.durationDays === 1 ? 'day' : 'days'}</small>
+                      )}
+                    </div>
                     {event.includes && event.includes.length > 0 && (
                       <ul className="event-includes">
                         {event.includes.map((item: string) => (
@@ -105,12 +110,12 @@ export default async function MonthEventsPage({
                           Know about the experience →
                         </Link>
                       )}
-                      {event.registrationOpen !== false ? (
+                      {isEventBookable(event) ? (
                         <Link href={`/events/${month}/${event.slug.current}`} className="btn btn-primary">
                           Reserve Spot →
                         </Link>
                       ) : (
-                        <span className="view-link" style={{color: 'var(--stone-gray)'}}>Fully booked</span>
+                        <span className="view-link" style={{color: 'var(--stone-gray)'}}>Registration closed</span>
                       )}
                     </div>
                   </div>

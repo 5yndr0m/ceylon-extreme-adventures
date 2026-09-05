@@ -199,8 +199,8 @@ export async function getEventsForMonthSlug(monthSlug: string) {
     ),
     client.fetch(
       `*[_type == "event" && date >= $start && date < $end] | order(date asc) {
-        _id, title, slug, date, price, flyerImage, includes, shortDescription,
-        maxParticipants, registrationOpen,
+        _id, title, slug, date, durationDays, price, flyerImage, includes, shortDescription,
+        registrationOpen,
         experience->{title, slug, category}
       }`,
       {start, end}
@@ -215,8 +215,8 @@ export async function getEventsForMonthSlug(monthSlug: string) {
 export async function getEventBySlug(slug: string) {
   return client.fetch(
     `*[_type == "event" && slug.current == $slug][0]{
-      _id, title, slug, date, price, flyerImage, includes, shortDescription,
-      maxParticipants, registrationOpen,
+      _id, title, slug, date, durationDays, price, flyerImage, includes, shortDescription,
+      registrationOpen,
       experience->{_id, title, slug, category, heroImage}
     }`,
     {slug}
@@ -226,19 +226,30 @@ export async function getEventBySlug(slug: string) {
 export async function getEventById(id: string) {
   return client.fetch(
     `*[_type == "event" && _id == $id][0]{
-      _id, title, slug, date, price, maxParticipants, registrationOpen,
+      _id, title, slug, date, durationDays, price, registrationOpen,
       experience->{_id, title, slug, category}
     }`,
     {id}
   )
 }
 
-// Optional capacity check for an event — returns null if the event has no cap set.
-export async function getEventSpotsRemaining(eventId: string, maxParticipants?: number | null) {
-  if (!maxParticipants) return null
-  const bookedCount = await client.fetch(
-    `count(*[_type == "booking" && event._ref == $eventId && paymentStatus != "Failed"])`,
-    {eventId}
-  )
-  return Math.max(0, maxParticipants - bookedCount)
+// A departure is bookable if registration hasn't been manually turned off AND the date
+// hasn't hit its automatic cutoff. Registration closes starting the day before the
+// departure date, not just on the day itself — so there's always at least a full day's
+// lead time to prepare. Both the API route and the two event pages use this same
+// function so the "is this still bookable" logic can't drift out of sync between them.
+export function isEventBookable(event: {date: string; registrationOpen?: boolean}): boolean {
+  if (event.registrationOpen === false) return false
+
+  // event.date is a plain "YYYY-MM-DD" string going forward, but events created before
+  // the date field was switched from datetime to date may still store a full timestamp
+  // (e.g. "2026-09-19T00:00:00.000Z") until they're re-saved in Studio — handle both.
+  const eventDate = new Date(event.date.includes('T') ? event.date : `${event.date}T00:00:00Z`)
+  const cutoff = new Date(eventDate)
+  cutoff.setUTCDate(cutoff.getUTCDate() - 1) // registration closes starting the day before
+
+  const today = new Date()
+  const todayDateOnly = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()))
+
+  return todayDateOnly < cutoff
 }

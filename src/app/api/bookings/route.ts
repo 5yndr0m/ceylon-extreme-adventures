@@ -1,6 +1,7 @@
 // src/app/api/bookings/route.ts
 import {NextRequest, NextResponse} from 'next/server'
 import {createClient} from '@sanity/client'
+import {isEventBookable} from '@/lib/sanity'
 
 // Separate client with a write token — never expose this token to the browser,
 // this only runs server-side inside the API route
@@ -33,32 +34,23 @@ export async function POST(req: NextRequest) {
         _id: string
         date: string
         registrationOpen: boolean
-        maxParticipants?: number
         experience?: {_id: string}
       } | null>(
-        `*[_type == "event" && _id == $eventId][0]{_id, date, registrationOpen, maxParticipants, experience->{_id}}`,
+        `*[_type == "event" && _id == $eventId][0]{_id, date, registrationOpen, experience->{_id}}`,
         {eventId}
       )
 
       if (!event) {
         return NextResponse.json({error: 'Event not found'}, {status: 404})
       }
-      if (event.registrationOpen === false) {
+      // Re-checked here server-side, not just trusted from what the page rendered —
+      // registration can close (day-before cutoff or manual toggle) between page load
+      // and form submit
+      if (!isEventBookable(event)) {
         return NextResponse.json({error: 'Registration is closed for this event'}, {status: 400})
       }
       if (!event.experience?._id) {
         return NextResponse.json({error: 'Event is not linked to an experience'}, {status: 400})
-      }
-
-      if (event.maxParticipants) {
-        const bookedCount = await sanity.fetch<number>(
-          `count(*[_type == "booking" && event._ref == $eventId && paymentStatus != "Failed"])`,
-          {eventId}
-        )
-        const requested = Number(groupSize) || 1
-        if (bookedCount + requested > event.maxParticipants) {
-          return NextResponse.json({error: 'Not enough spots remaining for this event'}, {status: 400})
-        }
       }
 
       resolvedExperienceId = event.experience._id
