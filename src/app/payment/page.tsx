@@ -207,8 +207,8 @@ function PaymentPortalInner() {
         <div className="container footer-row">
           <span>© 2026 Ceylon Extreme Adventures (Pvt) Ltd.</span>
           <div className="footer-links">
-            <a href="#">Refund Policy</a>
-            <a href="#">Terms &amp; Conditions</a>
+            <Link href="/contact">Refund Policy</Link>
+            <Link href="/terms">Terms &amp; Conditions</Link>
             <a href="mailto:sales@extremeadventure.lk">sales@extremeadventure.lk</a>
           </div>
         </div>

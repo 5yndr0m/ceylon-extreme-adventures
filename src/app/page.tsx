@@ -26,7 +26,15 @@ export default async function Home() {
           <p className="hero-sub body-lg">Abseil untouched waterfalls, raft wild rivers, and trek hidden trails across Sri Lanka — guided by experts who put your safety first.</p>
           <div className="hero-ctas">
             <a href="#activities" className="btn btn-primary">Explore Adventures</a>
-            <a href="#" className="btn btn-ghost" id="showreelBtn">Watch Showreel</a>
+            <a
+              href="https://www.youtube.com/@ceylonextremeadventures3799"
+              className="btn btn-ghost"
+              id="showreelBtn"
+              target="_blank"
+              rel="noopener"
+            >
+              Watch Showreel
+            </a>
           </div>
         </div>
       </section>
@@ -123,12 +131,12 @@ export default async function Home() {
             <h2>Moments of Freedom</h2>
           </Reveal2>
           <Reveal2 className="gallery-grid">
-            <a href="#"><img src="https://images.unsplash.com/photo-1547233528-08a0fabc00dd?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Waterfall abseiling moment" /></a>
-            <a href="#"><img src="https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Guide beside waterfall" /></a>
-            <a href="#"><img src="https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Group rafting" /></a>
-            <a href="#"><img src="https://images.unsplash.com/photo-1629248564797-8c5ba85da9d3?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Kayaking on calm river" /></a>
-            <a href="#"><img src="https://images.unsplash.com/photo-1708649290066-5f617003b93f?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Coral reef underwater" /></a>
-            <a href="#"><img src="https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Misty mountain trek" /></a>
+            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1547233528-08a0fabc00dd?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Waterfall abseiling moment" /></a>
+            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Guide beside waterfall" /></a>
+            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Group rafting" /></a>
+            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1629248564797-8c5ba85da9d3?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Kayaking on calm river" /></a>
+            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1708649290066-5f617003b93f?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Coral reef underwater" /></a>
+            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Misty mountain trek" /></a>
           </Reveal2>
           <Reveal2 className="gallery-cta"><a href="https://www.instagram.com/extremeadventures.lk/" className="btn btn-dark" target="_blank" rel="noopener">Follow @extremeadventures.lk →</a></Reveal2>
         </div>

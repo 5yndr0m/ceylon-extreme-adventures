@@ -157,7 +157,7 @@ export default function About() {
     <p className="body-lg">Tell us your dates and group size, and we&apos;ll match you with the right guide and the right river, gorge, or trail.</p>
     <div className="ctas">
       <a href="/contact" className="btn btn-primary">Plan Your Adventure</a>
-      <a href="/#activities" className="btn btn-ghost">See All Experiences</a>
+      <a href="/experiences" className="btn btn-ghost">See All Experiences</a>
     </div>
   </div>
 </section>
