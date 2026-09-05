@@ -1,6 +1,7 @@
 import Reveal2 from '../components/Reveal';
 import MonthlyEventFlyers from '../components/MonthlyEventFlyers';
 import ActivitiesCarousel from '../components/ActivitiesCarousel';
+import FoundersSlider from '../components/FoundersSlider';
 
 export default function Home() {
   return (
@@ -33,7 +34,7 @@ export default function Home() {
             <p>Every trip is led by certified guides with full safety briefings, gear checks, and small group sizes.</p>
           </Reveal2>
 
-          <ActivitiesCarousel/>
+          <ActivitiesCarousel />
 
           <Reveal2 className="activities-cta"><a href="/experiences">See All Experiences →</a></Reveal2>
         </div>
@@ -53,9 +54,9 @@ export default function Home() {
 
       <section id="about">
         <div className="container about-grid">
-          <Reveal2 className="about-img">
-            <img src="https://images.unsplash.com/photo-1550486686-a496af34a2d5?fm=jpg&q=70&w=1000&auto=format&fit=crop" alt="Ceylon Extreme Adventures guide team with travelers on a mountain summit" />
-          </Reveal2>
+          <div className="about-founders">
+            <FoundersSlider />
+          </div>
           <Reveal2 className="about-text">
             <span className="eyebrow">Who we are</span>
             <h2>Adventure Is in Our Nature</h2>
