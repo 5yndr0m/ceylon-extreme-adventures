@@ -3,7 +3,7 @@ import Reveal2 from '../components/Reveal';
 import ActivitiesCarousel from '../components/ActivitiesCarousel';
 import FoundersSlider from '../components/FoundersSlider';
 import Image from 'next/image';
-import { getFeaturedTestimonials, getUpcomingMonthlyBanners, urlFor } from '../lib/sanity';
+import { getAllPosts, getFeaturedTestimonials, getUpcomingMonthlyBanners, urlFor } from '../lib/sanity';
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
 
@@ -16,11 +16,27 @@ type MonthlyBannerCard = {
   events: {_id: string; title: string; slug: {current: string}; date: string; price: number}[]
 }
 
+type PostSummary = {
+  _id: string
+  title: string
+  slug: {current: string}
+  category?: string
+  excerpt?: string
+  publishedAt: string
+  image?: any
+}
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'});
+}
+
 export default async function Home() {
-  const [testimonials, monthlyBanners]: [any[], MonthlyBannerCard[]] = await Promise.all([
+  const [testimonials, monthlyBanners, posts]: [any[], MonthlyBannerCard[], PostSummary[]] = await Promise.all([
     getFeaturedTestimonials(),
     getUpcomingMonthlyBanners(3),
+    getAllPosts(),
   ]);
+  const latestPosts = posts.slice(0, 3);
   return (
     <main>
 
@@ -162,21 +178,44 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="gallery">
+      <section className="blog-list" id="blog">
         <div className="container">
           <Reveal2 className="section-head">
-            <span className="eyebrow">@extremeadventures.lk</span>
-            <h2>Moments of Freedom</h2>
+            <span className="eyebrow">From the trail</span>
+            <h2>Notes From The Trail</h2>
+            <p>Trip-planning guides, company news, and beginner&apos;s advice from the guides who run these routes every week.</p>
           </Reveal2>
-          <Reveal2 className="gallery-grid">
-            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1547233528-08a0fabc00dd?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Waterfall abseiling moment" /></a>
-            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Guide beside waterfall" /></a>
-            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Group rafting" /></a>
-            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1629248564797-8c5ba85da9d3?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Kayaking on calm river" /></a>
-            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1708649290066-5f617003b93f?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Coral reef underwater" /></a>
-            <a href="https://www.instagram.com/extremeadventures.lk/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=60&w=500&auto=format&fit=crop" alt="Misty mountain trek" /></a>
-          </Reveal2>
-          <Reveal2 className="gallery-cta"><a href="https://www.instagram.com/extremeadventures.lk/" className="btn btn-dark" target="_blank" rel="noopener">Follow @extremeadventures.lk →</a></Reveal2>
+          {latestPosts.length === 0 ? (
+            <p style={{ color: 'var(--stone-gray)' }}>No posts published yet — check back soon.</p>
+          ) : (
+            <>
+              <Reveal2 className="blog-grid">
+                {latestPosts.map((post) => (
+                  <Link key={post._id} href={`/blog/${post.slug.current}`} className="blog-card">
+                    <div className="blog-card-img">
+                      {post.image ? (
+                        <Image
+                          src={urlFor(post.image).width(700).height(460).url()}
+                          alt={post.title}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="blog-card-img-fallback" />
+                      )}
+                    </div>
+                    <div className="blog-card-body">
+                      {post.category && <span className="tag">{post.category}</span>}
+                      <h3>{post.title}</h3>
+                      {post.excerpt && <p>{post.excerpt}</p>}
+                      <span className="blog-card-date">{formatDate(post.publishedAt)}</span>
+                    </div>
+                  </Link>
+                ))}
+              </Reveal2>
+              <Reveal2 className="activities-cta"><Link href="/blog">Read More Stories →</Link></Reveal2>
+            </>
+          )}
         </div>
       </section>
 
