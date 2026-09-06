@@ -1,34 +1,12 @@
 // src/app/experiences/[slug]/page.tsx
 import Image from 'next/image'
+import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {getExperienceBySlug, urlFor} from '@/lib/sanity'
-import {PortableText} from '@portabletext/react' // npm install @portabletext/react
+import {PortableText} from '@portabletext/react'
 import BookingForm from './BookingForm'
 
 export const revalidate = 60
-
-const MONTHS: {key: string; label: string}[] = [
-  {key: 'jan', label: 'Jan'},
-  {key: 'feb', label: 'Feb'},
-  {key: 'mar', label: 'Mar'},
-  {key: 'apr', label: 'Apr'},
-  {key: 'may', label: 'May'},
-  {key: 'jun', label: 'Jun'},
-  {key: 'jul', label: 'Jul'},
-  {key: 'aug', label: 'Aug'},
-  {key: 'sep', label: 'Sep'},
-  {key: 'oct', label: 'Oct'},
-  {key: 'nov', label: 'Nov'},
-  {key: 'dec', label: 'Dec'},
-]
-
-// Matches the guide's Best/Ok/Worst legend colors
-const RATING_STYLES: Record<string, string> = {
-  best: 'bg-green-100 text-green-800',
-  ok: 'bg-yellow-100 text-yellow-800',
-  worst: 'bg-red-100 text-red-800',
-}
-const RATING_LABEL: Record<string, string> = {best: 'Best', ok: 'Ok', worst: 'Worst'}
 
 export default async function ExperienceDetailPage({
   params,
@@ -39,184 +17,179 @@ export default async function ExperienceDetailPage({
   const exp = await getExperienceBySlug(slug)
   if (!exp) return notFound()
 
+  const gallery = (exp.gallery || []).slice(0, 4)
+  const perPerson = exp.price != null ? `LKR ${exp.price.toLocaleString()}` : 'Contact us'
+
   return (
-    <main className="bg-white min-h-screen">
-      {/* Hero */}
-      <div className="relative h-[50vh] w-full">
-        {exp.heroImage && (
-          <Image
-            src={urlFor(exp.heroImage).width(1600).height(900).url()}
-            alt={exp.title}
-            fill
-            className="object-cover"
-            priority
-          />
-        )}
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute bottom-0 left-0 right-0 p-8 text-white max-w-7xl mx-auto">
-          <p className="text-orange-400 text-sm uppercase tracking-wide mb-2">
-            {exp.category}
-            {exp.status === 'new' && (
-              <span className="ml-2 text-white bg-orange-500 px-2 py-0.5 rounded-full text-xs normal-case tracking-normal align-middle">
-                New
-              </span>
-            )}
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold">{exp.title}</h1>
+    <main className="bp-page">
+      <div className="container bp-top">
+        <div className="bp-breadcrumb">
+          <Link href="/">Home</Link> / <Link href="/experiences">Experiences</Link> / <span>{exp.title}</span>
+        </div>
+        <h1 className="bp-title">{exp.title}</h1>
+        <div className="bp-subline">
+          {exp.category && <span className="bp-tag">{exp.category}</span>}
+          {exp.locationName && (
+            <span className="bp-sub-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              {exp.locationName}
+            </span>
+          )}
+          {exp.difficulty && (
+            <span className="bp-sub-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+              {exp.difficulty}
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
-        {/* Left: content */}
-        <div className="lg:col-span-2 space-y-8">
-          <div className="flex flex-wrap gap-6 text-sm border-y py-4">
-            <div>
-              <span className="text-gray-500 block">Difficulty</span>
-              <span className="font-semibold">{exp.difficulty}</span>
-            </div>
-            <div>
-              <span className="text-gray-500 block">Duration</span>
-              <span className="font-semibold">{exp.durationHours} hours</span>
-            </div>
-            {exp.locationName && (
-              <div>
-                <span className="text-gray-500 block">Location</span>
-                <span className="font-semibold">{exp.locationName}</span>
-              </div>
-            )}
-            {exp.maxGroupSize && (
-              <div>
-                <span className="text-gray-500 block">Max Group Size</span>
-                <span className="font-semibold">{exp.maxGroupSize} people</span>
-              </div>
+      {/* ================= PHOTO GRID ================= */}
+      <div className="container">
+        <div className="bp-photogrid">
+          <div className="bp-photo-main">
+            {exp.heroImage ? (
+              <Image
+                src={urlFor(exp.heroImage).width(1200).height(900).url()}
+                alt={exp.title}
+                fill
+                priority
+                className="object-cover"
+              />
+            ) : (
+              <div className="bp-photo-fallback" />
             )}
           </div>
-
-          {exp.activityTags && exp.activityTags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {exp.activityTags.map((tag: string) => (
-                <span key={tag} className="text-xs uppercase tracking-wide bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {exp.suitableMonths && (
-            <div>
-              <h2 className="text-lg font-semibold mb-3">Suitable Months</h2>
-              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-1.5">
-                {MONTHS.map(({key, label}) => {
-                  const rating = exp.suitableMonths[key]
-                  if (!rating) return null
-                  return (
-                    <div
-                      key={key}
-                      className={`text-center text-sm font-medium py-2 rounded ${RATING_STYLES[rating] ?? 'bg-gray-100 text-gray-600'}`}
-                    >
-                      {label}
-                    </div>
-                  )
-                })}
-              </div>
-              <div className="flex gap-4 mt-3 text-xs text-gray-500">
-                {(['best', 'ok', 'worst'] as const).map((r) => (
-                  <span key={r} className="flex items-center gap-1.5">
-                    <span className={`w-3 h-3 rounded-sm inline-block ${RATING_STYLES[r]}`} />
-                    {RATING_LABEL[r]}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {exp.quickFacts && exp.quickFacts.length > 0 && (
-            <div>
-              <h2 className="text-lg font-semibold mb-3">Quick Facts</h2>
-              <dl className="border rounded-xl divide-y overflow-hidden">
-                {exp.quickFacts.map((fact: {label: string; value: string}, i: number) => (
-                  <div key={i} className="flex justify-between gap-4 px-4 py-3 text-sm odd:bg-gray-50">
-                    <dt className="text-gray-500">{fact.label}</dt>
-                    <dd className="font-medium text-right">{fact.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              {exp.distancesFrom && exp.distancesFrom.length > 0 && (
-                <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
-                  {exp.distancesFrom.map((d: {location: string; km: number}) => (
-                    <span key={d.location}>
-                      <span className="font-medium text-gray-900">{d.location}</span> {d.km} km
-                    </span>
-                  ))}
+          <div className="bp-photo-side">
+            {gallery.length > 0 ? (
+              gallery.map((img: any, i: number) => (
+                <div className="bp-photo-thumb" key={i}>
+                  <Image
+                    src={urlFor(img).width(500).height(500).url()}
+                    alt={`${exp.title} photo ${i + 1}`}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
+              ))
+            ) : (
+              <div className="bp-photo-thumb bp-photo-fallback" />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ================= TABS (anchor links, no JS needed) ================= */}
+      <div className="bp-tabbar">
+        <div className="container bp-tabbar-inner">
+          <a href="#overview">Overview</a>
+          <a href="#included">What's included</a>
+          {exp.guide && <a href="#guide">Your guide</a>}
+          <a href="#book">Book</a>
+        </div>
+      </div>
+
+      {/* ================= BODY ================= */}
+      <div className="container bp-grid">
+        <div className="bp-main">
+          <section id="overview" className="bp-section">
+            <h2>Overview</h2>
+            <div className="bp-facts-row">
+              <div className="bp-fact-pill">
+                <span className="bp-fact-pill-label">Duration</span>
+                <span className="bp-fact-pill-value">{exp.durationHours ? `${exp.durationHours} hrs` : '—'}</span>
+              </div>
+              <div className="bp-fact-pill">
+                <span className="bp-fact-pill-label">Group size</span>
+                <span className="bp-fact-pill-value">{exp.maxGroupSize ? `Up to ${exp.maxGroupSize}` : 'Flexible'}</span>
+              </div>
+              <div className="bp-fact-pill">
+                <span className="bp-fact-pill-label">Difficulty</span>
+                <span className="bp-fact-pill-value">{exp.difficulty || '—'}</span>
+              </div>
+            </div>
+
+            {exp.activityTags && exp.activityTags.length > 0 && (
+              <div className="bp-tags">
+                {exp.activityTags.map((tag: string) => (
+                  <span key={tag} className="bp-activity-tag">{tag}</span>
+                ))}
+              </div>
+            )}
+
+            <div className="bp-prose">
+              {exp.fullDescription ? (
+                <PortableText value={exp.fullDescription} />
+              ) : (
+                <p>{exp.shortDescription || 'Full description coming soon — call us for the details.'}</p>
               )}
             </div>
-          )}
+          </section>
 
-          <div className="prose max-w-none">
-            {exp.fullDescription ? (
-              <PortableText value={exp.fullDescription} />
-            ) : (
-              // Fallback while full descriptions are still being backfilled from the old site —
-              // remove this branch once every experience has fullDescription populated
-              <p>{exp.shortDescription || 'Full description coming soon.'}</p>
-            )}
-          </div>
-
-          {exp.gallery && exp.gallery.length > 0 && (
-            <div>
-              <h2 className="text-lg font-semibold mb-3">Gallery</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {exp.gallery.map((img: {_key?: string; alt?: string} & Record<string, unknown>, i: number) => (
-                  <a
-                    key={img._key ?? i}
-                    href={urlFor(img).width(1600).url()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative block aspect-[4/3] rounded-lg overflow-hidden group"
-                  >
-                    <Image
-                      src={urlFor(img).width(600).height(450).url()}
-                      alt={img.alt || `${exp.title} photo ${i + 1}`}
-                      fill
-                      className="object-cover transition-transform duration-200 group-hover:scale-105"
-                    />
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
+          <section id="included" className="bp-section">
+            <h2>What's included</h2>
+            <ul className="bp-included-list">
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4z"/><path d="m9 12 2 2 4-4"/></svg>
+                Certified guide and full safety briefing
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Gear checked before every departure
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+                Free reschedule if weather turns unsafe
+              </li>
+              <li>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                Transport from the agreed meeting point
+              </li>
+            </ul>
+          </section>
 
           {exp.guide && (
-            <div className="flex items-center gap-4 border-t pt-6">
-              {exp.guide.photo && (
-                <Image
-                  src={urlFor(exp.guide.photo).width(80).height(80).url()}
-                  alt={exp.guide.name}
-                  width={64}
-                  height={64}
-                  className="rounded-full object-cover"
-                />
-              )}
-              <div>
-                <p className="font-semibold">{exp.guide.name}</p>
-                <p className="text-sm text-gray-500">{exp.guide.bio}</p>
+            <section id="guide" className="bp-section">
+              <h2>Your guide</h2>
+              <div className="bp-guide-card">
+                {exp.guide.photo && (
+                  <Image
+                    src={urlFor(exp.guide.photo).width(160).height(160).url()}
+                    alt={exp.guide.name}
+                    width={72}
+                    height={72}
+                    className="bp-guide-photo"
+                  />
+                )}
+                <div>
+                  <p className="bp-guide-name">{exp.guide.name}</p>
+                  {exp.guide.bio && <p className="bp-guide-bio">{exp.guide.bio}</p>}
+                </div>
               </div>
-            </div>
+            </section>
           )}
         </div>
 
-        {/* Right: sticky booking panel */}
-        <div className="lg:sticky lg:top-8 lg:self-start">
-          <div className="border rounded-xl p-6 shadow-sm">
-            <p className="text-2xl font-bold mb-1">
-              LKR {exp.price?.toLocaleString()}
-            </p>
-            <p className="text-sm text-gray-500 mb-6">per person</p>
-            {/* Client component — needs interactivity for date/group size/submit */}
-            <BookingForm experienceId={exp._id} experienceTitle={exp.title} />
+        {/* -------- Sticky booking card -------- */}
+        <aside className="bp-book-col" id="book">
+          <div className="bp-book-card">
+            <div className="bp-book-price">
+              <span className="bp-book-amount">{perPerson}</span>
+              <span className="bp-book-unit">per person</span>
+            </div>
+            <BookingForm experienceId={exp._id} experienceTitle={exp.title} unitPrice={exp.price ?? 0} />
+            <p className="bp-book-note">Reply within 1 business day · No payment until confirmed</p>
           </div>
+        </aside>
+      </div>
+
+      {/* ================= MOBILE STICKY CTA ================= */}
+      <div className="bp-mobile-cta">
+        <div>
+          <span className="bp-mobile-amount">{perPerson}</span>
+          <span className="bp-mobile-unit">per person</span>
         </div>
+        <a href="#book" className="btn btn-primary">Book Now</a>
       </div>
     </main>
   )
