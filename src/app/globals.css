@@ -627,7 +627,7 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-grid{ display:grid; gap:44px; padding-top:44px; }
 @media(min-width:960px){ .bp-grid{ grid-template-columns:1fr 380px; align-items:start; } }
 
-.bp-section{ padding-bottom:36px; margin-bottom:36px; border-bottom:1px solid var(--cloud-gray); scroll-margin-top:80px; }
+.bp-section{ padding-top:0; padding-bottom:36px; margin-bottom:36px; border-bottom:1px solid var(--cloud-gray); scroll-margin-top:80px; }
 .bp-section:last-child{ border-bottom:none; }
 .bp-section h2{ font-size:22px; color:var(--basalt-black); margin-bottom:18px; }
 .bp-section h2.bp-section-subhead{ margin-top:32px; }
