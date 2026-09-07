@@ -45,6 +45,66 @@ function truncateQuote(quote: string, sourceUrl?: string) {
   return {text: cut.slice(0, lastSpace > 0 ? lastSpace : QUOTE_TRUNCATE_LENGTH) + '…', truncated: true}
 }
 
+function TestimonialCard({t}: {t: any}) {
+  const {text, truncated} = truncateQuote(t.quote, t.sourceUrl)
+  return (
+    <div className="testi-card">
+      <div className="stars">{'★'.repeat(t.rating || 5)}{'☆'.repeat(5 - (t.rating || 5))}</div>
+      <p className="testi-quote">
+        &quot;{text}&quot;
+        {truncated && (
+          <>
+            {' '}
+            <a href={t.sourceUrl} target="_blank" rel="noopener" className="testi-read-more">
+              Read full review
+            </a>
+          </>
+        )}
+      </p>
+      <div className="testi-author">
+        <div className="avatar">
+          {t.photo ? (
+            <Image
+              src={urlFor(t.photo).width(88).height(88).url()}
+              alt={t.customerName}
+              width={44}
+              height={44}
+            />
+          ) : (
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'var(--jungle-green)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="8" r="4" fill="#fff" fillOpacity="0.85" />
+                <path
+                  d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8"
+                  stroke="#fff"
+                  strokeOpacity="0.85"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+          )}
+        </div>
+        <div>
+          <div className="author-name">{t.customerName}</div>
+          <div className="author-tag">
+            {t.experience ? `${t.experience.title}${t.experience.locationName ? ` — ${t.experience.locationName}` : ''}` : t.source}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default async function Home() {
   const [testimonials, monthlyBanners, posts]: [any[], MonthlyBannerCard[], PostSummary[]] = await Promise.all([
     getFeaturedTestimonials(),
@@ -161,66 +221,18 @@ export default async function Home() {
           {testimonials.length === 0 ? (
             <p style={{ color: 'var(--stone-gray)' }}>Reviews coming soon.</p>
           ) : (
-            <div className="testi-scroller">
-              {testimonials.map((t: any) => {
-                const {text, truncated} = truncateQuote(t.quote, t.sourceUrl)
-                return (
-                  <Reveal2 className="testi-card" key={t._id}>
-                    <div className="stars">{'★'.repeat(t.rating || 5)}{'☆'.repeat(5 - (t.rating || 5))}</div>
-                    <p className="testi-quote">
-                      &quot;{text}&quot;
-                      {truncated && (
-                        <>
-                          {' '}
-                          <a href={t.sourceUrl} target="_blank" rel="noopener" className="testi-read-more">
-                            Read full review
-                          </a>
-                        </>
-                      )}
-                    </p>
-                    <div className="testi-author">
-                      <div className="avatar">
-                        {t.photo ? (
-                          <Image
-                            src={urlFor(t.photo).width(88).height(88).url()}
-                            alt={t.customerName}
-                            width={44}
-                            height={44}
-                          />
-                        ) : (
-                          <div
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              background: 'var(--jungle-green)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                              <circle cx="12" cy="8" r="4" fill="#fff" fillOpacity="0.85" />
-                              <path
-                                d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8"
-                                stroke="#fff"
-                                strokeOpacity="0.85"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <div className="author-name">{t.customerName}</div>
-                        <div className="author-tag">
-                          {t.experience ? `${t.experience.title}${t.experience.locationName ? ` — ${t.experience.locationName}` : ''}` : t.source}
-                        </div>
-                      </div>
-                    </div>
-                  </Reveal2>
-                )
-              })}
+            <div className="testi-marquee">
+              {(['a', 'b'] as const).map((row) => (
+                <div
+                  key={row}
+                  className={`testi-row testi-row-${row}`}
+                  style={{'--testi-duration': `${Math.max(testimonials.length * 6, 24)}s`} as React.CSSProperties}
+                >
+                  {[...testimonials, ...testimonials].map((t: any, i: number) => (
+                    <TestimonialCard key={`${row}-${t._id}-${i}`} t={t} />
+                  ))}
+                </div>
+              ))}
             </div>
           )}
         </div>

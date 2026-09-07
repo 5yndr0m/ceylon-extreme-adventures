@@ -302,15 +302,31 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 
 /* ============ TESTIMONIALS ============ */
 .testimonials{ background:var(--cloud-gray); }
-.testi-scroller{
-  display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
-  margin:0 calc(var(--gutter) * -1); padding:6px var(--gutter) 14px;
+
+/* Two rows, each looping the full featured-testimonial list, sliding in opposite
+   directions — row a drifts left→right, row b right→left. Each row's own list is
+   duplicated so the loop point is invisible (translating exactly -50% of the doubled
+   row brings the second copy into the exact position the first started at). */
+.testi-marquee{ display:flex; flex-direction:column; gap:24px; overflow:hidden; margin:6px 0 14px; }
+.testi-row{
+  display:flex; gap:20px; width:max-content;
+  animation:testi-scroll-rtl var(--testi-duration, 36s) linear infinite;
 }
-.testi-scroller::-webkit-scrollbar{ display:none; }
+.testi-row:hover{ animation-play-state:paused; }
+.testi-row-a{ animation-name:testi-scroll-ltr; }
+.testi-row-b{ animation-name:testi-scroll-rtl; }
+
+@keyframes testi-scroll-rtl{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+@keyframes testi-scroll-ltr{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
+
+@media(prefers-reduced-motion:reduce){ .testi-row{ animation:none; } }
+
 .testi-card{
-  flex:0 0 88%; scroll-snap-align:start; background:#fff; border-radius:var(--radius-md);
+  flex:0 0 auto; width:360px; background:#fff; border-radius:var(--radius-md);
   padding:30px 26px; box-shadow:0 16px 40px -24px rgba(20,24,26,.25);
 }
+@media(max-width:639px){ .testi-card{ width:280px; } }
+
 .stars{ color:var(--adrenaline-orange); font-size:15px; letter-spacing:2px; margin-bottom:14px; }
 .testi-quote{ font-size:17px; line-height:1.55; color:var(--basalt-black); margin-bottom:20px; }
 .testi-read-more{ color:var(--rapids-blue); font-weight:600; white-space:nowrap; }
@@ -320,8 +336,6 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 .avatar img{ width:100%; height:100%; object-fit:cover; }
 .author-name{ font-weight:700; font-size:14px; }
 .author-tag{ font-size:12px; color:var(--stone-gray); }
-
-@media(min-width:768px){ .testi-scroller{ overflow-x:visible; } .testi-card{ flex:1; } }
 
 /* ============ GALLERY ============ */
 .gallery-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
