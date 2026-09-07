@@ -319,7 +319,7 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
   max-width:1400px; padding:0 24px; box-sizing:border-box;
 }
 .testi-carousel-row{
-  --testi-step: 345px; --testi-card-w: 320px; --testi-card-h: 270px;
+  --testi-step: 345px; --testi-card-w: 320px; --testi-card-h: 280px;
   display:flex; align-items:center; justify-content:center; gap:12px; width:100%;
 }
 .testi-stage{ position:relative; height:calc(var(--testi-card-h) + 40px); width:100%; max-width:1090px; overflow:hidden; }
@@ -344,16 +344,16 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 .testi-dot.active{ background:var(--adrenaline-orange); transform:scale(1.25); }
 
 @media(max-width:1199px){
-  .testi-carousel-row{ --testi-step: 260px; --testi-card-w: 240px; --testi-card-h: 300px; gap:8px; }
+  .testi-carousel-row{ --testi-step: 260px; --testi-card-w: 240px; gap:8px; }
   .testi-arrow{ width:34px; height:34px; }
 }
 
 @media(max-width:899px){
-  .testi-carousel-row{ --testi-step: 190px; --testi-card-w: 180px; --testi-card-h: 360px; gap:6px; }
+  .testi-carousel-row{ --testi-step: 190px; --testi-card-w: 180px; }
 }
 
 @media(max-width:767px){
-  .testi-carousel-row{ --testi-step: 220px; --testi-card-w: 260px; --testi-card-h: 320px; gap:6px; }
+  .testi-carousel-row{ --testi-step: 220px; --testi-card-w: 260px; }
 }
 
 @media(prefers-reduced-motion:reduce){ .testi-slot{ transition:none; } }
@@ -364,7 +364,14 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 }
 
 .stars{ color:var(--adrenaline-orange); font-size:15px; letter-spacing:2px; margin-bottom:14px; }
-.testi-quote{ font-size:17px; line-height:1.55; color:var(--basalt-black); margin-bottom:20px; }
+/* Capped to a fixed number of lines regardless of card width, so the quote's
+   rendered height never depends on how the text happens to wrap — that's what
+   keeps the author row below it from ever being pushed out of the fixed-height
+   card (it was getting clipped by .testi-card's overflow:hidden before this). */
+.testi-quote{
+  font-size:17px; line-height:1.55; color:var(--basalt-black); margin-bottom:20px;
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:4; line-clamp:4; overflow:hidden;
+}
 .testi-read-more{ color:var(--rapids-blue); font-weight:600; white-space:nowrap; }
 .testi-read-more:hover{ text-decoration:underline; }
 .testi-author{ display:flex; align-items:center; gap:12px; }
