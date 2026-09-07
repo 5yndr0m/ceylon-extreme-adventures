@@ -313,12 +313,12 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
    breakpoint below without touching the component. */
 .testi-carousel{ display:flex; flex-direction:column; align-items:center; gap:22px; margin:6px 0 14px; }
 .testi-carousel-row{
-  --testi-step: 320px; --testi-card-w: 300px;
+  --testi-step: 430px; --testi-card-w: 400px; --testi-card-h: 270px;
   display:flex; align-items:center; justify-content:center; gap:12px; width:100%;
 }
-.testi-stage{ position:relative; height:400px; width:100%; max-width:1040px; overflow:hidden; }
+.testi-stage{ position:relative; height:calc(var(--testi-card-h) + 40px); width:100%; max-width:1180px; overflow:hidden; }
 .testi-slot{
-  position:absolute; top:50%; left:50%; width:var(--testi-card-w);
+  position:absolute; top:50%; left:50%; width:var(--testi-card-w); height:var(--testi-card-h);
   transform:translate(-50%,-50%) translateX(calc(var(--diff, 0) * var(--testi-step)));
   opacity:var(--slot-opacity, 1);
   transition:transform .6s var(--ease), opacity .6s var(--ease);
@@ -338,8 +338,7 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 .testi-dot.active{ background:var(--adrenaline-orange); transform:scale(1.25); }
 
 @media(max-width:767px){
-  .testi-carousel-row{ --testi-step: 210px; --testi-card-w: 250px; gap:6px; }
-  .testi-stage{ height:420px; }
+  .testi-carousel-row{ --testi-step: 220px; --testi-card-w: 260px; --testi-card-h: 320px; gap:6px; }
   .testi-arrow{ width:34px; height:34px; }
 }
 
