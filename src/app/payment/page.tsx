@@ -4,7 +4,6 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Reveal from '../../components/Reveal';
 import { client, urlFor } from '../../lib/sanity';
 import { redirectToPayHere } from '../../lib/payhere';
 
@@ -25,6 +24,18 @@ type Booking = {
     flyerImage?: any;
   };
 };
+
+function PaymentHeader() {
+  return (
+    <div className="container" style={{ paddingTop: 24, paddingBottom: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--cloud-gray)' }}>
+      <Link href="/" style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: 'var(--basalt-black)' }}>Ceylon Extreme Adventures</Link>
+      <span className="bp-sub-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secure checkout via PayHere
+      </span>
+    </div>
+  );
+}
 
 function PaymentPortalInner() {
   const searchParams = useSearchParams();
@@ -73,16 +84,16 @@ function PaymentPortalInner() {
 
   if (!bookingId) {
     return (
-      <main className="payment-page">
-        <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
-          <p>No booking selected. Please start from an event or experience page.</p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 20 }}>
-            <Link href="/#events" className="btn btn-primary">
-              Browse Upcoming Events
-            </Link>
-            <Link href="/experiences" className="btn btn-ghost" style={{ color: 'var(--jungle-green)', borderColor: 'var(--jungle-green)' }}>
-              Browse Experiences
-            </Link>
+      <main className="bp-page">
+        <PaymentHeader />
+        <div className="container bp-top" style={{ textAlign: 'center', paddingBottom: 90 }}>
+          <h1 className="bp-title" style={{ margin: '0 auto 14px' }}>No booking selected</h1>
+          <p className="bp-prose" style={{ margin: '0 auto 28px' }}>
+            Please start from an event or experience page to make a booking.
+          </p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/#events" className="btn btn-primary">Browse Upcoming Events</Link>
+            <Link href="/experiences" className="btn btn-dark">Browse Experiences</Link>
           </div>
         </div>
       </main>
@@ -91,9 +102,10 @@ function PaymentPortalInner() {
 
   if (loading) {
     return (
-      <main className="payment-page">
-        <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
-          <p>Loading your booking…</p>
+      <main className="bp-page">
+        <PaymentHeader />
+        <div className="container bp-top" style={{ textAlign: 'center', paddingBottom: 90 }}>
+          <p className="bp-prose">Loading your booking…</p>
         </div>
       </main>
     );
@@ -101,9 +113,10 @@ function PaymentPortalInner() {
 
   if (error || !booking) {
     return (
-      <main className="payment-page">
-        <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
-          <p>{error || 'Booking not found.'}</p>
+      <main className="bp-page">
+        <PaymentHeader />
+        <div className="container bp-top" style={{ textAlign: 'center', paddingBottom: 90 }}>
+          <p className="bp-form-error">{error || 'Booking not found.'}</p>
         </div>
       </main>
     );
@@ -111,125 +124,146 @@ function PaymentPortalInner() {
 
   // Event bookings use the event's own price/title (can differ from the experience's
   // base rate — promos, group rates, etc., see eventType.ts) — same priority the
-  // PayHere checkout route already uses server-side. Using the experience's price here
-  // instead would show the customer a different total than what the flyer advertised
-  // and what actually gets charged.
+  // PayHere checkout route already uses server-side.
   const item = booking.event ?? booking.experience;
   const displayImage = booking.event?.flyerImage ?? booking.experience.heroImage;
   const total = item.price * booking.groupSize;
 
   return (
-    <main className="payment-page">
-      <div className="secure-header">
-        <div className="container secure-header-inner">
-          <Link href="/" className="logo">Ceylon<span>X</span>treme</Link>
-          <span className="secure-pill">🔒 Secure Checkout via PayHere</span>
+    <main className="bp-page">
+      <PaymentHeader />
+
+      <div className="container bp-top" style={{ paddingTop: 32 }}>
+        <div className="bp-breadcrumb">
+          <Link href="/">Home</Link> / <Link href="/experiences">Experiences</Link> / <span>Payment</span>
+        </div>
+        <h1 className="bp-title">Review &amp; Pay</h1>
+        <div className="bp-subline">
+          <span className="bp-tag">{booking.experience.category}</span>
+          <span className="bp-sub-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            {booking.preferredDate}
+          </span>
+          <span className="bp-sub-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            {booking.groupSize} {booking.groupSize === 1 ? 'traveller' : 'travellers'}
+          </span>
         </div>
       </div>
 
-      <section className="payment-hero">
-        <div className="container page-hero-inner">
-          <div className="breadcrumb"><Link href="/">Home</Link> / <Link href="/experiences">Experiences</Link> / <span>Payment</span></div>
-          <span className="eyebrow">Almost there</span>
-          <h1>Review &amp; Pay</h1>
-          <p className="page-hero-sub body-lg">
-            Confirm your booking details below, then you'll be securely redirected to PayHere to complete payment.
-          </p>
-          <div className="steps">
-            <div className="step done"><span className="step-num">✓</span> Trip Details</div>
-            <i />
-            <div className="step active"><span className="step-num">2</span> Payment</div>
-            <i />
-            <div className="step"><span className="step-num">3</span> Confirmation</div>
-          </div>
-        </div>
-      </section>
-
-      <section className="payment-portal">
-        <div className="container pay-grid">
-          <Reveal className="summary-card">
-            <div className="summary-img">
+      <div className="container bp-grid">
+        <div className="bp-main">
+          <section className="bp-section">
+            <h2>Trip summary</h2>
+            <div className="bp-event-top" style={{ marginBottom: 0 }}>
               {displayImage && (
-                <img
-                  src={urlFor(displayImage).width(900).height(506).url()}
-                  alt={item.title}
-                />
+                <div className="bp-flyer" style={{ maxWidth: 280, aspectRatio: '4/3' }}>
+                  <img
+                    src={urlFor(displayImage).width(700).height(525).url()}
+                    alt={item.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
               )}
-              <span className="summary-ref">REF: {booking._id.slice(-8).toUpperCase()}</span>
-            </div>
-            <div className="summary-body">
-              <span className="summary-tag">{booking.experience.category}</span>
-              <h3>{item.title}</h3>
-              <div className="summary-meta">
-                <span>📅 {booking.preferredDate}</span>
-                <span>👥 {booking.groupSize} {booking.groupSize === 1 ? 'traveller' : 'travellers'}</span>
-              </div>
-              <div className="price-lines">
-                <div>
-                  <span>Package ({booking.groupSize} × LKR {item.price.toLocaleString()})</span>
-                  <span>{total.toLocaleString()} LKR</span>
+              <div className="bp-event-top-details" style={{ paddingTop: 4 }}>
+                <h3 style={{ fontSize: 19, color: 'var(--basalt-black)', marginBottom: 4 }}>{item.title}</h3>
+                <p className="bp-book-note" style={{ textAlign: 'left', margin: '0 0 18px' }}>
+                  Reference: {booking._id.slice(-8).toUpperCase()}
+                </p>
+
+                <div className="bp-facts-row" style={{ marginBottom: 0 }}>
+                  <div className="bp-fact-pill">
+                    <span className="bp-fact-pill-label">Date</span>
+                    <span className="bp-fact-pill-value">{booking.preferredDate}</span>
+                  </div>
+                  <div className="bp-fact-pill">
+                    <span className="bp-fact-pill-label">Travellers</span>
+                    <span className="bp-fact-pill-value">{booking.groupSize}</span>
+                  </div>
+                  <div className="bp-fact-pill">
+                    <span className="bp-fact-pill-label">Rate</span>
+                    <span className="bp-fact-pill-value">LKR {item.price.toLocaleString()} pp</span>
+                  </div>
                 </div>
               </div>
-              <div className="price-total">
-                <strong>Total due</strong>
-                <strong>{total.toLocaleString()} <small>LKR</small></strong>
+            </div>
+          </section>
+
+          <section className="bp-section">
+            <h2>Price breakdown</h2>
+            <dl className="bp-quickfacts">
+              <div className="bp-quickfacts-row">
+                <dt>Package ({booking.groupSize} × LKR {item.price.toLocaleString()})</dt>
+                <dd>LKR {total.toLocaleString()}</dd>
               </div>
-              <p className="guarantee-note">
-                🛡 Cancel 7+ days before your event for a full refund. Guide-verified safety checks on every departure. See our cancellation policy for details.
+              <div className="bp-quickfacts-row">
+                <dt style={{ fontWeight: 700, color: 'var(--basalt-black)' }}>Total due</dt>
+                <dd style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: 'var(--jungle-green)' }}>
+                  LKR {total.toLocaleString()}
+                </dd>
+              </div>
+            </dl>
+            <div className="bp-prose">
+              <p>
+                Cancel 7+ days before your event for a full refund. Guide-verified safety checks run on
+                every departure — see our <Link href="/contact">cancellation policy</Link> for details.
               </p>
             </div>
-          </Reveal>
+          </section>
+        </div>
 
-          <Reveal className="pay-panel">
-            <div className="form-section-label">Ready to confirm</div>
-            <p style={{ color: 'var(--stone-gray)', fontSize: 14, marginBottom: 24 }}>
+        <aside className="bp-book-col">
+          <div className="bp-book-card">
+            <div className="bp-book-price">
+              <span className="bp-book-amount">LKR {total.toLocaleString()}</span>
+              <span className="bp-book-unit">total due</span>
+            </div>
+            <p className="bp-book-note" style={{ marginTop: 0, marginBottom: 20 }}>
               Payment is processed securely by PayHere — we never see or store your card details.
-              You'll be redirected to complete payment, then brought back here automatically.
             </p>
+
             <button
               type="button"
-              className="btn btn-primary pay-cta"
+              className="btn btn-primary bp-submit"
               onClick={proceedToPayment}
               disabled={redirecting}
             >
-              {redirecting ? 'Redirecting…' : `🔒 Proceed to Pay ${total.toLocaleString()} LKR`}
+              {redirecting ? 'Redirecting…' : `Proceed to Pay LKR ${total.toLocaleString()}`}
             </button>
-            {error && <p style={{ color: 'crimson', fontSize: 13, marginTop: 10 }}>{error}</p>}
-            <div className="lock-note">✓ Accepts Visa, Mastercard, Amex — LKR and international cards.</div>
-          </Reveal>
-        </div>
-      </section>
+            {error && <p className="bp-form-error" style={{ marginTop: 10, textAlign: 'center' }}>{error}</p>}
 
-      <section className="trust-strip">
-        <div className="container trust-grid">
-          {[
-            ['🔒', 'Secure Checkout', 'Handled entirely by PayHere'],
-            ['🛡', 'PCI-DSS Compliant', 'We never see your card details'],
-            ['✓', 'Fair Cancellation Policy', 'Full refund if you cancel 7+ days ahead'],            ['☎', '24/7 Support', '+94 707 900 700'],
-          ].map(([icon, title, text]) => (
-            <div className="trust-item" key={title}>
-              <div className="trust-icon">{icon}</div>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+            <p className="bp-book-note">Accepts Visa, Mastercard, and Amex — LKR and international cards.</p>
 
-      <footer className="payment-footer">
-        <div className="container footer-row">
-          <span>© 2026 Ceylon Extreme Adventures (Pvt) Ltd.</span>
-          <div className="footer-links">
-            <Link href="/contact">Refund Policy</Link>
-            <Link href="/terms">Terms &amp; Conditions</Link>
-            <a href="mailto:sales@extremeadventure.lk">sales@extremeadventure.lk</a>
+            <ul className="bp-included-list" style={{ marginTop: 20, paddingTop: 20, borderTop: '1px solid var(--cloud-gray)' }}>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Secure checkout via PayHere
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4z"/></svg>
+                PCI-DSS compliant, we never see your card
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 6 9 17l-5-5"/></svg>
+                Full refund 7+ days before departure
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Support: +94 707 900 700
+              </li>
+            </ul>
           </div>
-        </div>
-      </footer>
+        </aside>
+      </div>
 
-      <style jsx>{`
-        .secure-header{background:rgba(20,24,26,.96);padding:16px 0;box-shadow:0 2px 20px rgba(0,0,0,.15)}.secure-header-inner{display:flex;align-items:center;justify-content:space-between}.secure-pill{color:rgba(255,255,255,.85);font-size:12px;font-weight:600}.payment-hero{background:var(--jungle-green-dark);padding:70px 0 52px}.payment-hero h1{color:#fff}.payment-hero .eyebrow{display:block;margin-bottom:10px}.steps{display:flex;align-items:center;gap:8px;margin-top:28px;flex-wrap:wrap}.step{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;text-transform:uppercase;color:rgba(255,255,255,.45)}.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12)}.step.done{color:rgba(255,255,255,.85)}.step.done .step-num{background:var(--success-green);color:#fff}.step.active{color:#fff}.step.active .step-num{background:var(--adrenaline-orange);color:#fff}.steps i{width:20px;height:1px;background:rgba(255,255,255,.25)}.pay-grid{display:grid;gap:28px;align-items:start}@media(min-width:960px){.pay-grid{grid-template-columns:1fr 1.35fr;gap:36px}.summary-card{position:sticky;top:96px}}.summary-card,.pay-panel{background:#fff;border:1px solid var(--cloud-gray);border-radius:var(--radius-md);overflow:hidden;box-shadow:0 18px 44px -28px rgba(20,24,26,.3)}.summary-img{position:relative;aspect-ratio:16/9;overflow:hidden}.summary-img img{width:100%;height:100%;object-fit:cover}.summary-ref{position:absolute;top:12px;left:12px;background:rgba(20,24,26,.85);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:var(--radius-pill)}.summary-body{padding:24px}.summary-tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--adrenaline-orange)}.summary-meta{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;color:var(--stone-gray);font-size:13px}.price-lines{margin-top:22px;padding-top:18px;border-top:1px dashed var(--cloud-gray);display:grid;gap:10px}.price-lines div,.price-total{display:flex;justify-content:space-between;font-size:14px;color:var(--stone-gray)}.price-total{align-items:baseline;margin-top:8px;padding-top:14px;border-top:2px solid var(--jungle-green);color:var(--basalt-black)}.price-total strong:last-child{font-family:var(--font-display);font-size:26px;color:var(--jungle-green)}.price-total small{font-family:var(--font-body);font-size:13px;color:var(--stone-gray)}.guarantee-note{margin-top:20px;padding:14px;background:var(--mist-white);border-radius:var(--radius-sm);font-size:12.5px;color:var(--stone-gray);line-height:1.5}.pay-panel{padding:28px}@media(min-width:768px){.pay-panel{padding:36px}}.form-section-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--jungle-green);margin:6px 0 -4px;border-bottom:1px solid var(--cloud-gray);padding-bottom:4px}.pay-cta{width:100%;margin-top:20px;padding:17px 24px;font-size:15px}.lock-note{text-align:center;font-size:12px;color:var(--stone-gray);margin-top:14px}.trust-strip{background:var(--mist-white);border-top:1px solid var(--cloud-gray)}.trust-grid{display:grid;gap:22px;grid-template-columns:repeat(2,1fr)}@media(min-width:768px){.trust-grid{grid-template-columns:repeat(4,1fr)}}.trust-item{text-align:center}.trust-icon{margin:0 auto 10px;width:48px;height:48px;border-radius:50%;background:#fff;border:1.5px solid var(--cloud-gray);display:flex;align-items:center;justify-content:center;color:var(--jungle-green)}.trust-item h3{font-size:14px}.trust-item p{font-size:12.5px;color:var(--stone-gray)}.payment-footer{background:var(--basalt-black);color:rgba(255,255,255,.6);padding:32px 0}.footer-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;font-size:13px}.footer-links{display:flex;gap:18px;flex-wrap:wrap}
-      `}</style>
+      <div className="container" style={{ padding: '24px 0 48px', borderTop: '1px solid var(--cloud-gray)', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 14, fontSize: 13, color: 'var(--stone-gray)' }}>
+        <span>© 2026 Ceylon Extreme Adventures (Pvt) Ltd.</span>
+        <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
+          <Link href="/contact">Refund Policy</Link>
+          <Link href="/terms">Terms &amp; Conditions</Link>
+          <a href="mailto:sales@extremeadventure.lk">sales@extremeadventure.lk</a>
+        </div>
+      </div>
     </main>
   );
 }
@@ -237,7 +271,7 @@ function PaymentPortalInner() {
 // useSearchParams requires a Suspense boundary in the App Router
 export default function PaymentPortal() {
   return (
-    <Suspense fallback={<main className="payment-page" />}>
+    <Suspense fallback={<main className="bp-page" />}>
       <PaymentPortalInner />
     </Suspense>
   );
