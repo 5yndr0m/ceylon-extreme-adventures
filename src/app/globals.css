@@ -303,32 +303,22 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 /* ============ TESTIMONIALS ============ */
 .testimonials{ background:var(--cloud-gray); }
 
-/* Two rows, each looping the full featured-testimonial list, sliding in opposite
-   directions — row a drifts left→right, row b right→left. Each row's own list is
-   duplicated so the loop point is invisible (translating exactly -50% of the doubled
-   row brings the second copy into the exact position the first started at). */
-.testi-marquee{ display:flex; flex-direction:column; gap:24px; overflow:hidden; margin:6px 0 14px; }
-.testi-row{
-  display:flex; gap:20px; width:max-content;
-  animation:testi-scroll-rtl var(--testi-duration, 36s) linear infinite;
-}
-.testi-row:hover{ animation-play-state:paused; }
-.testi-row-a{ animation-name:testi-scroll-ltr; }
-.testi-row-b{ animation-name:testi-scroll-rtl; }
-
-@keyframes testi-scroll-rtl{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
-@keyframes testi-scroll-ltr{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
-
-@media(prefers-reduced-motion:reduce){ .testi-row{ animation:none; } }
+.testi-grid{ display:grid; gap:24px; grid-template-columns:1fr; margin-bottom:38px; }
+@media(min-width:768px){ .testi-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(min-width:1024px){ .testi-grid{ grid-template-columns:repeat(3,1fr); } }
 
 .testi-card{
-  flex:0 0 auto; width:360px; background:#fff; border-radius:var(--radius-md);
+  background:#fff; border-radius:var(--radius-md);
   padding:30px 26px; box-shadow:0 16px 40px -24px rgba(20,24,26,.25);
 }
-@media(max-width:639px){ .testi-card{ width:280px; } }
 
 .stars{ color:var(--adrenaline-orange); font-size:15px; letter-spacing:2px; margin-bottom:14px; }
-.testi-quote{ font-size:17px; line-height:1.55; color:var(--basalt-black); margin-bottom:20px; }
+/* Capped to a fixed number of lines regardless of card width, so a one-line
+   quote and an 800-character one produce the same card height in the grid. */
+.testi-quote{
+  font-size:17px; line-height:1.55; color:var(--basalt-black); margin-bottom:20px;
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:4; line-clamp:4; overflow:hidden;
+}
 .testi-read-more{ color:var(--rapids-blue); font-weight:600; white-space:nowrap; }
 .testi-read-more:hover{ text-decoration:underline; }
 .testi-author{ display:flex; align-items:center; gap:12px; }

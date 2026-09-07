@@ -5,6 +5,8 @@ import FoundersSlider from '../components/FoundersSlider';
 import Image from 'next/image';
 import { getAllPosts, getFeaturedTestimonials, getUpcomingMonthlyBanners, urlFor } from '../lib/sanity';
 
+const TRIPADVISOR_URL = 'https://www.tripadvisor.com/Attraction_Review-g304138-d26849088-Reviews-Ceylon_Extreme_Adventure_Pvt_Ltd-Kandy_Kandy_District_Central_Province.html'
+
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
 
 type MonthlyBannerCard = {
@@ -123,7 +125,7 @@ export default async function Home() {
         <div className="container hero-inner">
           <div className="hero-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 8.5L21 9.5L16 14L17.5 21L12 17.5L6.5 21L8 14L3 9.5L9.5 8.5L12 2Z" fill="#F2622E" /></svg>
-            SATA Gold Winner 2023 — Leading Adventure Sports Operator, South Asia
+            SATA Gold Winner 2023, 2024 &amp; 2025 — Leading Adventure Sports Operator, South Asia
           </div>
           <h1>Chase Freedom. One Extreme Adventure at a Time.</h1>
           <p className="hero-sub body-lg">Abseil untouched waterfalls, raft wild rivers, and trek hidden trails across Sri Lanka — guided by experts who put your safety first.</p>
@@ -221,19 +223,16 @@ export default async function Home() {
           {testimonials.length === 0 ? (
             <p style={{ color: 'var(--stone-gray)' }}>Reviews coming soon.</p>
           ) : (
-            <div className="testi-marquee">
-              {(['a', 'b'] as const).map((row) => (
-                <div
-                  key={row}
-                  className={`testi-row testi-row-${row}`}
-                  style={{'--testi-duration': `${Math.max(testimonials.length * 6, 24)}s`} as React.CSSProperties}
-                >
-                  {[...testimonials, ...testimonials].map((t: any, i: number) => (
-                    <TestimonialCard key={`${row}-${t._id}-${i}`} t={t} />
-                  ))}
-                </div>
-              ))}
-            </div>
+            <>
+              <Reveal2 className="testi-grid">
+                {testimonials.slice(0, 6).map((t: any) => (
+                  <TestimonialCard key={t._id} t={t} />
+                ))}
+              </Reveal2>
+              <Reveal2 className="activities-cta">
+                <a href={TRIPADVISOR_URL} target="_blank" rel="noopener">View More Reviews</a>
+              </Reveal2>
+            </>
           )}
         </div>
       </section>
