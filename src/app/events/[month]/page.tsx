@@ -107,12 +107,12 @@ export default async function MonthEventsPage({
                     <div className="event-card-links">
                       {event.experience?.slug?.current && (
                         <Link href={`/experiences/${event.experience.slug.current}`} className="view-link">
-                          Know about the experience →
+                          Know about the experience
                         </Link>
                       )}
                       {isEventBookable(event) ? (
                         <Link href={`/events/${month}/${event.slug.current}`} className="btn btn-primary">
-                          Reserve Spot →
+                          Reserve Spot
                         </Link>
                       ) : (
                         <span className="view-link" style={{color: 'var(--stone-gray)'}}>Registration closed</span>

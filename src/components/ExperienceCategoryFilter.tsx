@@ -238,9 +238,8 @@ export default function ExperienceCategoryFilter({
                 {exp.locationName && (
                   <p className="text-sm text-white/80 mb-2">{exp.locationName}</p>
                 )}
-                <div className="flex items-center justify-between text-sm">
-                  <span>From LKR {exp.price?.toLocaleString() ?? '0'}</span>
-                  <span className="underline">View Details →</span>
+                <div className="flex items-center justify-end text-sm">
+                  <span className="underline">View Details</span>
                 </div>
               </div>
             </Link>
@@ -275,11 +274,8 @@ export default function ExperienceCategoryFilter({
                 {exp.locationName && (
                   <p className="text-sm text-stone-500 mb-2">{exp.locationName}</p>
                 )}
-                <div className="mt-auto flex items-center justify-between text-sm">
-                  <span className="font-semibold text-stone-800">
-                    From LKR {exp.price?.toLocaleString() ?? '0'}
-                  </span>
-                  <span className="text-orange-600 underline">View Details →</span>
+                <div className="mt-auto flex items-center justify-end text-sm">
+                  <span className="text-orange-600 underline">View Details</span>
                 </div>
               </div>
             </Link>

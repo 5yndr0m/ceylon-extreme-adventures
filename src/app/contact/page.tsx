@@ -70,7 +70,7 @@ export default function Contact() {
                   Fastest way to reach us, especially for last-minute dates.
                 </p>
                 <a href="tel:+94707900700" className="quick-link">
-                  +94 707 900 700 / +94 707 900 701 →
+                  +94 707 900 700 / +94 707 900 701
                 </a>
               </div>
             </Reveal>
@@ -98,7 +98,7 @@ export default function Contact() {
                   href="mailto:sales@extremeadventure.lk"
                   className="quick-link"
                 >
-                  sales@extremeadventure.lk →
+                  sales@extremeadventure.lk
                 </a>
               </div>
             </Reveal>
@@ -124,7 +124,7 @@ export default function Contact() {
                   person.
                 </p>
                 <a href="#location" className="quick-link">
-                  93/A, Madiwala Rd, Embuldeniya, Nugegoda →
+                  93/A, Madiwala Rd, Embuldeniya, Nugegoda
                 </a>
               </div>
             </Reveal>

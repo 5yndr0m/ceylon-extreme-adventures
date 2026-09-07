@@ -80,7 +80,7 @@ export default async function EventDetailPage({
                 href={`/experiences/${event.experience.slug.current}`}
                 className="text-orange-600 font-semibold underline"
               >
-                Know about the experience →
+                Know about the experience
               </Link>
             </div>
           )}

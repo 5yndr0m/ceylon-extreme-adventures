@@ -77,7 +77,7 @@ export default async function Home() {
 
           <ActivitiesCarousel />
 
-          <Reveal2 className="activities-cta"><a href="/experiences">See All Experiences →</a></Reveal2>
+          <Reveal2 className="activities-cta"><a href="/experiences">See All Experiences</a></Reveal2>
         </div>
       </section>
 
@@ -108,7 +108,7 @@ export default async function Home() {
                       <h3>{monthLabel}</h3>
                       {banner.tagline && <p className="month-tagline">{banner.tagline}</p>}
                       <p className="month-count">{eventCount} {eventCount === 1 ? 'departure' : 'departures'} scheduled</p>
-                      <Link href={`/events/${banner.monthSlug}`} className="view-link">See More →</Link>
+                      <Link href={`/events/${banner.monthSlug}`} className="view-link">See More</Link>
                     </div>
                   </Reveal2>
                 );
@@ -213,7 +213,7 @@ export default async function Home() {
                   </Link>
                 ))}
               </Reveal2>
-              <Reveal2 className="activities-cta"><Link href="/blog">Read More Stories →</Link></Reveal2>
+              <Reveal2 className="activities-cta"><Link href="/blog">Read More Stories</Link></Reveal2>
             </>
           )}
         </div>
