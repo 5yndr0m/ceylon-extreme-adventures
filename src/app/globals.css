@@ -615,9 +615,14 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 }
 
 .bp-tabbar{ position:sticky; top:0; z-index:40; background:#fff; border-bottom:1px solid var(--cloud-gray); }
-.bp-tabbar-inner{ display:flex; gap:28px; overflow-x:auto; padding:16px 0; }
-.bp-tabbar-inner a{ font-size:14px; font-weight:600; color:var(--stone-gray); white-space:nowrap; }
-.bp-tabbar-inner a:hover{ color:var(--adrenaline-orange); }
+.bp-tabbar-inner{ display:flex; gap:28px; overflow-x:auto; }
+.bp-tab{
+  font-size:14px; font-weight:600; color:var(--stone-gray); white-space:nowrap;
+  background:none; border:none; padding:16px 0; margin:0; cursor:pointer; position:relative; font-family:inherit;
+}
+.bp-tab:hover{ color:var(--adrenaline-orange); }
+.bp-tab.active{ color:var(--adrenaline-orange); }
+.bp-tab.active::after{ content:''; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--adrenaline-orange); }
 
 .bp-grid{ display:grid; gap:44px; padding-top:44px; }
 @media(min-width:960px){ .bp-grid{ grid-template-columns:1fr 380px; align-items:start; } }
@@ -625,6 +630,7 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-section{ padding-bottom:36px; margin-bottom:36px; border-bottom:1px solid var(--cloud-gray); scroll-margin-top:80px; }
 .bp-section:last-child{ border-bottom:none; }
 .bp-section h2{ font-size:22px; color:var(--basalt-black); margin-bottom:18px; }
+.bp-section h2.bp-section-subhead{ margin-top:32px; }
 
 .bp-facts-row{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:22px; }
 .bp-fact-pill{ background:var(--mist-white); border-radius:var(--radius-sm); padding:12px 18px; min-width:120px; }
@@ -647,9 +653,6 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 
 .bp-book-card{ background:#fff; border:1px solid var(--cloud-gray); border-radius:var(--radius-md); padding:24px; box-shadow:0 20px 44px -28px rgba(20,24,26,.3); }
 @media(min-width:960px){ .bp-book-card{ position:sticky; top:76px; } }
-.bp-book-price{ display:flex; align-items:baseline; gap:8px; margin-bottom:20px; }
-.bp-book-amount{ font-family:var(--font-display); font-size:28px; color:var(--jungle-green); }
-.bp-book-unit{ font-size:13px; color:var(--stone-gray); }
 .bp-book-note{ text-align:center; font-size:12px; color:var(--stone-gray); margin-top:16px; }
 
 .bp-form{ display:grid; gap:14px; }
@@ -662,24 +665,15 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-form-row textarea{ resize:vertical; min-height:64px; }
 .bp-form-row-split{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 
-.bp-stepper{ display:flex; align-items:center; gap:16px; background:var(--mist-white); border:1px solid var(--cloud-gray); border-radius:8px; padding:8px 14px; width:fit-content; }
-.bp-stepper button{ width:26px; height:26px; border-radius:50%; border:1px solid var(--cloud-gray); background:#fff; font-size:16px; line-height:1; color:var(--jungle-green); }
-.bp-stepper button:hover{ border-color:var(--adrenaline-orange); color:var(--adrenaline-orange); }
-.bp-stepper span{ min-width:20px; text-align:center; font-weight:700; }
-
-.bp-total-row{ display:flex; justify-content:space-between; align-items:baseline; font-size:14px; color:var(--stone-gray); padding:12px 0; border-top:1px dashed var(--cloud-gray); border-bottom:1px dashed var(--cloud-gray); }
-.bp-total-row strong{ color:var(--jungle-green); font-size:17px; }
-
 .bp-submit{ width:100%; margin-top:4px; }
 .bp-form-error{ color:crimson; font-size:13px; margin:0; }
 
 .bp-mobile-cta{
   position:fixed; bottom:0; left:0; right:0; z-index:90; background:#fff;
   border-top:1px solid var(--cloud-gray); box-shadow:0 -8px 24px rgba(0,0,0,.12);
-  padding:14px var(--gutter); display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:14px var(--gutter);
 }
-.bp-mobile-amount{ display:block; font-family:var(--font-display); font-size:18px; color:var(--jungle-green); }
-.bp-mobile-unit{ display:block; font-size:11px; color:var(--stone-gray); }
+.bp-mobile-cta .btn{ width:100%; }
 @media(min-width:1024px){ .bp-mobile-cta{ display:none; } }
 
 .bp-new-badge{
