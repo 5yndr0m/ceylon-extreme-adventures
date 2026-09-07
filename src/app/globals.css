@@ -624,7 +624,9 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-tab.active{ color:var(--adrenaline-orange); }
 .bp-tab.active::after{ content:''; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--adrenaline-orange); }
 
-.bp-grid{ display:grid; gap:44px; padding-top:44px; }
+.bp-grid{ display:grid; gap:44px; padding-top:44px; padding-bottom:64px; }
+@media(min-width:768px){ .bp-grid{ padding-bottom:88px; } }
+@media(min-width:1280px){ .bp-grid{ padding-bottom:120px; } }
 @media(min-width:960px){ .bp-grid{ grid-template-columns:1fr 380px; align-items:start; } }
 
 .bp-section{ padding-top:0; padding-bottom:36px; margin-bottom:36px; border-bottom:1px solid var(--cloud-gray); scroll-margin-top:80px; }
