@@ -14,7 +14,7 @@ export default function ScrollEffects({ children }: { children: React.ReactNode 
     // never played until the visitor happened to scroll).
     const revealSelector = 'main > section:not(.hero):not(.reveal-on-load), main > .page-hero, .page-hero';
     const immediateSelector = 'main > section.reveal-on-load';
-    const parallaxSelector = '.hero-bg img, .page-hero-bg img, [data-parallax]';
+    const parallaxSelector = '.hero-bg img, .hero-bg video, .page-hero-bg img, [data-parallax]';
     let frame = 0;
 
     const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(revealSelector));

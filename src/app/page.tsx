@@ -7,6 +7,13 @@ import { getAllPosts, getFeaturedTestimonials, getUpcomingMonthlyBanners, urlFor
 
 const TRIPADVISOR_URL = 'https://www.tripadvisor.com/Attraction_Review-g304138-d26849088-Reviews-Ceylon_Extreme_Adventure_Pvt_Ltd-Kandy_Kandy_District_Central_Province.html'
 
+// Looping hero background clip — a 15s highlight cut from the company's own promo reel
+// (trimmed to skip the intro/name-card sections, which have on-screen captions baked in
+// that would clash with the hero's own heading text). Self-hosted as a Sanity file asset
+// rather than committed to the repo, so it doesn't bloat the git history.
+const HERO_VIDEO_URL = 'https://cdn.sanity.io/files/b5qf24u0/production/3492fb79ce2da5f8eef90a8655f49953efb7ea94.mp4'
+const HERO_POSTER_URL = 'https://cdn.sanity.io/images/b5qf24u0/production/5bcb3d3473a8ddac33e9b477354e7c39f7f0c1b3-1280x540.jpg'
+
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
 
 type MonthlyBannerCard = {
@@ -118,8 +125,10 @@ export default async function Home() {
     <main>
 
       <section className="hero" id="top">
-        <div className="hero-bg">
-          <img src="https://images.unsplash.com/photo-1547233528-08a0fabc00dd?fm=jpg&q=70&w=2200&auto=format&fit=crop" alt="Adventurer abseiling down a waterfall in Sri Lanka" />
+        <div className="hero-bg" style={{backgroundImage: `url(${HERO_POSTER_URL})`}}>
+          <video autoPlay muted loop playsInline preload="auto" poster={HERO_POSTER_URL} aria-hidden="true">
+            <source src={HERO_VIDEO_URL} type="video/mp4" />
+          </video>
           <div className="overlay"></div>
         </div>
         <div className="container hero-inner">
