@@ -188,7 +188,27 @@ export default async function Home() {
                             height={44}
                           />
                         ) : (
-                          <div style={{ width: '100%', height: '100%', background: 'var(--jungle-green)' }} />
+                          <div
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              background: 'var(--jungle-green)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                              <circle cx="12" cy="8" r="4" fill="#fff" fillOpacity="0.85" />
+                              <path
+                                d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8"
+                                stroke="#fff"
+                                strokeOpacity="0.85"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                          </div>
                         )}
                       </div>
                       <div>
