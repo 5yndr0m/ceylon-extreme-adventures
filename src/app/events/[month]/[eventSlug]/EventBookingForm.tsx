@@ -4,14 +4,8 @@
 import {useState} from 'react'
 import {useRouter} from 'next/navigation'
 
-// Mirrors BookingForm.tsx's light-theme field styling (same reasoning: this sits on a
-// white card, and globals.css's dark-theme label/input rules are scoped to .booking-form
-// on /contact, not this form — see BookingForm.tsx for the fuller explanation). The date
-// isn't a field here at all: it's fixed by the event, not chosen by the customer.
-const labelClass = 'block text-sm font-semibold text-gray-700 mb-1'
-const inputClass =
-  'w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-900 bg-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500'
-
+// The date isn't a field here at all: it's fixed by the event, not chosen by the
+// customer (see the sticky card next to this form for the departure date/price).
 export default function EventBookingForm({eventId}: {eventId: string}) {
   const router = useRouter()
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle')
@@ -23,6 +17,10 @@ export default function EventBookingForm({eventId}: {eventId: string}) {
     groupSize: 1,
     message: '',
   })
+
+  function updateGroupSize(delta: number) {
+    setForm((f) => ({...f, groupSize: Math.max(1, f.groupSize + delta)}))
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -46,79 +44,65 @@ export default function EventBookingForm({eventId}: {eventId: string}) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="ebf-fullName" className={labelClass}>Full Name</label>
+    <form onSubmit={handleSubmit} className="bp-form">
+      <div className="bp-form-row">
+        <label htmlFor="ebf-fullName">Full name</label>
         <input
           id="ebf-fullName"
           required
           placeholder="Your full name"
-          className={inputClass}
           value={form.fullName}
           onChange={(e) => setForm({...form, fullName: e.target.value})}
         />
       </div>
 
-      <div>
-        <label htmlFor="ebf-email" className={labelClass}>Email</label>
-        <input
-          id="ebf-email"
-          required
-          type="email"
-          placeholder="you@email.com"
-          className={inputClass}
-          value={form.email}
-          onChange={(e) => setForm({...form, email: e.target.value})}
-        />
+      <div className="bp-form-row bp-form-row-split">
+        <div>
+          <label htmlFor="ebf-email">Email</label>
+          <input
+            id="ebf-email"
+            required
+            type="email"
+            placeholder="you@email.com"
+            value={form.email}
+            onChange={(e) => setForm({...form, email: e.target.value})}
+          />
+        </div>
+        <div>
+          <label htmlFor="ebf-phone">Phone</label>
+          <input
+            id="ebf-phone"
+            placeholder="+94 7X XXX XXXX"
+            value={form.phone}
+            onChange={(e) => setForm({...form, phone: e.target.value})}
+          />
+        </div>
       </div>
 
-      <div>
-        <label htmlFor="ebf-phone" className={labelClass}>Phone</label>
-        <input
-          id="ebf-phone"
-          placeholder="+94 7X XXX XXXX"
-          className={inputClass}
-          value={form.phone}
-          onChange={(e) => setForm({...form, phone: e.target.value})}
-        />
+      <div className="bp-form-row">
+        <label>Travellers</label>
+        <div className="bp-stepper">
+          <button type="button" onClick={() => updateGroupSize(-1)} aria-label="Decrease group size">−</button>
+          <span>{form.groupSize}</span>
+          <button type="button" onClick={() => updateGroupSize(1)} aria-label="Increase group size">+</button>
+        </div>
       </div>
 
-      <div>
-        <label htmlFor="ebf-group" className={labelClass}>Group Size</label>
-        <input
-          id="ebf-group"
-          required
-          type="number"
-          min={1}
-          placeholder="e.g. 2"
-          className={inputClass}
-          value={form.groupSize}
-          onChange={(e) => setForm({...form, groupSize: Number(e.target.value)})}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="ebf-message" className={labelClass}>Message</label>
+      <div className="bp-form-row">
+        <label htmlFor="ebf-message">Message (optional)</label>
         <textarea
           id="ebf-message"
           placeholder="Anything we should know?"
-          className={inputClass}
-          rows={3}
+          rows={2}
           value={form.message}
           onChange={(e) => setForm({...form, message: e.target.value})}
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={status === 'submitting'}
-        className="w-full bg-orange-600 text-white rounded-full py-3 font-semibold disabled:opacity-50"
-      >
+      <button type="submit" disabled={status === 'submitting'} className="btn btn-primary bp-submit">
         {status === 'submitting' ? 'Continuing…' : 'Continue to Payment'}
       </button>
-      {status === 'error' && (
-        <p className="text-red-600 text-sm">{errorMessage}</p>
-      )}
+      {status === 'error' && <p className="bp-form-error">{errorMessage}</p>}
     </form>
   )
 }

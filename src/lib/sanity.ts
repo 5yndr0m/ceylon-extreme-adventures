@@ -227,13 +227,16 @@ export async function getEventsForMonthSlug(monthSlug: string) {
 }
 
 // Full detail for a single event — used by the booking API routes (to resolve the
-// experience/price/date for an event-based booking) and by any dedicated event page.
+// experience/price/date for an event-based booking) and by the dedicated event page.
+// Pulls a handful of trip-context fields from the linked experience (difficulty,
+// location, group size, a short blurb) — just enough for the event page to not be
+// bare, not the full experience page's quickFacts/suitableMonths/gallery/guide.
 export async function getEventBySlug(slug: string) {
   return client.fetch(
     `*[_type == "event" && slug.current == $slug][0]{
       _id, title, slug, date, durationDays, price, flyerImage, includes, shortDescription,
       registrationOpen,
-      experience->{_id, title, slug, category, heroImage}
+      experience->{_id, title, slug, category, heroImage, difficulty, locationName, maxGroupSize, shortDescription}
     }`,
     {slug}
   )
