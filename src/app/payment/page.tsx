@@ -19,6 +19,11 @@ type Booking = {
     price: number;
     heroImage: any;
   };
+  event?: {
+    title: string;
+    price: number;
+    flyerImage?: any;
+  };
 };
 
 function PaymentPortalInner() {
@@ -39,7 +44,8 @@ function PaymentPortalInner() {
       .fetch(
         `*[_type == "booking" && _id == $id][0]{
           _id, fullName, preferredDate, groupSize,
-          experience->{title, category, price, heroImage}
+          experience->{title, category, price, heroImage},
+          event->{title, price, flyerImage}
         }`,
         { id: bookingId }
       )
@@ -103,7 +109,14 @@ function PaymentPortalInner() {
     );
   }
 
-  const total = booking.experience.price * booking.groupSize;
+  // Event bookings use the event's own price/title (can differ from the experience's
+  // base rate — promos, group rates, etc., see eventType.ts) — same priority the
+  // PayHere checkout route already uses server-side. Using the experience's price here
+  // instead would show the customer a different total than what the flyer advertised
+  // and what actually gets charged.
+  const item = booking.event ?? booking.experience;
+  const displayImage = booking.event?.flyerImage ?? booking.experience.heroImage;
+  const total = item.price * booking.groupSize;
 
   return (
     <main className="payment-page">
@@ -136,24 +149,24 @@ function PaymentPortalInner() {
         <div className="container pay-grid">
           <Reveal className="summary-card">
             <div className="summary-img">
-              {booking.experience.heroImage && (
+              {displayImage && (
                 <img
-                  src={urlFor(booking.experience.heroImage).width(900).height(506).url()}
-                  alt={booking.experience.title}
+                  src={urlFor(displayImage).width(900).height(506).url()}
+                  alt={item.title}
                 />
               )}
               <span className="summary-ref">REF: {booking._id.slice(-8).toUpperCase()}</span>
             </div>
             <div className="summary-body">
               <span className="summary-tag">{booking.experience.category}</span>
-              <h3>{booking.experience.title}</h3>
+              <h3>{item.title}</h3>
               <div className="summary-meta">
                 <span>📅 {booking.preferredDate}</span>
                 <span>👥 {booking.groupSize} {booking.groupSize === 1 ? 'traveller' : 'travellers'}</span>
               </div>
               <div className="price-lines">
                 <div>
-                  <span>Package ({booking.groupSize} × LKR {booking.experience.price.toLocaleString()})</span>
+                  <span>Package ({booking.groupSize} × LKR {item.price.toLocaleString()})</span>
                   <span>{total.toLocaleString()} LKR</span>
                 </div>
               </div>
