@@ -8,6 +8,24 @@ import BookingForm from './BookingForm'
 
 export const revalidate = 60
 
+const MONTHS: {key: string; label: string}[] = [
+  {key: 'jan', label: 'Jan'},
+  {key: 'feb', label: 'Feb'},
+  {key: 'mar', label: 'Mar'},
+  {key: 'apr', label: 'Apr'},
+  {key: 'may', label: 'May'},
+  {key: 'jun', label: 'Jun'},
+  {key: 'jul', label: 'Jul'},
+  {key: 'aug', label: 'Aug'},
+  {key: 'sep', label: 'Sep'},
+  {key: 'oct', label: 'Oct'},
+  {key: 'nov', label: 'Nov'},
+  {key: 'dec', label: 'Dec'},
+]
+
+// Matches the guide's Best/Ok/Worst legend colors
+const RATING_LABEL: Record<string, string> = {best: 'Best', ok: 'Ok', worst: 'Worst'}
+
 export default async function ExperienceDetailPage({
   params,
 }: {
@@ -18,6 +36,7 @@ export default async function ExperienceDetailPage({
   if (!exp) return notFound()
 
   const gallery = (exp.gallery || []).slice(0, 4)
+  const fullGallery = exp.gallery || []
   const perPerson = exp.price != null ? `LKR ${exp.price.toLocaleString()}` : 'Contact us'
 
   return (
@@ -29,6 +48,7 @@ export default async function ExperienceDetailPage({
         <h1 className="bp-title">{exp.title}</h1>
         <div className="bp-subline">
           {exp.category && <span className="bp-tag">{exp.category}</span>}
+          {exp.status === 'new' && <span className="bp-new-badge">New</span>}
           {exp.locationName && (
             <span className="bp-sub-item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
@@ -83,6 +103,9 @@ export default async function ExperienceDetailPage({
       <div className="bp-tabbar">
         <div className="container bp-tabbar-inner">
           <a href="#overview">Overview</a>
+          {exp.quickFacts && exp.quickFacts.length > 0 && <a href="#facts">Quick facts</a>}
+          {exp.suitableMonths && <a href="#months">Best months</a>}
+          {fullGallery.length > 0 && <a href="#gallery">Gallery</a>}
           <a href="#included">What's included</a>
           {exp.guide && <a href="#guide">Your guide</a>}
           <a href="#book">Book</a>
@@ -125,6 +148,78 @@ export default async function ExperienceDetailPage({
               )}
             </div>
           </section>
+
+          {exp.quickFacts && exp.quickFacts.length > 0 && (
+            <section id="facts" className="bp-section">
+              <h2>Quick facts</h2>
+              <dl className="bp-quickfacts">
+                {exp.quickFacts.map((fact: {label: string; value: string}, i: number) => (
+                  <div key={i} className="bp-quickfacts-row">
+                    <dt>{fact.label}</dt>
+                    <dd>{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              {exp.distancesFrom && exp.distancesFrom.length > 0 && (
+                <div className="bp-distances">
+                  {exp.distancesFrom.map((d: {location: string; km: number}) => (
+                    <span key={d.location} className="bp-distance-item">
+                      <strong>{d.location}</strong> {d.km} km
+                    </span>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
+
+          {exp.suitableMonths && (
+            <section id="months" className="bp-section">
+              <h2>Best months to visit</h2>
+              <div className="bp-months-grid">
+                {MONTHS.map(({key, label}) => {
+                  const rating = exp.suitableMonths[key]
+                  if (!rating) return null
+                  return (
+                    <div key={key} className={`bp-month-cell bp-month-${rating}`}>
+                      {label}
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="bp-months-legend">
+                {(['best', 'ok', 'worst'] as const).map((r) => (
+                  <span key={r} className="bp-months-legend-item">
+                    <span className={`bp-months-legend-swatch bp-month-${r}`} />
+                    {RATING_LABEL[r]}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {fullGallery.length > 0 && (
+            <section id="gallery" className="bp-section">
+              <h2>Gallery</h2>
+              <div className="bp-gallery-grid">
+                {fullGallery.map((img: {_key?: string; alt?: string} & Record<string, unknown>, i: number) => (
+                  <a
+                    key={img._key ?? i}
+                    href={urlFor(img).width(1600).url()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bp-gallery-item"
+                  >
+                    <Image
+                      src={urlFor(img).width(600).height(450).url()}
+                      alt={img.alt || `${exp.title} photo ${i + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section id="included" className="bp-section">
             <h2>What's included</h2>

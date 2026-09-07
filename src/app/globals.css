@@ -681,3 +681,33 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-mobile-amount{ display:block; font-family:var(--font-display); font-size:18px; color:var(--jungle-green); }
 .bp-mobile-unit{ display:block; font-size:11px; color:var(--stone-gray); }
 @media(min-width:1024px){ .bp-mobile-cta{ display:none; } }
+
+.bp-new-badge{
+  font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:#fff;
+  background:var(--adrenaline-orange); padding:3px 10px; border-radius:var(--radius-pill);
+}
+
+.bp-quickfacts{ border:1px solid var(--cloud-gray); border-radius:var(--radius-md); overflow:hidden; margin:0 0 18px; }
+.bp-quickfacts-row{ display:flex; justify-content:space-between; gap:16px; padding:12px 18px; font-size:14px; }
+.bp-quickfacts-row:nth-child(odd){ background:var(--mist-white); }
+.bp-quickfacts-row dt{ color:var(--stone-gray); }
+.bp-quickfacts-row dd{ margin:0; font-weight:600; color:var(--basalt-black); text-align:right; }
+.bp-distances{ display:flex; flex-wrap:wrap; gap:8px 20px; font-size:13.5px; color:var(--stone-gray); }
+.bp-distance-item strong{ color:var(--basalt-black); }
+
+.bp-months-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:14px; }
+@media(min-width:640px){ .bp-months-grid{ grid-template-columns:repeat(6,1fr); } }
+@media(min-width:960px){ .bp-months-grid{ grid-template-columns:repeat(12,1fr); } }
+.bp-month-cell{ text-align:center; font-size:13px; font-weight:600; padding:9px 4px; border-radius:6px; }
+.bp-month-best{ background:rgba(58,143,74,.15); color:var(--success-green); }
+.bp-month-ok{ background:rgba(242,98,46,.14); color:var(--adrenaline-orange-dark); }
+.bp-month-worst{ background:rgba(20,24,26,.08); color:var(--stone-gray); }
+.bp-months-legend{ display:flex; gap:18px; font-size:12.5px; color:var(--stone-gray); }
+.bp-months-legend-item{ display:flex; align-items:center; gap:7px; }
+.bp-months-legend-swatch{ width:12px; height:12px; border-radius:3px; display:inline-block; }
+
+.bp-gallery-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+@media(min-width:768px){ .bp-gallery-grid{ grid-template-columns:repeat(3,1fr); } }
+.bp-gallery-item{ position:relative; display:block; aspect-ratio:4/3; border-radius:var(--radius-sm); overflow:hidden; }
+.bp-gallery-item img{ transition:transform .4s var(--ease); }
+.bp-gallery-item:hover img{ transform:scale(1.06); }
