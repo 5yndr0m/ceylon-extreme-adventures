@@ -18,7 +18,7 @@ export default async function ExperiencesPage({
 
   return (
     <main className="min-h-screen bg-[var(--mist-white)]">
-      <section className="relative overflow-hidden bg-[var(--jungle-green)] px-6 pb-14 pt-32 text-white md:pb-20">
+      <section className="reveal-on-load relative overflow-hidden bg-[var(--jungle-green)] px-6 pb-14 pt-32 text-white md:pb-20">
         <div className="relative z-10 mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[2.5px] text-[var(--adrenaline-orange)]">
             What We Run
@@ -34,7 +34,7 @@ export default async function ExperiencesPage({
         <div className="absolute right-24 top-10 h-3 w-3 rounded-full bg-[var(--adrenaline-orange)] md:right-36 md:top-20" />
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-12 md:py-16">
+      <section className="reveal-on-load mx-auto max-w-7xl px-6 py-12 md:py-16">
         <div className="mb-8 h-1 w-16 rounded-full bg-[var(--adrenaline-orange)]" />
 
         <ExperienceCategoryFilter experiences={experiences} initialCategory={initialCategory} />
