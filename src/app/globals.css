@@ -303,21 +303,23 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 /* ============ TESTIMONIALS ============ */
 .testimonials{ background:var(--cloud-gray); }
 
-/* One centered card at full size with the previous/next cards peeking in slightly
-   smaller on each side. Auto-play advances the index, which — via the sign in the
-   translateX below — drifts existing cards to the right and pulls the next one in
-   from the left, so the whole thing reads as scrolling left→right. Cards are
-   positioned with a CSS custom property (--diff, an integer set inline per card)
-   rather than JS-computed pixel offsets, so --testi-step can be tuned per
+/* One centered card with the previous/next cards peeking in at the same size on
+   each side (only their opacity drops, so they read as "coming up next" rather
+   than a separate size tier). Auto-play advances the index, which — via the sign
+   in the translateX below — drifts existing cards to the right and pulls the next
+   one in from the left, so the whole thing reads as scrolling left→right. Cards
+   are positioned with a CSS custom property (--diff, an integer set inline per
+   card) rather than JS-computed pixel offsets, so --testi-step can be tuned per
    breakpoint below without touching the component. */
-.testi-carousel{
+.testi-carousel{ display:flex; flex-direction:column; align-items:center; gap:22px; margin:6px 0 14px; }
+.testi-carousel-row{
   --testi-step: 320px; --testi-card-w: 300px;
-  display:flex; align-items:center; justify-content:center; gap:12px; margin:6px 0 14px;
+  display:flex; align-items:center; justify-content:center; gap:12px; width:100%;
 }
 .testi-stage{ position:relative; height:400px; width:100%; max-width:1040px; overflow:hidden; }
 .testi-slot{
   position:absolute; top:50%; left:50%; width:var(--testi-card-w);
-  transform:translate(-50%,-50%) translateX(calc(var(--diff, 0) * var(--testi-step))) scale(var(--scale, 1));
+  transform:translate(-50%,-50%) translateX(calc(var(--diff, 0) * var(--testi-step)));
   opacity:var(--slot-opacity, 1);
   transition:transform .6s var(--ease), opacity .6s var(--ease);
 }
@@ -325,20 +327,20 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 
 .testi-arrow{
   flex-shrink:0; width:40px; height:40px; border-radius:50%; border:1px solid var(--cloud-gray);
-  background:#fff; color:var(--jungle-green); font-size:20px; line-height:1;
+  background:#fff; color:var(--jungle-green);
   display:flex; align-items:center; justify-content:center;
   box-shadow:0 8px 20px -14px rgba(20,24,26,.3);
 }
 .testi-arrow:hover{ border-color:var(--adrenaline-orange); color:var(--adrenaline-orange); }
 
-.testi-dots{ display:flex; justify-content:center; gap:9px; margin-top:8px; }
+.testi-dots{ display:flex; justify-content:center; gap:9px; }
 .testi-dot{ width:9px; height:9px; padding:0; border:none; border-radius:50%; background:rgba(20,24,26,.18); }
 .testi-dot.active{ background:var(--adrenaline-orange); transform:scale(1.25); }
 
 @media(max-width:767px){
-  .testi-carousel{ --testi-step: 210px; --testi-card-w: 250px; gap:6px; }
+  .testi-carousel-row{ --testi-step: 210px; --testi-card-w: 250px; gap:6px; }
   .testi-stage{ height:420px; }
-  .testi-arrow{ width:34px; height:34px; font-size:17px; }
+  .testi-arrow{ width:34px; height:34px; }
 }
 
 @media(prefers-reduced-motion:reduce){ .testi-slot{ transition:none; } }

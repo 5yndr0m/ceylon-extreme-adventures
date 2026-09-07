@@ -116,57 +116,61 @@ export default function TestimonialsCarousel({testimonials}: {testimonials: any[
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {count > 1 && (
-        <button
-          type="button"
-          className="testi-arrow testi-arrow-prev"
-          onClick={() => goTo(index - 1)}
-          aria-label="Previous testimonial"
-        >
-          ‹
-        </button>
-      )}
+      <div className="testi-carousel-row">
+        {count > 1 && (
+          <button
+            type="button"
+            className="testi-arrow testi-arrow-prev"
+            onClick={() => goTo(index - 1)}
+            aria-label="Previous testimonial"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+        )}
 
-      <div className="testi-stage">
-        {testimonials.map((t, i) => {
-          const diff = wrappedDiff(i, index, count)
-          const distance = Math.abs(diff)
-          if (distance > MAX_VISIBLE_DISTANCE) return null
+        <div className="testi-stage">
+          {testimonials.map((t, i) => {
+            const diff = wrappedDiff(i, index, count)
+            const distance = Math.abs(diff)
+            if (distance > MAX_VISIBLE_DISTANCE) return null
 
-          const scale = distance === 0 ? 1 : distance === 1 ? 0.88 : 0.78
-          const opacity = distance <= 1 ? 1 : 0.35
+            const opacity = distance <= 1 ? 1 : 0.35
 
-          return (
-            <div
-              key={t._id}
-              className={`testi-slot ${distance === 0 ? 'is-active' : ''}`}
-              style={{
-                // Auto-play advances the index; negating diff here moves existing
-                // cards to the right (pulling the next one in from the left), so
-                // the carousel drifts left-to-right, matching the rest of the page.
-                '--diff': -diff,
-                '--scale': scale,
-                '--slot-opacity': opacity,
-                zIndex: 10 - distance,
-                pointerEvents: distance === 0 ? 'auto' : 'none',
-              } as React.CSSProperties}
-            >
-              <TestimonialCard t={t} />
-            </div>
-          )
-        })}
+            return (
+              <div
+                key={t._id}
+                className={`testi-slot ${distance === 0 ? 'is-active' : ''}`}
+                style={{
+                  // Auto-play advances the index; negating diff here moves existing
+                  // cards to the right (pulling the next one in from the left), so
+                  // the carousel drifts left-to-right, matching the rest of the page.
+                  '--diff': -diff,
+                  '--slot-opacity': opacity,
+                  zIndex: 10 - distance,
+                  pointerEvents: distance === 0 ? 'auto' : 'none',
+                } as React.CSSProperties}
+              >
+                <TestimonialCard t={t} />
+              </div>
+            )
+          })}
+        </div>
+
+        {count > 1 && (
+          <button
+            type="button"
+            className="testi-arrow testi-arrow-next"
+            onClick={() => goTo(index + 1)}
+            aria-label="Next testimonial"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </button>
+        )}
       </div>
-
-      {count > 1 && (
-        <button
-          type="button"
-          className="testi-arrow testi-arrow-next"
-          onClick={() => goTo(index + 1)}
-          aria-label="Next testimonial"
-        >
-          ›
-        </button>
-      )}
 
       {count > 1 && (
         <div className="testi-dots">
