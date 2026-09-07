@@ -60,63 +60,65 @@ export default async function EventDetailPage({
         </div>
       </div>
 
-      {event.flyerImage && (
-        <div className="container">
-          <div className="bp-flyer">
-            <Image
-              src={urlFor(event.flyerImage).width(700).height(875).url()}
-              alt={event.title}
-              fill
-              priority
-              className="object-cover"
-            />
-          </div>
-        </div>
-      )}
-
       <div className="container bp-grid">
         <div className="bp-main">
-          <section className="bp-section">
-            <h2>About this departure</h2>
+          <div className="bp-event-top">
+            {event.flyerImage && (
+              <div className="bp-flyer">
+                <Image
+                  src={urlFor(event.flyerImage).width(700).height(875).url()}
+                  alt={event.title}
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              </div>
+            )}
 
-            <div className="bp-facts-row">
-              <div className="bp-fact-pill">
-                <span className="bp-fact-pill-label">Date</span>
-                <span className="bp-fact-pill-value">{new Date(event.date).toLocaleDateString('en-GB', {day: 'numeric', month: 'short'})}</span>
-              </div>
-              <div className="bp-fact-pill">
-                <span className="bp-fact-pill-label">Duration</span>
-                <span className="bp-fact-pill-value">{event.durationDays ? `${event.durationDays} ${event.durationDays === 1 ? 'day' : 'days'}` : '—'}</span>
-              </div>
-              {exp?.maxGroupSize && (
-                <div className="bp-fact-pill">
-                  <span className="bp-fact-pill-label">Group size</span>
-                  <span className="bp-fact-pill-value">Up to {exp.maxGroupSize}</span>
+            <div className="bp-event-top-details">
+              <section className="bp-section">
+                <h2>About this departure</h2>
+
+                <div className="bp-facts-row">
+                  <div className="bp-fact-pill">
+                    <span className="bp-fact-pill-label">Date</span>
+                    <span className="bp-fact-pill-value">{new Date(event.date).toLocaleDateString('en-GB', {day: 'numeric', month: 'short'})}</span>
+                  </div>
+                  <div className="bp-fact-pill">
+                    <span className="bp-fact-pill-label">Duration</span>
+                    <span className="bp-fact-pill-value">{event.durationDays ? `${event.durationDays} ${event.durationDays === 1 ? 'day' : 'days'}` : '—'}</span>
+                  </div>
+                  {exp?.maxGroupSize && (
+                    <div className="bp-fact-pill">
+                      <span className="bp-fact-pill-label">Group size</span>
+                      <span className="bp-fact-pill-value">Up to {exp.maxGroupSize}</span>
+                    </div>
+                  )}
+                  {exp?.difficulty && (
+                    <div className="bp-fact-pill">
+                      <span className="bp-fact-pill-label">Difficulty</span>
+                      <span className="bp-fact-pill-value">{exp.difficulty}</span>
+                    </div>
+                  )}
                 </div>
-              )}
-              {exp?.difficulty && (
-                <div className="bp-fact-pill">
-                  <span className="bp-fact-pill-label">Difficulty</span>
-                  <span className="bp-fact-pill-value">{exp.difficulty}</span>
+
+                <div className="bp-prose">
+                  <p>{event.shortDescription || exp?.shortDescription || 'Full trip details coming soon — get in touch if you have questions before booking.'}</p>
                 </div>
+              </section>
+
+              {event.includes && event.includes.length > 0 && (
+                <section className="bp-section">
+                  <h2>What&apos;s included</h2>
+                  <div className="bp-tags">
+                    {event.includes.map((item: string) => (
+                      <span key={item} className="bp-activity-tag">{item}</span>
+                    ))}
+                  </div>
+                </section>
               )}
             </div>
-
-            <div className="bp-prose">
-              <p>{event.shortDescription || exp?.shortDescription || 'Full trip details coming soon — get in touch if you have questions before booking.'}</p>
-            </div>
-          </section>
-
-          {event.includes && event.includes.length > 0 && (
-            <section className="bp-section">
-              <h2>What&apos;s included</h2>
-              <div className="bp-tags">
-                {event.includes.map((item: string) => (
-                  <span key={item} className="bp-activity-tag">{item}</span>
-                ))}
-              </div>
-            </section>
-          )}
+          </div>
 
           {exp?.slug?.current && (
             <section className="bp-section">

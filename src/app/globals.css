@@ -625,7 +625,15 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 
 /* Event flyer posters are 4:5 portrait with the title/tagline baked into the
    artwork — sized to match that ratio exactly so nothing gets cropped off. */
-.bp-flyer{ position:relative; max-width:360px; aspect-ratio:4/5; border-radius:var(--radius-md); overflow:hidden; margin-bottom:8px; background:var(--cloud-gray); }
+.bp-flyer{ position:relative; width:100%; max-width:360px; aspect-ratio:4/5; border-radius:var(--radius-md); overflow:hidden; margin:0 auto; background:var(--cloud-gray); }
+
+.bp-event-top{ display:flex; flex-direction:column; gap:28px; margin-bottom:8px; }
+.bp-event-top-details .bp-section:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+@media(min-width:768px){
+  .bp-event-top{ flex-direction:row; align-items:flex-start; }
+  .bp-flyer{ flex:0 0 280px; margin:0; }
+  .bp-event-top-details{ flex:1; min-width:0; }
+}
 
 .bp-tabbar{ position:sticky; top:0; z-index:40; background:#fff; border-bottom:1px solid var(--cloud-gray); }
 .bp-tabbar-inner{ display:flex; gap:28px; overflow-x:auto; }
