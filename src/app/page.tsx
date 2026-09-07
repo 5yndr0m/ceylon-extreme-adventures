@@ -30,6 +30,21 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'});
 }
 
+// Long reviews (some run 5+ paragraphs) blow out the fixed-height testimonial
+// card layout — truncate and link out to the full review instead of showing
+// it all inline. Only truncates when there's a sourceUrl to send people to;
+// otherwise showing a "..." with nowhere to go is worse than just showing
+// the full (short) quote.
+const QUOTE_TRUNCATE_LENGTH = 220
+function truncateQuote(quote: string, sourceUrl?: string) {
+  if (!sourceUrl || quote.length <= QUOTE_TRUNCATE_LENGTH) {
+    return {text: quote, truncated: false}
+  }
+  const cut = quote.slice(0, QUOTE_TRUNCATE_LENGTH)
+  const lastSpace = cut.lastIndexOf(' ')
+  return {text: cut.slice(0, lastSpace > 0 ? lastSpace : QUOTE_TRUNCATE_LENGTH) + '…', truncated: true}
+}
+
 export default async function Home() {
   const [testimonials, monthlyBanners, posts]: [any[], MonthlyBannerCard[], PostSummary[]] = await Promise.all([
     getFeaturedTestimonials(),
@@ -147,32 +162,45 @@ export default async function Home() {
             <p style={{ color: 'var(--stone-gray)' }}>Reviews coming soon.</p>
           ) : (
             <div className="testi-scroller">
-              {testimonials.map((t: any) => (
-                <Reveal2 className="testi-card" key={t._id}>
-                  <div className="stars">{'★'.repeat(t.rating || 5)}{'☆'.repeat(5 - (t.rating || 5))}</div>
-                  <p className="testi-quote">&quot;{t.quote}&quot;</p>
-                  <div className="testi-author">
-                    <div className="avatar">
-                      {t.photo ? (
-                        <Image
-                          src={urlFor(t.photo).width(88).height(88).url()}
-                          alt={t.customerName}
-                          width={44}
-                          height={44}
-                        />
-                      ) : (
-                        <div style={{ width: '100%', height: '100%', background: 'var(--jungle-green)' }} />
+              {testimonials.map((t: any) => {
+                const {text, truncated} = truncateQuote(t.quote, t.sourceUrl)
+                return (
+                  <Reveal2 className="testi-card" key={t._id}>
+                    <div className="stars">{'★'.repeat(t.rating || 5)}{'☆'.repeat(5 - (t.rating || 5))}</div>
+                    <p className="testi-quote">
+                      &quot;{text}&quot;
+                      {truncated && (
+                        <>
+                          {' '}
+                          <a href={t.sourceUrl} target="_blank" rel="noopener" className="testi-read-more">
+                            Read full review
+                          </a>
+                        </>
                       )}
-                    </div>
-                    <div>
-                      <div className="author-name">{t.customerName}</div>
-                      <div className="author-tag">
-                        {t.experience ? `${t.experience.title}${t.experience.locationName ? ` — ${t.experience.locationName}` : ''}` : t.source}
+                    </p>
+                    <div className="testi-author">
+                      <div className="avatar">
+                        {t.photo ? (
+                          <Image
+                            src={urlFor(t.photo).width(88).height(88).url()}
+                            alt={t.customerName}
+                            width={44}
+                            height={44}
+                          />
+                        ) : (
+                          <div style={{ width: '100%', height: '100%', background: 'var(--jungle-green)' }} />
+                        )}
+                      </div>
+                      <div>
+                        <div className="author-name">{t.customerName}</div>
+                        <div className="author-tag">
+                          {t.experience ? `${t.experience.title}${t.experience.locationName ? ` — ${t.experience.locationName}` : ''}` : t.source}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Reveal2>
-              ))}
+                  </Reveal2>
+                )
+              })}
             </div>
           )}
         </div>

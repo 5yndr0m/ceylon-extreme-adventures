@@ -116,6 +116,7 @@ export async function getFeaturedTestimonials() {
       quote,
       rating,
       source,
+      sourceUrl,
       photo,
       experience->{title, locationName}
     }

@@ -313,6 +313,8 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 }
 .stars{ color:var(--adrenaline-orange); font-size:15px; letter-spacing:2px; margin-bottom:14px; }
 .testi-quote{ font-size:17px; line-height:1.55; color:var(--basalt-black); margin-bottom:20px; }
+.testi-read-more{ color:var(--rapids-blue); font-weight:600; white-space:nowrap; }
+.testi-read-more:hover{ text-decoration:underline; }
 .testi-author{ display:flex; align-items:center; gap:12px; }
 .avatar{ width:44px; height:44px; border-radius:50%; overflow:hidden; flex-shrink:0; background:var(--jungle-green); }
 .avatar img{ width:100%; height:100%; object-fit:cover; }
