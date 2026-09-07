@@ -80,7 +80,7 @@ export default async function MonthEventsPage({
                 <article className="event-card" key={event._id}>
                   <div className="event-card-img">
                     {event.flyerImage && (
-                      <img src={urlFor(event.flyerImage).width(700).height(525).url()} alt={event.title} />
+                      <img src={urlFor(event.flyerImage).width(700).height(875).url()} alt={event.title} />
                     )}
                     <span className="event-date">
                       <span className="event-date-mon">{formatDate(event.date).split(' ')[1]}</span>
