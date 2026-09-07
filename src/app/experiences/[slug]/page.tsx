@@ -4,7 +4,7 @@ import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {getExperienceBySlug, urlFor} from '@/lib/sanity'
 import {PortableText} from '@portabletext/react'
-import BookingForm from './BookingForm'
+import InquiryForm from './InquiryForm'
 
 export const revalidate = 60
 
@@ -108,7 +108,7 @@ export default async function ExperienceDetailPage({
           {fullGallery.length > 0 && <a href="#gallery">Gallery</a>}
           <a href="#included">What's included</a>
           {exp.guide && <a href="#guide">Your guide</a>}
-          <a href="#book">Book</a>
+          <a href="#book">Enquire</a>
         </div>
       </div>
 
@@ -265,15 +265,15 @@ export default async function ExperienceDetailPage({
           )}
         </div>
 
-        {/* -------- Sticky booking card -------- */}
+        {/* -------- Sticky inquiry card -------- */}
         <aside className="bp-book-col" id="book">
           <div className="bp-book-card">
             <div className="bp-book-price">
               <span className="bp-book-amount">{perPerson}</span>
               <span className="bp-book-unit">per person</span>
             </div>
-            <BookingForm experienceId={exp._id} experienceTitle={exp.title} unitPrice={exp.price ?? 0} />
-            <p className="bp-book-note">Reply within 1 business day · No payment until confirmed</p>
+            <InquiryForm experienceTitle={exp.title} />
+            <p className="bp-book-note">We&apos;ll reply within 1 business day</p>
           </div>
         </aside>
       </div>
@@ -284,7 +284,7 @@ export default async function ExperienceDetailPage({
           <span className="bp-mobile-amount">{perPerson}</span>
           <span className="bp-mobile-unit">per person</span>
         </div>
-        <a href="#book" className="btn btn-primary">Book Now</a>
+        <a href="#book" className="btn btn-primary">Enquire Now</a>
       </div>
     </main>
   )
