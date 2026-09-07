@@ -20,13 +20,13 @@ const founders: Founder[] = [
     name: 'Dr. Nath Dharmasena',
     role: 'Chairman',
     image: 'https://i.pravatar.cc/500?img=53',
-    bio: 'A seasoned entrepreneur with experience across 13 countries including Malaysia, Singapore, Norway, and the UAE. Holds a BSc in Engineering from Peradeniya, sits as director in four companies, and is the founder of Ceylon Graphene Technologies Pvt Ltd.',
+    bio: 'A seasoned entrepreneur with experience across 13 countries including Malaysia, Singapore, Norway, and the UAE. Holds a BSc in Engineering from Peradeniya and sits as director in four companies.',
   },
   {
     name: 'Manju S. Gunawardana',
     role: 'Director / Technical Advisor',
     image: 'https://i.pravatar.cc/500?img=60',
-    bio: 'First person to abseil Sri Lanka’s highest waterfall, Bambarakanda, in 1998. 25+ years in research and innovation, holds an International Rafting Federation guide license, and is qualified in Wilderness and Occupational First Aid.',
+    bio: 'First person to abseil Sri Lanka’s highest waterfall, Bambarakanda, in 1998. 25+ years in research and innovation, Group CEO of LOLC’s Research & Innovation arm, and founder of Ceylon Graphene Technologies Pvt Ltd.',
   },
 ];
 

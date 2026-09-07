@@ -80,7 +80,7 @@ export default async function MonthEventsPage({
                 <article className="event-card" key={event._id}>
                   <div className="event-card-img">
                     {event.flyerImage && (
-                      <img src={urlFor(event.flyerImage).width(700).height(525).url()} alt={event.title} />
+                      <img src={urlFor(event.flyerImage).width(700).height(875).url()} alt={event.title} />
                     )}
                     <span className="event-date">
                       <span className="event-date-mon">{formatDate(event.date).split(' ')[1]}</span>
@@ -107,12 +107,12 @@ export default async function MonthEventsPage({
                     <div className="event-card-links">
                       {event.experience?.slug?.current && (
                         <Link href={`/experiences/${event.experience.slug.current}`} className="view-link">
-                          Know about the experience →
+                          Know about the experience
                         </Link>
                       )}
                       {isEventBookable(event) ? (
                         <Link href={`/events/${month}/${event.slug.current}`} className="btn btn-primary">
-                          Reserve Spot →
+                          Reserve Spot
                         </Link>
                       ) : (
                         <span className="view-link" style={{color: 'var(--stone-gray)'}}>Registration closed</span>

@@ -126,10 +126,15 @@ function normalizeName(name: string): string {
 
 // Reverse lookup built from FOLDER_TO_SLUG, used to match Banner filenames
 // (e.g. "Kotaganga-Ella.jpg" -> normalized "kotaganga-ella" -> same as folder
-// "Kotaganga Ella" normalized -> slug "kotaganga-ella").
+// "Kotaganga Ella" normalized -> slug "kotaganga-ella"). Keyed on both the
+// normalized folder name AND the normalized slug itself, since banner filenames
+// sometimes match neither exactly — e.g. the folder "Gerandi Ella (Beginner)"
+// normalizes to "gerandi-ella-beginner", but its banner is just "Gerandi-Ella.jpg"
+// (-> "gerandi-ella"), which only matches via the slug-based key.
 const NORMALIZED_TO_SLUG: Record<string, string> = {}
 for (const [folder, slug] of Object.entries(FOLDER_TO_SLUG)) {
   NORMALIZED_TO_SLUG[normalizeName(folder)] = slug
+  NORMALIZED_TO_SLUG[normalizeName(slug)] = slug
 }
 
 type FoundImage = {filePath: string; priority: number}

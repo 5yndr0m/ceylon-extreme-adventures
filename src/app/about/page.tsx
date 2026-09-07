@@ -35,7 +35,7 @@ export default function About() {
         <div className="stat"><span className="stat-num">500+</span><span className="stat-label">Adventures Led</span></div>
         <div className="stat"><span className="stat-num">98%</span><span className="stat-label">Recommend Us</span></div>
         <div className="stat"><span className="stat-num">10+</span><span className="stat-label">Years Experience</span></div>
-        <div className="stat"><span className="stat-num">Gold</span><span className="stat-label">SATA Award 2023</span></div>
+        <div className="stat"><span className="stat-num">Gold</span><span className="stat-label">SATA Award &apos;23–&apos;25</span></div>
       </div>
     </Reveal>
   </div>
@@ -95,7 +95,7 @@ export default function About() {
         <div className="team-info">
           <h3>Dr. Nath Dharmasena</h3>
           <span className="team-role">Chairman</span>
-          <p>A seasoned entrepreneur with experience across 13 countries. Holds a BSc in Engineering from Peradeniya, sits as director in four companies, and is the founder of Ceylon Graphene Technologies Pvt Ltd.</p>
+          <p>A seasoned entrepreneur with experience across 13 countries. Holds a BSc in Engineering from Peradeniya and sits as director in four companies.</p>
         </div>
       </Reveal>
       <Reveal className="team-card">
@@ -103,7 +103,7 @@ export default function About() {
         <div className="team-info">
           <h3>Manju S. Gunawardana</h3>
           <span className="team-role">Director / Technical Advisor</span>
-          <p>First person to abseil Sri Lanka's highest waterfall, Bambarakanda, in 1998. 25+ years in research and innovation, holds an International Rafting Federation guide license, and is qualified in Wilderness First Aid and Occupational First Aid.</p>
+          <p>First person to abseil Sri Lanka's highest waterfall, Bambarakanda, in 1998. 25+ years in research and innovation, Group CEO of LOLC&apos;s Research &amp; Innovation arm, and founder of Ceylon Graphene Technologies Pvt Ltd.</p>
         </div>
       </Reveal>
       <Reveal className="team-card">
@@ -126,7 +126,7 @@ export default function About() {
       <h2>Certified. Insured. Accountable.</h2>
       <p className="body-lg" style={{color: 'var(--stone-gray)', marginTop: '16px'}}>Every guide on our team is certified for the activity they lead, every trip carries participant insurance, and every route has a documented rescue plan on file before a group sets out.</p>
       <div className="badge-row">
-        <span className="badge-pill">🏆 SATA Gold Award 2023</span>
+        <span className="badge-pill">🏆 SATA Gold Award 2023–25</span>
         <span className="badge-pill">🪢 IRATA Rope Access Certified</span>
         <span className="badge-pill">🌊 Swiftwater Rescue Trained</span>
         <span className="badge-pill">🤿 PADI Dive Masters</span>
@@ -157,7 +157,7 @@ export default function About() {
     <p className="body-lg">Tell us your dates and group size, and we&apos;ll match you with the right guide and the right river, gorge, or trail.</p>
     <div className="ctas">
       <a href="/contact" className="btn btn-primary">Plan Your Adventure</a>
-      <a href="/#activities" className="btn btn-ghost">See All Experiences</a>
+      <a href="/experiences" className="btn btn-ghost">See All Experiences</a>
     </div>
   </div>
 </section>

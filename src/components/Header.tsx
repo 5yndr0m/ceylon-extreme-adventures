@@ -29,9 +29,8 @@ export default function Header() {
             <Link href='/experiences' className={pathname === '/experiences' ? 'active' : ''}>Experiences</Link>
             <Link href={isHome ? '#events' : '/#events'} className={pathname?.startsWith('/events') ? 'active' : ''}>Events</Link>
             <Link href='/about' className={pathname === '/about' ? 'active' : ''}>About Us</Link>
-            <Link href='/blog' className={pathname?.startsWith('/blog') ? 'active' : ''}>Blog</Link>
-            <Link href={isHome ? '#gallery' : '/#gallery'}>Gallery</Link>
             <Link href='/contact' className={pathname === '/contact' ? 'active' : ''}>Contact</Link>
+            <Link href='/blog' className={pathname?.startsWith('/blog') ? 'active' : ''}>Blog</Link>
           </nav>
           <Link href={isHome ? '#events' : '/#events'} className='btn btn-primary nav-cta'>Book Now</Link>
           <button 
@@ -49,9 +48,8 @@ export default function Header() {
         <Link href='/experiences' onClick={() => setIsOpen(false)}>Experiences</Link>
         <Link href={isHome ? '#events' : '/#events'} onClick={() => setIsOpen(false)}>Events</Link>
         <Link href='/about' onClick={() => setIsOpen(false)}>About Us</Link>
-        <Link href='/blog' onClick={() => setIsOpen(false)}>Blog</Link>
-        <Link href={isHome ? '#gallery' : '/#gallery'} onClick={() => setIsOpen(false)}>Gallery</Link>
         <Link href='/contact' onClick={() => setIsOpen(false)}>Contact</Link>
+        <Link href='/blog' onClick={() => setIsOpen(false)}>Blog</Link>
         <Link href={isHome ? '#events' : '/#events'} className='btn btn-primary' style={{ marginTop: '10px' }} onClick={() => setIsOpen(false)}>Book Now</Link>
       </div>
     </>

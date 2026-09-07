@@ -8,12 +8,26 @@ export default function ScrollEffects({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const revealSelector = 'main > section:not(.hero), main > .page-hero, .page-hero';
+    // .reveal-on-load opts a section out of scroll-triggered reveal — it plays the same
+    // fade-up entrance immediately on mount instead, for pages short enough that most of
+    // their content is already on screen at load (scroll-triggering there just meant it
+    // never played until the visitor happened to scroll).
+    const revealSelector = 'main > section:not(.hero):not(.reveal-on-load), main > .page-hero, .page-hero';
+    const immediateSelector = 'main > section.reveal-on-load';
     const parallaxSelector = '.hero-bg img, .page-hero-bg img, [data-parallax]';
     let frame = 0;
 
     const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(revealSelector));
     revealTargets.forEach((target) => target.classList.add('scroll-reveal'));
+
+    const immediateTargets = Array.from(document.querySelectorAll<HTMLElement>(immediateSelector));
+    immediateTargets.forEach((target) => target.classList.add('scroll-reveal'));
+    // Force a style flush between adding the hidden state and the visible state, otherwise
+    // the browser coalesces both and the transition never runs.
+    void document.body.offsetHeight;
+    window.requestAnimationFrame(() => {
+      immediateTargets.forEach((target) => target.classList.add('is-visible'));
+    });
 
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
