@@ -159,7 +159,7 @@ export const experienceType = defineType({
       name: 'guide',
       title: 'Assigned Guide',
       type: 'reference',
-      to: [{type: 'guide'}],
+      to: [{type: 'profile'}],
     }),
   ],
 })

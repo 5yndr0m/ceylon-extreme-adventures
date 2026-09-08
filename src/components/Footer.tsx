@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -7,7 +8,9 @@ export default function Footer() {
         <div className='container'>
           <div className='footer-grid'>
             <div className='footer-col'>
-              <div className='footer-logo'>Ceylon<span>X</span>treme</div>
+              <div className='footer-logo'>
+                <Image src='/logo-full.png' alt='Ceylon Extreme Adventures' width={900} height={449} />
+              </div>
               <p style={{ fontSize: '14px', maxWidth: '32ch' }}>In search of freedom</p>
               <div className='social-row'>
                 <a href='https://www.facebook.com/extremeadventure.lk' target='_blank' rel='noopener' aria-label='Facebook'>
@@ -23,10 +26,12 @@ export default function Footer() {
             </div>
             <div className='footer-col'>
               <h4>Experiences</h4>
-              <Link href='/experiences?category=Abseiling'>Waterfall Abseiling</Link>
-              <Link href='/experiences?category=Canyoning'>Canyoning</Link>
-              <Link href='/experiences?category=Rafting'>White-Water Rafting</Link>
-              <Link href='/experiences?category=Hiking'>Hiking &amp; Trekking</Link>
+              <Link href='/experiences?category=Abseiling'>Abseiling Adventures</Link>
+              <Link href='/experiences?category=Hiking'>Hiking Adventures</Link>
+              <Link href='/experiences?category=Camping%20%26%20Trekking'>Trekking and Camping</Link>
+              <Link href='/experiences?category=Rafting'>Rafting Adventures</Link>
+              <Link href='/experiences?category=Canyoning'>Canyoning Adventures</Link>
+              <Link href='/experiences?category=River%20Expedition'>River Expedition</Link>
             </div>
             <div className='footer-col'>
               <h4>Support</h4>

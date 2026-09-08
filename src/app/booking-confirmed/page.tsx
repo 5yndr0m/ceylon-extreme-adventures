@@ -62,7 +62,7 @@ export default async function BookingConfirmedPage({
                 <span className="bp-fact-pill-value">{booking.preferredDate}</span>
               </div>
               <div className="bp-fact-pill">
-                <span className="bp-fact-pill-label">Travellers</span>
+                <span className="bp-fact-pill-label">Slots</span>
                 <span className="bp-fact-pill-value">{booking.groupSize}</span>
               </div>
             </div>

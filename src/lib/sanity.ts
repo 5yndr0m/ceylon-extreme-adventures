@@ -59,7 +59,7 @@ export async function getExperienceBySlug(slug: string) {
       suitableMonths,
       heroImage,
       gallery,
-      guide->{name, photo, bio, phone},
+      guide->{name, portraitImage, bio, phone},
       "testimonials": *[_type == "testimonial" && references(^._id)] | order(featured desc) {
         _id, customerName, quote, rating, source, photo
       },

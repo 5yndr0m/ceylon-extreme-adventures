@@ -2,13 +2,17 @@
 //
 // Batch-imports the photo library (folders per event, size variants inside each)
 // into Sanity: fills each experience's `gallery` array with alt text, and sets
-// `heroImage` from the Banners folder where one isn't already set.
+// `heroImage` from the Banners folder where one isn't already set. Every image is
+// converted to WebP before upload (via sharp) regardless of source format — smaller
+// files without a visible quality hit, which matters here given how large some of
+// these galleries are.
 //
 // This does NOT touch anything else on the document. By default it's idempotent:
 // skips gallery upload if the doc already has a non-empty gallery, skips hero upload
 // if the doc already has a heroImage — safe to re-run. Pass --force to overwrite both
 // regardless of current state (e.g. an experience with a single leftover placeholder
-// image in its gallery, or you've re-run photo prep and want the newest set uploaded).
+// image in its gallery, or you've re-run photo prep and want the newest set uploaded) —
+// this is also how you replace previously-uploaded JPGs with WebP versions.
 //
 // ---- Folder structure this expects ----
 // PHOTOS_ROOT/
@@ -48,22 +52,42 @@
 // Optional: cap how many gallery photos get uploaded per experience (default:
 // no cap — everything found in the chosen size folder is uploaded).
 //   MAX_GALLERY_PER_EXPERIENCE=12 PHOTOS_ROOT="..." npx tsx import-photos.ts
+//
+// Optional: change the WebP output quality (default 82, 1-100).
+//   WEBP_QUALITY=90 PHOTOS_ROOT="..." npx tsx import-photos.ts
+//
+// To replace everything already uploaded as JPG with WebP versions, re-run with
+// --force — that overwrites galleries/hero images regardless of what's already set:
+//   PHOTOS_ROOT="..." npx tsx import-photos.ts --force
+// Note: this uploads new WebP assets and re-points the gallery/heroImage fields at
+// them — it does not delete the old JPG assets from Sanity's media library. Once
+// you've confirmed the new WebP images look right, the old JPGs can be cleaned up
+// from the Media browser in Studio (they'll show as unused once nothing references
+// them anymore).
 
 import {createClient} from '@sanity/client'
 import fs from 'fs'
 import path from 'path'
+import sharp from 'sharp'
 import 'dotenv/config'
 
 const DRY_RUN = process.argv.includes('--dry-run')
 // By default this script never overwrites a gallery/heroImage that's already set (safe to
 // re-run without duplicating work). Pass --force to overwrite both regardless of current
 // state — useful when an experience has a leftover placeholder image, or you've re-run the
-// photo prep and want the freshest set uploaded.
+// photo prep and want the freshest set uploaded. This is also how you replace previously
+// uploaded JPGs with the WebP versions this script now produces — re-running without
+// --force will just skip everything that already has a gallery/heroImage.
 const FORCE = process.argv.includes('--force')
 const PHOTOS_ROOT = process.env.PHOTOS_ROOT!
 const MAX_GALLERY_PER_EXPERIENCE = process.env.MAX_GALLERY_PER_EXPERIENCE
   ? parseInt(process.env.MAX_GALLERY_PER_EXPERIENCE, 10)
   : Infinity
+// 82 is a reasonable middle ground for photography — visually near-lossless, well under
+// half the file size of an equivalent-quality JPEG. Raise toward 90+ if banding/artifacts
+// show up on any particular photo, or drop toward 70 if gallery load time matters more
+// than a bit of extra compression.
+const WEBP_QUALITY = process.env.WEBP_QUALITY ? parseInt(process.env.WEBP_QUALITY, 10) : 82
 
 const sanity = createClient({
   projectId: process.env.SANITY_PROJECT_ID!,
@@ -178,9 +202,15 @@ function pickBestImages(eventDir: string): string[] {
   return [...byBasename.values()].sort((a, b) => a.filePath.localeCompare(b.filePath)).map((v) => v.filePath)
 }
 
+// Converts every image to WebP before upload, regardless of source format (jpg/png/etc) —
+// smaller files, same visual quality, and every image in Sanity ends up in one consistent
+// format instead of a mix. sharp handles the decode+encode; source files on disk are never
+// modified, only the bytes actually sent to Sanity.
 async function uploadImage(filePath: string) {
-  const buffer = fs.readFileSync(filePath)
-  return sanity.assets.upload('image', buffer, {filename: path.basename(filePath)})
+  const original = fs.readFileSync(filePath)
+  const webpBuffer = await sharp(original).webp({quality: WEBP_QUALITY}).toBuffer()
+  const filename = path.basename(filePath, path.extname(filePath)) + '.webp'
+  return sanity.assets.upload('image', webpBuffer, {filename, contentType: 'image/webp'})
 }
 
 async function run() {
