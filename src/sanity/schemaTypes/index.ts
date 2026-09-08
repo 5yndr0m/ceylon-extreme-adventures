@@ -2,7 +2,7 @@ import type {SchemaTypeDefinition} from 'sanity'
 
 import {postType} from './postType'
 import {experienceType} from './experienceType'
-import {guideType} from './guideType'
+import {profileType} from './profileType'
 import {testimonialType} from './testimonialType'
 import {bookingType} from './bookingType'
 import {eventType} from './eventType'
@@ -15,7 +15,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     postType,
     experienceType,
-    guideType,
+    profileType,
     testimonialType,
     bookingType,
     eventType,

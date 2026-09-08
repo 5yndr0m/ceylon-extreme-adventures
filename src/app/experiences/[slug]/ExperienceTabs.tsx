@@ -201,9 +201,9 @@ export default function ExperienceTabs({exp}: {exp: any}) {
             <section className="bp-section">
               <h2>Your guide</h2>
               <div className="bp-guide-card">
-                {exp.guide.photo && (
+                {exp.guide.portraitImage && (
                   <Image
-                    src={urlFor(exp.guide.photo).width(160).height(160).url()}
+                    src={urlFor(exp.guide.portraitImage).width(160).height(160).url()}
                     alt={exp.guide.name}
                     width={72}
                     height={72}
