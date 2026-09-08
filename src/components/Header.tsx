@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -24,7 +25,9 @@ export default function Header() {
     <>
       <header id='siteHeader' className={headerClass}>
         <div className='container nav-row'>
-          <Link href='/' className='logo'>Ceylon<span>X</span>treme</Link>
+          <Link href='/' className='logo'>
+            <Image src='/logo-mark.png' alt='Ceylon Extreme Adventures' width={700} height={262} priority />
+          </Link>
           <nav className='nav-links'>
             <Link href='/experiences' className={pathname === '/experiences' ? 'active' : ''}>Experiences</Link>
             <Link href={isHome ? '#events' : '/#events'} className={pathname?.startsWith('/events') ? 'active' : ''}>Events</Link>
