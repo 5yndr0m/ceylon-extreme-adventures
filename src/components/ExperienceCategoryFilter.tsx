@@ -12,7 +12,6 @@ type ExperienceCard = {
   slug?: { current?: string }
   category?: string | null
   locationName?: string | null
-  price?: number | null
   heroImage?: any
 }
 
@@ -29,7 +28,6 @@ export default function ExperienceCategoryFilter({
   const searchParams = useSearchParams()
   const [selectedCategory, setSelectedCategory] = useState(initialCategory)
   const [searchQuery, setSearchQuery] = useState('')
-  const [maxPrice, setMaxPrice] = useState<number | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
 
   useEffect(() => {
@@ -45,12 +43,6 @@ export default function ExperienceCategoryFilter({
     )
 
     return Array.from(uniqueCategories).sort((a, b) => a.localeCompare(b))
-  }, [experiences])
-
-  // Highest price across all experiences — used to bound the price slider
-  const priceCeiling = useMemo(() => {
-    const prices = experiences.map((e) => e.price ?? 0)
-    return prices.length > 0 ? Math.max(...prices) : 0
   }, [experiences])
 
   const updateCategory = (category: string) => {
@@ -76,9 +68,6 @@ export default function ExperienceCategoryFilter({
         ? experience.title.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
           (experience.locationName ?? '').toLowerCase().includes(searchQuery.trim().toLowerCase())
         : true
-    )
-    .filter((experience) =>
-      maxPrice !== null ? (experience.price ?? 0) <= maxPrice : true
     )
 
   return (
@@ -113,7 +102,7 @@ export default function ExperienceCategoryFilter({
         ))}
       </div>
 
-      {/* Search + price filter + view toggle row */}
+      {/* Search + view toggle row */}
       <div className="mb-8 flex flex-col gap-4 rounded-xl border border-stone-200 bg-white/70 p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-center">
           {/* Search bar */}
@@ -137,35 +126,6 @@ export default function ExperienceCategoryFilter({
               placeholder="Search by name or location..."
               className="w-full rounded-full border border-stone-300 bg-white py-2 pl-9 pr-4 text-sm text-stone-800 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
-          </div>
-
-          {/* Price filter */}
-          <div className="flex items-center gap-3 sm:min-w-[220px]">
-            <label htmlFor="price-filter" className="whitespace-nowrap text-sm font-medium text-stone-600">
-              Max price
-            </label>
-            <input
-              id="price-filter"
-              type="range"
-              min={0}
-              max={priceCeiling || 1}
-              step={500}
-              value={maxPrice ?? priceCeiling}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="flex-1 accent-orange-600"
-            />
-            <span className="whitespace-nowrap text-sm text-stone-700">
-              {maxPrice !== null ? `≤ LKR ${maxPrice.toLocaleString()}` : 'Any'}
-            </span>
-            {maxPrice !== null && (
-              <button
-                type="button"
-                onClick={() => setMaxPrice(null)}
-                className="text-xs text-orange-600 underline whitespace-nowrap"
-              >
-                Reset
-              </button>
-            )}
           </div>
         </div>
 
