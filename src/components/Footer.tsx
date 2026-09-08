@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -7,7 +8,9 @@ export default function Footer() {
         <div className='container'>
           <div className='footer-grid'>
             <div className='footer-col'>
-              <div className='footer-logo'>Ceylon<span>X</span>treme</div>
+              <div className='footer-logo'>
+                <Image src='/logo-full.png' alt='Ceylon Extreme Adventures' width={900} height={449} />
+              </div>
               <p style={{ fontSize: '14px', maxWidth: '32ch' }}>In search of freedom</p>
               <div className='social-row'>
                 <a href='https://www.facebook.com/extremeadventure.lk' target='_blank' rel='noopener' aria-label='Facebook'>
