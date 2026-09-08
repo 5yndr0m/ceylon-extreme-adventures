@@ -146,7 +146,7 @@ function PaymentPortalInner() {
           </span>
           <span className="bp-sub-item">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            {booking.groupSize} {booking.groupSize === 1 ? 'traveller' : 'travellers'}
+            {booking.groupSize} {booking.groupSize === 1 ? 'slot' : 'slots'}
           </span>
         </div>
       </div>
@@ -177,7 +177,7 @@ function PaymentPortalInner() {
                     <span className="bp-fact-pill-value">{booking.preferredDate}</span>
                   </div>
                   <div className="bp-fact-pill">
-                    <span className="bp-fact-pill-label">Travellers</span>
+                    <span className="bp-fact-pill-label">Slots</span>
                     <span className="bp-fact-pill-value">{booking.groupSize}</span>
                   </div>
                   <div className="bp-fact-pill">

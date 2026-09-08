@@ -80,7 +80,7 @@ export default function EventBookingForm({eventId}: {eventId: string}) {
       </div>
 
       <div className="bp-form-row">
-        <label>Travellers</label>
+        <label>Slots</label>
         <div className="bp-stepper">
           <button type="button" onClick={() => updateGroupSize(-1)} aria-label="Decrease group size">−</button>
           <span>{form.groupSize}</span>
