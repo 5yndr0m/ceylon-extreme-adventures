@@ -26,7 +26,8 @@ export default function Header() {
       <header id='siteHeader' className={headerClass}>
         <div className='container nav-row'>
           <Link href='/' className='logo'>
-            <Image src='/logo-mark.png' alt='Ceylon Extreme Adventures' width={700} height={262} priority />
+            <Image src='/logo-mark.png' alt='Ceylon Extreme Adventures' width={700} height={262} className='logo-mark' priority />
+            <Image src='/logo-tagline.png' alt='' width={500} height={85} className='logo-tagline' priority />
           </Link>
           <nav className='nav-links'>
             <Link href='/experiences' className={pathname === '/experiences' ? 'active' : ''}>Experiences</Link>

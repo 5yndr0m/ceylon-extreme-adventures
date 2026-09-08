@@ -102,8 +102,9 @@ header.transparent-mode { background:transparent; box-shadow:none; padding:18px 
 header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0; box-shadow:0 2px 20px rgba(0,0,0,.2); }
 
 .nav-row{ display:flex; align-items:center; justify-content:space-between; }
-.logo{ display:flex; align-items:center; }
-.logo img{ height:38px; width:auto; display:block; }
+.logo{ display:flex; align-items:center; gap:8px; }
+.logo .logo-mark{ height:34px; width:auto; display:block; }
+.logo .logo-tagline{ height:17px; width:auto; display:block; }
 .nav-links{ display:none; gap:34px; }
 .nav-links a{ color:#fff; font-size:14px; font-weight:600; letter-spacing:.3px; text-transform:uppercase; opacity:.9; transition:opacity .2s; }
 .nav-links a:hover, .nav-links a.active{ opacity:1; color:var(--adrenaline-orange); }
