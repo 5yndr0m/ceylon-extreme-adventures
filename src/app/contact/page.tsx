@@ -157,7 +157,7 @@ export default function Contact() {
               <div className="hours-list">
                 <div className="hours-row">
                   <span>Monday – Friday</span>
-                  <span>7:00 AM – 7:00 PM</span>
+                  <span>8:00 AM – 6:00 PM</span>
                 </div>
                 <div className="hours-row">
                   <span>Saturday – Sunday</span>
