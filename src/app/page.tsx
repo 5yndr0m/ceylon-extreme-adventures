@@ -8,12 +8,12 @@ import { getAllPosts, getFeaturedTestimonials, getUpcomingMonthlyBanners, urlFor
 
 const TRIPADVISOR_URL = 'https://www.tripadvisor.com/Attraction_Review-g304138-d26849088-Reviews-Ceylon_Extreme_Adventure_Pvt_Ltd-Kandy_Kandy_District_Central_Province.html'
 
-// Looping hero background clip — a 15s highlight cut from the company's own promo reel
-// (trimmed to skip the intro/name-card sections, which have on-screen captions baked in
-// that would clash with the hero's own heading text). Self-hosted as a Sanity file asset
-// rather than committed to the repo, so it doesn't bloat the git history.
-const HERO_VIDEO_URL = 'https://cdn.sanity.io/files/b5qf24u0/production/3492fb79ce2da5f8eef90a8655f49953efb7ea94.mp4'
-const HERO_POSTER_URL = 'https://cdn.sanity.io/images/b5qf24u0/production/5bcb3d3473a8ddac33e9b477354e7c39f7f0c1b3-1280x540.jpg'
+// Looping hero background clip — a purpose-shot 28s montage (waterfall aerial, kayaking,
+// abseiling, sunset paddle, hiking) with no on-screen text, so it needed no cropping/trimming,
+// just muting + compression. Self-hosted as a Sanity file asset rather than committed to the
+// repo, so it doesn't bloat the git history.
+const HERO_VIDEO_URL = 'https://cdn.sanity.io/files/b5qf24u0/production/71a077c0df4195e13a2f2ed213e30ea19b918072.mp4'
+const HERO_POSTER_URL = 'https://cdn.sanity.io/images/b5qf24u0/production/d1879051ce34ad0b11b684706bc4df69242c945d-1280x720.jpg'
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
 
