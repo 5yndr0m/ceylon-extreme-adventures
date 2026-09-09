@@ -27,7 +27,6 @@ export async function getAllExperiences() {
       category,
       difficulty,
       durationHours,
-      price,
       locationName,
       status,
       heroImage
@@ -47,7 +46,6 @@ export async function getExperienceBySlug(slug: string) {
       category,
       difficulty,
       durationHours,
-      price,
       locationName,
       distancesFrom,
       maxGroupSize,
@@ -99,7 +97,7 @@ export async function getPostBySlug(slug: string) {
       publishedAt,
       image,
       body,
-      relatedExperience->{title, slug, heroImage, price, category}
+      relatedExperience->{title, slug, heroImage, category}
     }
   `,
     {slug}
@@ -234,7 +232,8 @@ export async function getEventBySlug(slug: string) {
   return client.fetch(
     `*[_type == "event" && slug.current == $slug][0]{
       _id, title, slug, date, durationDays, price, flyerImage, includes, shortDescription,
-      registrationOpen,
+      registrationOpen, maxSlots,
+      "bookedSlots": math::sum(*[_type == "booking" && event._ref == ^._id].groupSize),
       experience->{_id, title, slug, category, heroImage, difficulty, locationName, maxGroupSize, shortDescription}
     }`,
     {slug}

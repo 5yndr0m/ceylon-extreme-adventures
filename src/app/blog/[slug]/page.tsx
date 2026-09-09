@@ -77,9 +77,6 @@ export default async function BlogPostPage({
                   </div>
                 )}
                 <h3>{post.relatedExperience.title}</h3>
-                {post.relatedExperience.price && (
-                  <p className="blog-related-price">From LKR {post.relatedExperience.price.toLocaleString()}</p>
-                )}
                 <span className="blog-related-cta">View Experience</span>
               </Link>
             </aside>

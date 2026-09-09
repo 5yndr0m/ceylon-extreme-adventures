@@ -19,6 +19,13 @@ export default async function EventDetailPage({
   const canBook = isEventBookable(event)
   const exp = event.experience
 
+  // Only show remaining-slots info once at least one booking exists for THIS event —
+  // bookedSlots is scoped by the exact event._id (see getEventBySlug), so a different
+  // departure's bookings (same experience, other dates) never factor in here.
+  const bookedSlots: number = event.bookedSlots ?? 0
+  const remainingSlots =
+    bookedSlots > 0 && typeof event.maxSlots === 'number' ? Math.max(0, event.maxSlots - bookedSlots) : null
+
   const dateLabel = new Date(event.date).toLocaleDateString('en-GB', {
     weekday: 'long',
     day: 'numeric',
@@ -146,7 +153,7 @@ export default async function EventDetailPage({
                 Registration closed
               </p>
             ) : (
-              <EventBookingForm eventId={event._id} />
+              <EventBookingForm eventId={event._id} remainingSlots={remainingSlots} />
             )}
           </div>
         </aside>

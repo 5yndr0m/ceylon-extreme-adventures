@@ -568,8 +568,7 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .blog-related-label{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-gray); margin-bottom:12px; }
 .blog-related-link{ display:block; }
 .blog-related-img{ position:relative; aspect-ratio:4/3; border-radius:var(--radius-sm); overflow:hidden; margin-bottom:12px; }
-.blog-related-link h3{ font-size:17px; color:var(--basalt-black); margin-bottom:4px; }
-.blog-related-price{ font-size:14px; color:var(--stone-gray); margin-bottom:10px; }
+.blog-related-link h3{ font-size:17px; color:var(--basalt-black); margin-bottom:10px; }
 .blog-related-cta{ font-size:13px; font-weight:700; color:var(--adrenaline-orange); }
 
 /* Hours list for booking */
@@ -730,6 +729,7 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-stepper button{ width:26px; height:26px; border-radius:50%; border:1px solid var(--cloud-gray); background:#fff; font-size:16px; line-height:1; color:var(--jungle-green); }
 .bp-stepper button:hover{ border-color:var(--adrenaline-orange); color:var(--adrenaline-orange); }
 .bp-stepper span{ min-width:20px; text-align:center; font-weight:700; }
+.bp-slots-note{ font-size:13px; color:var(--stone-gray); }
 
 .bp-submit{ width:100%; margin-top:4px; }
 .bp-form-error{ color:crimson; font-size:13px; margin:0; }
