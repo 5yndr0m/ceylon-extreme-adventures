@@ -12,6 +12,13 @@ type Activity = {
 
 const activities: Activity[] = [
   {
+    href: '/experiences?category=Abseiling',
+    image: 'https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=70&w=900&auto=format&fit=crop',
+    alt: 'Traveler abseiling down a waterfall in Sri Lanka',
+    title: 'Abseiling',
+    description: 'Descend cascading waterfalls with full safety gear and expert instruction.',
+  },
+  {
     href: '/experiences?category=Hiking',
     image: 'https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=70&w=900&auto=format&fit=crop',
     alt: 'Hikers on a misty mountain trail in Sri Lanka',
@@ -19,11 +26,13 @@ const activities: Activity[] = [
     description: 'Trek scenic ridgelines and misty peaks with guides who know every hidden trail.',
   },
   {
-    href: '/experiences?category=Abseiling',
-    image: 'https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=70&w=900&auto=format&fit=crop',
-    alt: 'Traveler abseiling down a waterfall in Sri Lanka',
-    title: 'Abseiling',
-    description: 'Descend cascading waterfalls with full safety gear and expert instruction.',
+    // Category value is "Camping & Trekking" — previously mis-linked to category=Hiking,
+    // which meant this card and the Hiking card above pointed at the same filtered list.
+    href: '/experiences?category=Camping%20%26%20Trekking',
+    image: 'https://images.unsplash.com/photo-1508873699372-7aeab60b44ab?fm=jpg&q=70&w=900&auto=format&fit=crop',
+    alt: 'Campers with tents under the stars in the mountains',
+    title: 'Trekking & Camping',
+    description: 'Multi-day treks with camp nights under the stars, far from the crowds.',
   },
   {
     href: '/experiences?category=Rafting',
@@ -33,11 +42,14 @@ const activities: Activity[] = [
     description: "Paddle through rapids and calm stretches alike on Sri Lanka's best rivers.",
   },
   {
-    href: '/experiences?category=Hiking',
-    image: 'https://images.unsplash.com/photo-1508873699372-7aeab60b44ab?fm=jpg&q=70&w=900&auto=format&fit=crop',
-    alt: 'Campers with tents under the stars in the mountains',
-    title: 'Trekking & Camping',
-    description: 'Multi-day treks with camp nights under the stars, far from the crowds.',
+    // Placeholder: a real Canyoning experience's own hero image (Katarang Oya), swapped
+    // in for the old Caving card — Caving has zero published experiences while Canyoning
+    // has several, and the client is sourcing dedicated category photos separately.
+    href: '/experiences?category=Canyoning',
+    image: 'https://cdn.sanity.io/images/b5qf24u0/production/d2acc1e1a247fe6015877cd2312f05a60d5042a4-2560x1440.webp?w=900&h=600&fit=crop&auto=format',
+    alt: 'Canyoning down Katarang Oya in Sri Lanka',
+    title: 'Canyoning',
+    description: 'Slide, jump, and abseil your way down river gorges carved into the rainforest.',
   },
   {
     href: '/experiences?category=River%20Expedition',
@@ -45,13 +57,6 @@ const activities: Activity[] = [
     alt: 'Adventurers on a multi-day river expedition',
     title: 'River Expedition',
     description: 'Multi-day river journeys blending rapids, camping, and remote scenery.',
-  },
-  {
-    href: '/experiences?category=Caving',
-    image: 'https://images.unsplash.com/photo-1520962880247-cfaf541c8724?fm=jpg&q=70&w=900&auto=format&fit=crop',
-    alt: 'Explorer navigating a dark cave with headlamp',
-    title: 'Caving',
-    description: 'Explore underground chambers and passages lit only by your headlamp.',
   },
 ]
 
