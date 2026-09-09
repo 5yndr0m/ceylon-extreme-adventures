@@ -64,7 +64,11 @@ export default async function Home() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 8.5L21 9.5L16 14L17.5 21L12 17.5L6.5 21L8 14L3 9.5L9.5 8.5L12 2Z" fill="#F2622E" /></svg>
             SATA Gold Winner 2023, 2024 &amp; 2025 — Leading Adventure Sports Operator, South Asia
           </div>
-          <h1>Chase Freedom. One Extreme Adventure at a Time.</h1>
+          <h1>
+            <span className="hero-line"><span className="hero-line-inner">Chase Freedom.</span></span>
+            <span className="hero-line"><span className="hero-line-inner">One Extreme Adventure</span></span>
+            <span className="hero-line"><span className="hero-line-inner">at a Time.</span></span>
+          </h1>
           <p className="hero-sub body-lg">Abseil untouched waterfalls, raft wild rivers, and trek hidden trails across Sri Lanka — guided by experts who put your safety first.</p>
           <div className="hero-ctas">
             <a href="#activities" className="btn btn-primary">Explore Adventures</a>
