@@ -394,6 +394,8 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .footer-col h4{ color:#fff; font-size:14px; letter-spacing:.5px; text-transform:uppercase; margin-bottom:16px; }
 .footer-col a{ display:block; font-size:14px; padding:5px 0; color:rgba(255,255,255,.65); }
 .footer-col a:hover{ color:var(--adrenaline-orange); }
+.footer-col .footer-contact-link{ display:flex; align-items:flex-start; gap:10px; }
+.footer-contact-icon{ width:16px; height:16px; flex:0 0 16px; margin-top:2px; }
 .footer-logo{ margin-bottom:14px; }
 .footer-logo img{ width:170px; height:auto; display:block; }
 .social-row{ display:flex; gap:12px; margin-top:16px; }
@@ -405,6 +407,10 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .footer-bottom{ border-top:1px solid rgba(255,255,255,.12); padding-top:22px; font-size:13px; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; }
 
 @media(min-width:768px){ .footer-grid{ grid-template-columns:1.4fr 1fr 1fr 1fr; } }
+@media(min-width:768px){
+  .footer-grid > .footer-col:first-child > p{ text-align:flex-start; }
+  .footer-grid > .footer-col:first-child .social-row{ justify-content:flex-start; }
+}
 
 .sticky-cta{
   position:fixed; bottom:0; left:0; right:0; z-index:90; background:var(--basalt-black);

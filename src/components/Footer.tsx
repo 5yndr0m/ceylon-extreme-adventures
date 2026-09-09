@@ -22,6 +22,12 @@ export default function Footer() {
                 <a href='https://www.youtube.com/@ceylonextremeadventures3799' target='_blank' rel='noopener' aria-label='YouTube'>
                   <svg width='16' height='16' viewBox='0 0 24 24' fill='#fff'><path d='M22 12s0-3.2-.4-4.7c-.2-.9-.9-1.6-1.8-1.8C18.3 5 12 5 12 5s-6.3 0-7.8.5c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.7c.2.9.9 1.6 1.8 1.8C5.7 19 12 19 12 19s6.3 0 7.8-.5c.9-.2 1.6-.9 1.8-1.8.4-1.5.4-4.7.4-4.7zM10 15.3V8.7l6 3.3-6 3.3z'/></svg>
                 </a>
+                <a href='https://www.tiktok.com/@extremeadventures.lk' target='_blank' rel='noopener' aria-label='TikTok'>
+                  <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
+                    <path d='M15 4v10.5a4.5 4.5 0 1 1-4.5-4.5' />
+                    <path d='M15 4c.7 2.2 2.1 3.4 4.5 3.5' />
+                  </svg>
+                </a>
               </div>
             </div>
             <div className='footer-col'>
@@ -44,10 +50,32 @@ export default function Footer() {
             </div>
             <div className='footer-col'>
               <h4>Contact</h4>
-              <Link href='/contact#location'>93/A, Madiwala Rd, Embuldeniya, Nugegoda</Link>
-              <a href='mailto:sales@extremeadventure.lk'>sales@extremeadventure.lk</a>
-              <a href='tel:+94707900700'>+94 707 900 700</a>
-              <a href='tel:+94707900701'>+94 707 900 701</a>
+              <Link href='/contact#location' className='footer-contact-link'>
+                <svg className='footer-contact-icon' viewBox='0 0 24 24' aria-hidden='true' fill='none' stroke='currentColor' strokeWidth='1.8'>
+                  <path d='M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z' />
+                  <circle cx='12' cy='10' r='2.5' />
+                </svg>
+                <span>93/A, Madiwala Rd, Embuldeniya, Nugegoda</span>
+              </Link>
+              <a href='mailto:sales@extremeadventure.lk' className='footer-contact-link'>
+                <svg className='footer-contact-icon' viewBox='0 0 24 24' aria-hidden='true' fill='none' stroke='currentColor' strokeWidth='1.8'>
+                  <rect x='3' y='5' width='18' height='14' rx='2' />
+                  <path d='m4 7 8 6 8-6' />
+                </svg>
+                <span>sales@extremeadventure.lk</span>
+              </a>
+              <a href='tel:+94707900700' className='footer-contact-link'>
+                <svg className='footer-contact-icon' viewBox='0 0 24 24' aria-hidden='true' fill='none' stroke='currentColor' strokeWidth='1.8'>
+                  <path d='M6.6 3.5 9 3l2 5-2.1 1.7a14.5 14.5 0 0 0 5.4 5.4L16 13l5 2-.5 2.4a3 3 0 0 1-3.2 2.4C10.4 19.1 4.9 13.6 4.2 6.7A3 3 0 0 1 6.6 3.5Z' />
+                </svg>
+                <span>+94 707 900 700</span>
+              </a>
+              <a href='tel:+94707900701' className='footer-contact-link'>
+                <svg className='footer-contact-icon' viewBox='0 0 24 24' aria-hidden='true' fill='none' stroke='currentColor' strokeWidth='1.8'>
+                  <path d='M6.6 3.5 9 3l2 5-2.1 1.7a14.5 14.5 0 0 0 5.4 5.4L16 13l5 2-.5 2.4a3 3 0 0 1-3.2 2.4C10.4 19.1 4.9 13.6 4.2 6.7A3 3 0 0 1 6.6 3.5Z' />
+                </svg>
+                <span>+94 707 900 701</span>
+              </a>
             </div>
           </div>
           <div className='footer-bottom'>
