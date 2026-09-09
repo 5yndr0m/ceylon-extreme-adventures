@@ -156,12 +156,8 @@ export default function Contact() {
 
               <div className="hours-list">
                 <div className="hours-row">
-                  <span>Monday – Friday</span>
+                  <span>Monday – Saturday</span>
                   <span>8:00 AM – 6:00 PM</span>
-                </div>
-                <div className="hours-row">
-                  <span>Saturday – Sunday</span>
-                  <span>6:00 AM – 7:00 PM</span>
                 </div>
                 <div className="hours-row">
                   <span>Public Holidays</span>
@@ -270,10 +266,10 @@ export default function Contact() {
 
           <Reveal className="map-wrap">
             <iframe
-              src="https://www.google.com/maps?q=Nugegoda,Sri%20Lanka&output=embed"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d247.57332350198104!2d79.91240114905668!3d6.869842130954164!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25bff217cb23b%3A0xe80bb79999171280!2sCeylon%20Extreme%20Adventure%20(Pvt)%20Ltd.!5e0!3m2!1sen!2sus!4v1788924598047!5m2!1sen!2sus"
               allowFullScreen
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+              referrerPolicy="strict-origin-when-cross-origin"
               title="Ceylon Extreme Adventures office location"
             ></iframe>
           </Reveal>
