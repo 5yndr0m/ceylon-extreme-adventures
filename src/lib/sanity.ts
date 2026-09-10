@@ -14,6 +14,43 @@ export function urlFor(source: any) {
   return builder.image(source)
 }
 
+export async function getLeadershipProfiles() {
+  return client.fetch(`
+    *[_type == "profile" && defined(slug.current)] | order(_createdAt asc) {
+      _id,
+      name,
+      slug,
+      role,
+      portraitImage,
+      coverImage,
+      bio,
+      longDescription,
+      specialties,
+      email,
+      phone
+    }
+  `)
+}
+
+export async function getProfileBySlug(slug: string) {
+  return client.fetch(
+    `*[_type == "profile" && slug.current == $slug][0] {
+      _id,
+      name,
+      slug,
+      role,
+      portraitImage,
+      coverImage,
+      bio,
+      longDescription,
+      specialties,
+      email,
+      phone
+    }`,
+    {slug}
+  )
+}
+
 // One row per experience card — keep this lean, listing pages don't need fullDescription.
 // Excludes retired experiences: status != "retired" also matches docs where status was
 // never set (older docs pre-dating this field), so nothing existing silently disappears —

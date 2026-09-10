@@ -1,8 +1,13 @@
 
 import Reveal from '../../components/Reveal';
+import Link from 'next/link';
+import Image from 'next/image';
+import {getLeadershipProfiles, urlFor} from '../../lib/sanity';
 
 
-export default function About() {
+export default async function About() {
+  const founders = await getLeadershipProfiles();
+
   return (
     <main>
       
@@ -82,38 +87,23 @@ export default function About() {
       <p>A registered, structured company led by a leadership team with decades of combined experience in adventure sports, research, and enterprise.</p>
     </Reveal>
     <div className="team-scroller">
-      <Reveal className="team-card">
-        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=51" alt="Sanjeewa Ariyarathne, Founder, Director and CEO" /></div>
-        <div className="team-info">
-          <h3>Sanjeewa Ariyarathne</h3>
-          <span className="team-role">Founder / Director / CEO</span>
-          <p>A well-experienced all-around adventure sports guide and instructor with over a decade of experience. Holds a Hiking/Trekking Guide License from the Wayamba Development Authority and a course in Inbound Tourism from the Academy of Inbound Tourism and Foreign Languages.</p>
-        </div>
-      </Reveal>
-      <Reveal className="team-card">
-        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=53" alt="Dr. Nath Dharmasena, Chairman" /></div>
-        <div className="team-info">
-          <h3>Dr. Nath Dharmasena</h3>
-          <span className="team-role">Chairman</span>
-          <p>A seasoned entrepreneur with experience across 13 countries. Holds a BSc in Engineering from Peradeniya and sits as director in four companies.</p>
-        </div>
-      </Reveal>
-      <Reveal className="team-card">
-        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=60" alt="Manju S. Gunawardana, Director and Technical Advisor" /></div>
-        <div className="team-info">
-          <h3>Manju S. Gunawardana</h3>
-          <span className="team-role">Director / Technical Advisor</span>
-          <p>First person to abseil Sri Lanka's highest waterfall, Bambarakanda, in 1998. 25+ years in research and innovation, Group CEO of LOLC&apos;s Research &amp; Innovation arm, and founder of Ceylon Graphene Technologies Pvt Ltd.</p>
-        </div>
-      </Reveal>
-      <Reveal className="team-card">
-        <div className="team-photo"><img src="https://i.pravatar.cc/400?img=45" alt="Priyanga Maldeniya, Sales and Reservations Manager" /></div>
-        <div className="team-info">
-          <h3>Priyanga Maldeniya</h3>
-          <span className="team-role">Sales &amp; Reservations Manager</span>
-          <p>Handles bookings, reservations, and client inquiries — your first point of contact for planning an adventure with CEA.</p>
-        </div>
-      </Reveal>
+      {founders.map((founder: any) => (
+        <Reveal className="team-card" key={founder._id}>
+          <Link href={`/about/team/${founder.slug.current}`} className="team-card-link">
+            <div className="team-photo">
+              {founder.portraitImage ? (
+                <Image src={urlFor(founder.portraitImage).width(600).height(750).url()} alt={founder.name} fill className="object-cover" />
+              ) : <div className="team-photo-fallback" />}
+            </div>
+            <div className="team-info">
+              <h3>{founder.name}</h3>
+              <span className="team-role">{founder.role}</span>
+              <p>{founder.bio}</p>
+              <span className="team-card-cta">View profile <span aria-hidden="true">→</span></span>
+            </div>
+          </Link>
+        </Reveal>
+      ))}
     </div>
   </div>
 </section>

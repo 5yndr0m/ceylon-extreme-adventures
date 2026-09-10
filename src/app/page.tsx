@@ -4,7 +4,7 @@ import ActivitiesCarousel from '../components/ActivitiesCarousel';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import FoundersSlider from '../components/FoundersSlider';
 import Image from 'next/image';
-import { getAllPosts, getFeaturedTestimonials, getUpcomingMonthlyBanners, urlFor } from '../lib/sanity';
+import { getAllPosts, getFeaturedTestimonials, getLeadershipProfiles, getUpcomingMonthlyBanners, urlFor } from '../lib/sanity';
 
 const TRIPADVISOR_URL = 'https://www.tripadvisor.com/Attraction_Review-g304138-d26849088-Reviews-Ceylon_Extreme_Adventure_Pvt_Ltd-Kandy_Kandy_District_Central_Province.html'
 
@@ -43,10 +43,11 @@ function formatDate(iso: string) {
 }
 
 export default async function Home() {
-  const [testimonials, monthlyBanners, posts]: [any[], MonthlyBannerCard[], PostSummary[]] = await Promise.all([
+  const [testimonials, monthlyBanners, posts, founders]: [any[], MonthlyBannerCard[], PostSummary[], any[]] = await Promise.all([
     getFeaturedTestimonials(),
     getUpcomingMonthlyBanners(3),
     getAllPosts(),
+    getLeadershipProfiles(),
   ]);
   const latestPosts = posts.slice(0, 3);
   return (
@@ -139,7 +140,7 @@ export default async function Home() {
       <section id="about">
         <div className="container about-grid">
           <div className="about-founders">
-            <FoundersSlider />
+            <FoundersSlider founders={founders} />
           </div>
             <div className="about-text">
               <span className="eyebrow">Who we are</span>

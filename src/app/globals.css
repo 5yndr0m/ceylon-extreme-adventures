@@ -454,12 +454,50 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
   flex:0 0 68%; scroll-snap-align:start; background:#fff; border-radius:var(--radius-md); overflow:hidden;
   box-shadow:0 16px 40px -24px rgba(20,24,26,.25);
 }
-.team-photo{ aspect-ratio:4/5; overflow:hidden; background:var(--cloud-gray); }
+.team-card-link{ display:block; height:100%; }
+.team-photo{ position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--cloud-gray); }
 .team-photo img{ width:100%; height:100%; object-fit:cover; }
+.team-photo-fallback{ width:100%; height:100%; background:var(--jungle-green); }
 .team-info{ padding:20px; }
 .team-info h3{ margin-bottom:4px; }
 .team-role{ font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--adrenaline-orange); display:block; margin-bottom:12px; }
 .team-info p{ font-size:14px; color:var(--stone-gray); }
+.team-card-cta{ display:inline-flex; gap:7px; margin-top:16px; color:var(--jungle-green); font-size:12px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; }
+.team-card-link:hover .team-card-cta{ color:var(--adrenaline-orange); }
+
+/* ============ FOUNDER PROFILE ============ */
+.profile-hero{ position:relative; z-index:0; min-height:58svh; display:flex; align-items:flex-end; padding:150px 0 58px; color:#fff; overflow:hidden; }
+.profile-hero-bg{ position:absolute; inset:0; z-index:0; overflow:hidden; background:var(--jungle-green-dark); }
+.profile-hero-bg img{ width:100%; height:100%; object-fit:cover; object-position:center 30%; }
+.profile-hero-bg .overlay{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(18,46,34,.35), rgba(10,12,11,.92)); }
+.profile-hero-inner{ position:relative; z-index:1; width:100%; }
+.profile-hero h1{ max-width:15ch; color:#fff; margin:12px 0 10px; }
+.profile-role{ color:var(--adrenaline-orange); font-size:13px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; }
+.profile-content{ background:var(--mist-white); }
+.profile-grid{ display:grid; gap:30px; align-items:start; }
+.profile-portrait-wrap{ max-width:420px; overflow:hidden; background:var(--cloud-gray); box-shadow:0 20px 44px -26px rgba(20,24,26,.4); }
+.profile-portrait{ display:block; width:100%; height:auto; aspect-ratio:4/5; object-fit:cover; }
+.profile-portrait-fallback{ background:var(--jungle-green); }
+.profile-copy{ max-width:720px; }
+.profile-copy .eyebrow{ display:block; margin-bottom:12px; }
+.profile-copy h2{ margin-bottom:18px; }
+.profile-copy p{ color:var(--stone-gray); margin-top:16px; }
+.profile-copy .profile-bio{ margin-top:0; color:var(--jungle-green); font-weight:600; }
+.profile-long-description{ margin-top:24px; }
+.profile-copy .prose p:first-child{ margin-top:0; }
+.profile-aside{ background:#fff; border-top:3px solid var(--adrenaline-orange); padding:24px; box-shadow:0 18px 38px -28px rgba(20,24,26,.4); }
+.profile-aside .eyebrow{ display:block; margin-bottom:9px; }
+.profile-aside h2{ font-size:1.35rem; margin-bottom:18px; }
+.profile-specialties{ display:flex; flex-wrap:wrap; gap:8px; }
+.profile-specialty{ padding:8px 11px; background:var(--cloud-gray); color:var(--jungle-green); font-size:12px; font-weight:700; }
+.profile-contact{ display:grid; gap:10px; margin-top:22px; padding-top:18px; border-top:1px solid var(--cloud-gray); color:var(--stone-gray); font-size:14px; }
+.profile-contact a{ display:grid; gap:3px; color:var(--jungle-green); font-weight:600; overflow-wrap:anywhere; }
+.profile-contact a span{ color:var(--stone-gray); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.profile-empty{ color:var(--stone-gray); font-size:14px; }
+.profile-back{ display:inline-flex; gap:8px; margin-top:30px; color:var(--jungle-green); font-size:13px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
+.profile-back:hover{ color:var(--adrenaline-orange); }
+@media(min-width:768px){ .profile-grid{ grid-template-columns:minmax(180px,.7fr) minmax(0,1.4fr) minmax(240px,.7fr); gap:42px; } }
+@media(prefers-reduced-motion:reduce){ .profile-back, .team-card-cta{ transition:none; } }
 @media(min-width:768px){
   .team-scroller{ overflow-x:visible; display:grid; grid-template-columns:repeat(2,1fr); margin:0; padding:0; }
   .team-card{ flex:auto; }

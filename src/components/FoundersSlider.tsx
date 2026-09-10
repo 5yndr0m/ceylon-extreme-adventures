@@ -1,39 +1,23 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 type Founder = {
+  _id: string;
   name: string;
-  role: string;
-  image: string;
-  bio: string;
+  role?: string;
+  portraitImage?: any;
+  slug: { current: string };
+  bio?: string;
 };
-
-const founders: Founder[] = [
-  {
-    name: 'Sanjeewa Ariyarathne',
-    role: 'Founder / Director / CEO',
-    image: 'https://i.pravatar.cc/500?img=51',
-    bio: 'A well-experienced all-around adventure sports guide and instructor with over a decade of experience. Holds a Hiking/Trekking Guide License from the Wayamba Development Authority and a course in Inbound Tourism from the Academy of Inbound Tourism and Foreign Languages.',
-  },
-  {
-    name: 'Dr. Nath Dharmasena',
-    role: 'Chairman',
-    image: 'https://i.pravatar.cc/500?img=53',
-    bio: 'A seasoned entrepreneur with experience across 13 countries including Malaysia, Singapore, Norway, and the UAE. Holds a BSc in Engineering from Peradeniya and sits as director in four companies.',
-  },
-  {
-    name: 'Manju S. Gunawardana',
-    role: 'Director / Technical Advisor',
-    image: 'https://i.pravatar.cc/500?img=60',
-    bio: 'First person to abseil Sri Lanka’s highest waterfall, Bambarakanda, in 1998. 25+ years in research and innovation, Group CEO of LOLC’s Research & Innovation arm, and founder of Ceylon Graphene Technologies Pvt Ltd.',
-  },
-];
+import { urlFor } from '../lib/sanity';
 
 const TRANSITION_MS = 800;
 
 // slotOf[i] = current slot (0 = left, 1 = middle, 2 = right) of founders[i]
-export default function FoundersSlider() {
+export default function FoundersSlider({ founders }: { founders: Founder[] }) {
+  const visibleFounders = founders.slice(0, 3);
   const [slotOf, setSlotOf] = useState<number[]>([0, 1, 2]);
   const [wrapping, setWrapping] = useState<Set<number>>(new Set());
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -64,21 +48,29 @@ export default function FoundersSlider() {
     };
   }, []);
 
-  const activeFounder = founders[slotOf.indexOf(1)];
+  if (visibleFounders.length === 0) return null;
+
+  const activeFounder = visibleFounders[slotOf.indexOf(1) % visibleFounders.length];
 
   return (
     <div className="founders-slider">
       <div className="founders-track">
-        {founders.map((founder, i) => (
+        {visibleFounders.map((founder, i) => (
           <div
-            key={founder.name}
+            key={founder._id}
             className={`founder-card slot-${slotOf[i]} ${wrapping.has(i) ? 'is-wrapping' : ''}`}
           >
-            <img src={founder.image} alt={founder.name} className="founder-img" />
-            <div className="founder-overlay">
-              <span className="founder-name">{founder.name}</span>
-              <span className="founder-role">{founder.role}</span>
-            </div>
+            <Link href={`/about/team/${founder.slug.current}`} className="founder-card-link" aria-label={`View ${founder.name}'s profile`}>
+              {founder.portraitImage ? (
+                <img src={urlFor(founder.portraitImage).width(600).height(760).url()} alt={founder.name} className="founder-img" />
+              ) : (
+                <div className="founder-img founder-img-fallback" />
+              )}
+              <div className="founder-overlay">
+                <span className="founder-name">{founder.name}</span>
+                <span className="founder-role">{founder.role}</span>
+              </div>
+            </Link>
           </div>
         ))}
       </div>
@@ -87,6 +79,7 @@ export default function FoundersSlider() {
         <span className="founder-desc-name">{activeFounder.name}</span>
         <span className="founder-desc-role">{activeFounder.role}</span>
         <p className="founder-desc-bio">{activeFounder.bio}</p>
+        <Link href={`/about/team/${activeFounder.slug.current}`} className="founder-profile-link">View full profile <span aria-hidden="true">→</span></Link>
       </div>
 
       <style jsx>{`
@@ -153,6 +146,14 @@ export default function FoundersSlider() {
           height: 100%;
           object-fit: cover;
         }
+        .founder-card-link {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+        .founder-img-fallback {
+          background: var(--jungle-green);
+        }
         .founder-overlay {
           position: absolute;
           left: 0;
@@ -205,6 +206,16 @@ export default function FoundersSlider() {
           color: var(--stone-gray);
           font-size: 15px;
           line-height: 1.6;
+        }
+        .founder-profile-link {
+          display: inline-flex;
+          gap: 8px;
+          margin-top: 14px;
+          color: var(--jungle-green);
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: .4px;
+          text-transform: uppercase;
         }
 
         @media (max-width: 640px) {
