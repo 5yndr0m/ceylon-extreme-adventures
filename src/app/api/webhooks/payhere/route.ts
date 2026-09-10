@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
 
       // Customer-facing confirmation
       const customerResult = await resend.emails.send({
-        from: 'Ceylon Extreme Adventures <bookings@test.dilanjana.me>', // swap to the client's real domain once verified in Resend
+        from: 'Ceylon Extreme Adventures <bookings@extremeadventure.lk>',
         to: booking.email,
         subject: `Booking Confirmed — ${itemTitle}`,
         html: booking.event
@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
 
       // Internal notification — client's team needs to know a new paid booking came in
       const internalResult = await resend.emails.send({
-        from: 'Ceylon Extreme Adventures Site <bookings@test.dilanjana.me>',
+        from: 'Ceylon Extreme Adventures Site <bookings@extremeadventure.lk>',
         to: process.env.CLIENT_NOTIFICATION_EMAIL!, // set this in env, not hardcoded — client's inbox may change
         subject: `New Paid Booking — ${itemTitle}`,
         html: `

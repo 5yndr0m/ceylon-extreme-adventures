@@ -312,35 +312,6 @@ export default function Contact() {
 
             <Reveal className="faq-item">
               <button className="faq-q" onClick={handleFaqClick}>
-                Can you arrange transport and gear?
-                <span className="plus">+</span>
-              </button>
-              <div className="faq-a">
-                <p>
-                  93/A, Madiwala Rd, Embuldeniya, Nugegoda — a short drive from central
-                  Colombo — walk-ins welcome during office hours.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal className="faq-item">
-              <button className="faq-q" onClick={handleFaqClick}>
-                What happens if the weather turns on the day?
-                <span className="plus">+</span>
-              </button>
-              <div className="faq-a">
-                <p>
-                  We reschedule rather than run a route our guides haven&apos;t
-                  cleared. If we must cancel outright due to unforeseen
-                  circumstances after costs are already committed, a refund may
-                  not be possible — we&apos;ll always try to offer an alternative
-                  experience where we can.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal className="faq-item">
-              <button className="faq-q" onClick={handleFaqClick}>
                 What's your cancellation policy?
                 <span className="plus">+</span>
               </button>

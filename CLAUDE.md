@@ -14,7 +14,7 @@ Core goals: a fully migrated experience catalog, a working booking/payment flow,
 
 ## Current State
 
-The project is substantially built and live at `dilanjana.me`.
+The project is substantially built and live at `extremeadventure.lk` (previously `dilanjana.me` during development).
 
 **Content & Sanity:**
 - Sanity project ID: `b5qf24u0`, datasets: `production` and `development` (development is not a mirror of production — only has a placeholder doc)
