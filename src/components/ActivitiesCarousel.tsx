@@ -13,15 +13,15 @@ type Activity = {
 const activities: Activity[] = [
   {
     href: '/experiences?category=Abseiling',
-    image: 'https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=70&w=900&auto=format&fit=crop',
-    alt: 'Traveler abseiling down a waterfall in Sri Lanka',
+    image: 'https://cdn.sanity.io/images/b5qf24u0/production/d47059c095a0841443e13a0a5ef244011c89a75f-1000x563.jpg?w=900&auto=format',
+    alt: 'Abseiler descending Laxapana Falls in Sri Lanka',
     title: 'Abseiling',
     description: 'Descend cascading waterfalls with full safety gear and expert instruction.',
   },
   {
     href: '/experiences?category=Hiking',
-    image: 'https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=70&w=900&auto=format&fit=crop',
-    alt: 'Hikers on a misty mountain trail in Sri Lanka',
+    image: 'https://cdn.sanity.io/images/b5qf24u0/production/9d6c3f75ad68c4f2d280f885227a431811fa18d3-800x1000.jpg?w=900&auto=format',
+    alt: 'Hiker overlooking the valley from Yahangala',
     title: 'Hiking',
     description: 'Trek scenic ridgelines and misty peaks with guides who know every hidden trail.',
   },
@@ -29,32 +29,29 @@ const activities: Activity[] = [
     // Category value is "Camping & Trekking" — previously mis-linked to category=Hiking,
     // which meant this card and the Hiking card above pointed at the same filtered list.
     href: '/experiences?category=Camping%20%26%20Trekking',
-    image: 'https://images.unsplash.com/photo-1508873699372-7aeab60b44ab?fm=jpg&q=70&w=900&auto=format&fit=crop',
-    alt: 'Campers with tents under the stars in the mountains',
+    image: 'https://cdn.sanity.io/images/b5qf24u0/production/3e7986011b8f4b3e2f83f488e2fa17f582357d97-800x1000.jpg?w=900&auto=format',
+    alt: "Trekking group descending the ridge at Devil's Staircase",
     title: 'Trekking & Camping',
     description: 'Multi-day treks with camp nights under the stars, far from the crowds.',
   },
   {
     href: '/experiences?category=Rafting',
-    image: 'https://images.unsplash.com/photo-1641584495089-5914d85d9bcc?fm=jpg&q=70&w=900&auto=format&fit=crop',
-    alt: 'Group rafting and kayaking down the Kelani River',
+    image: 'https://cdn.sanity.io/images/b5qf24u0/production/0f2e1ddd73aba46ba6557314455200c1d99493d6-800x1000.jpg?w=900&auto=format',
+    alt: 'Rafters running whitewater rapids on the Kelani River',
     title: 'Rafting & Kayaking',
     description: "Paddle through rapids and calm stretches alike on Sri Lanka's best rivers.",
   },
   {
-    // Placeholder: a real Canyoning experience's own hero image (Katarang Oya), swapped
-    // in for the old Caving card — Caving has zero published experiences while Canyoning
-    // has several, and the client is sourcing dedicated category photos separately.
     href: '/experiences?category=Canyoning',
-    image: 'https://cdn.sanity.io/images/b5qf24u0/production/d2acc1e1a247fe6015877cd2312f05a60d5042a4-2560x1440.webp?w=900&h=600&fit=crop&auto=format',
-    alt: 'Canyoning down Katarang Oya in Sri Lanka',
+    image: 'https://cdn.sanity.io/images/b5qf24u0/production/7bbe71a3c1f9d1e6c36be04c0b9253ce71310b31-1000x1000.jpg?w=900&auto=format',
+    alt: 'Canyoners sliding down a natural rock waterfall at Katarang Oya',
     title: 'Canyoning',
     description: 'Slide, jump, and abseil your way down river gorges carved into the rainforest.',
   },
   {
     href: '/experiences?category=River%20Expedition',
-    image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?fm=jpg&q=70&w=900&auto=format&fit=crop',
-    alt: 'Adventurers on a multi-day river expedition',
+    image: 'https://cdn.sanity.io/images/b5qf24u0/production/babdbfde5d88f193fa95bf04add3ca313553e34b-1000x563.jpg?w=900&auto=format',
+    alt: 'Kayaks paddling down the Mahaweli River on a multi-day expedition',
     title: 'River Expedition',
     description: 'Multi-day river journeys blending rapids, camping, and remote scenery.',
   },
