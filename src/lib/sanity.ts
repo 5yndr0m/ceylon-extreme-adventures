@@ -14,6 +14,12 @@ export function urlFor(source: any) {
   return builder.image(source)
 }
 
+// Site-wide default — used as both the homepage hero video's poster frame and the
+// default Open Graph/Twitter share image in layout.tsx. Keeping one source of truth
+// so both stay in sync if this photo ever changes.
+export const DEFAULT_HERO_IMAGE_URL =
+  'https://cdn.sanity.io/images/b5qf24u0/production/d1879051ce34ad0b11b684706bc4df69242c945d-1280x720.jpg'
+
 export async function getLeadershipProfiles() {
   return client.fetch(`
     *[_type == "profile" && defined(slug.current)] | order(_createdAt asc) {

@@ -4,7 +4,7 @@ import ActivitiesCarousel from '../components/ActivitiesCarousel';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import FoundersSlider from '../components/FoundersSlider';
 import Image from 'next/image';
-import { getAllPosts, getFeaturedTestimonials, getLeadershipProfiles, getUpcomingMonthlyBanners, urlFor } from '../lib/sanity';
+import { getAllPosts, getFeaturedTestimonials, getLeadershipProfiles, getUpcomingMonthlyBanners, urlFor, DEFAULT_HERO_IMAGE_URL } from '../lib/sanity';
 
 const TRIPADVISOR_URL = 'https://www.tripadvisor.com/Attraction_Review-g304138-d26849088-Reviews-Ceylon_Extreme_Adventure_Pvt_Ltd-Kandy_Kandy_District_Central_Province.html'
 
@@ -15,7 +15,6 @@ const TRIPADVISOR_URL = 'https://www.tripadvisor.com/Attraction_Review-g304138-d
 // suggest (1280x720, crf 27) since the hero's own dark gradient overlay sits on top of it —
 // full 1080p/crf21 sharpness is wasted once that overlay darkens most of the frame.
 const HERO_VIDEO_URL = 'https://cdn.sanity.io/files/b5qf24u0/production/c291dca1daf761ac57c163e1ed1bf5357f72e8b9.mp4'
-const HERO_POSTER_URL = 'https://cdn.sanity.io/images/b5qf24u0/production/d1879051ce34ad0b11b684706bc4df69242c945d-1280x720.jpg'
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
 
@@ -54,8 +53,8 @@ export default async function Home() {
     <main>
 
       <section className="hero" id="top">
-        <div className="hero-bg" style={{backgroundImage: `url(${HERO_POSTER_URL})`}}>
-          <video autoPlay muted loop playsInline preload="auto" poster={HERO_POSTER_URL} aria-hidden="true">
+        <div className="hero-bg" style={{backgroundImage: `url(${DEFAULT_HERO_IMAGE_URL})`}}>
+          <video autoPlay muted loop playsInline preload="auto" poster={DEFAULT_HERO_IMAGE_URL} aria-hidden="true">
             <source src={HERO_VIDEO_URL} type="video/mp4" />
           </video>
           <div className="overlay"></div>
