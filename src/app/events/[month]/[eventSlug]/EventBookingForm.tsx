@@ -6,7 +6,13 @@ import {useRouter} from 'next/navigation'
 
 // The date isn't a field here at all: it's fixed by the event, not chosen by the
 // customer (see the sticky card next to this form for the departure date/price).
-export default function EventBookingForm({eventId}: {eventId: string}) {
+export default function EventBookingForm({
+  eventId,
+  remainingSlots,
+}: {
+  eventId: string
+  remainingSlots?: number | null
+}) {
   const router = useRouter()
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -81,10 +87,17 @@ export default function EventBookingForm({eventId}: {eventId: string}) {
 
       <div className="bp-form-row">
         <label>Slots</label>
-        <div className="bp-stepper">
-          <button type="button" onClick={() => updateGroupSize(-1)} aria-label="Decrease group size">−</button>
-          <span>{form.groupSize}</span>
-          <button type="button" onClick={() => updateGroupSize(1)} aria-label="Increase group size">+</button>
+        <div style={{display: 'flex', alignItems: 'center', gap: 12}}>
+          <div className="bp-stepper">
+            <button type="button" onClick={() => updateGroupSize(-1)} aria-label="Decrease group size">−</button>
+            <span>{form.groupSize}</span>
+            <button type="button" onClick={() => updateGroupSize(1)} aria-label="Increase group size">+</button>
+          </div>
+          {remainingSlots !== null && remainingSlots !== undefined && (
+            <span className="bp-slots-note">
+              {remainingSlots} {remainingSlots === 1 ? 'slot' : 'slots'} remaining
+            </span>
+          )}
         </div>
       </div>
 

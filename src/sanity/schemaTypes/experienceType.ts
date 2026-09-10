@@ -30,7 +30,7 @@ export const experienceType = defineType({
         layout: 'radio',
       },
       initialValue: 'active',
-      description: 'Lifecycle status — use "New" for experiences just added and awaiting a full review (price, photos, description), and "Retired" for ones no longer offered instead of deleting them outright.',
+      description: 'Lifecycle status — use "New" for experiences just added and awaiting a full review (photos, description), and "Retired" for ones no longer offered instead of deleting them outright.',
     }),
     defineField({
       name: 'category',
@@ -115,12 +115,6 @@ export const experienceType = defineType({
       of: [{type: 'string'}],
       description: 'Free-form tags (e.g. "beginner-friendly", "night-hike") for search/filtering beyond the main category.',
       options: {layout: 'tags'},
-    }),
-    defineField({
-      name: 'price',
-      title: 'Price (LKR)',
-      type: 'number',
-      validation: (rule) => rule.required().positive(),
     }),
     defineField({
       name: 'heroImage',

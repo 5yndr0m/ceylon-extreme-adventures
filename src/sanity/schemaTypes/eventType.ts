@@ -58,8 +58,15 @@ export const eventType = defineType({
       name: 'price',
       title: 'Price per Person (LKR)',
       type: 'number',
-      description: 'Price for this specific departure — can differ from the experience\'s base price (promos, group rates, etc.)',
+      description: 'Price for this specific departure — the experience itself has no price of its own, since a single experience can run at different rates across different scheduled events (promos, group rates, etc.)',
       validation: (rule) => rule.required().positive(),
+    }),
+    defineField({
+      name: 'maxSlots',
+      title: 'Total Slots',
+      type: 'number',
+      description: 'Total number of spots available for this departure. Optional — when set, the booking form shows remaining availability once bookings start coming in for this event.',
+      validation: (rule) => rule.positive().integer(),
     }),
     defineField({
       name: 'includes',

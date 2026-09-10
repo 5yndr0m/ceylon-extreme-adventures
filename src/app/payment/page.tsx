@@ -15,7 +15,6 @@ type Booking = {
   experience: {
     title: string;
     category: string;
-    price: number;
     heroImage: any;
   };
   event?: {
@@ -55,7 +54,7 @@ function PaymentPortalInner() {
       .fetch(
         `*[_type == "booking" && _id == $id][0]{
           _id, fullName, preferredDate, groupSize,
-          experience->{title, category, price, heroImage},
+          experience->{title, category, heroImage},
           event->{title, price, flyerImage}
         }`,
         { id: bookingId }
@@ -122,12 +121,13 @@ function PaymentPortalInner() {
     );
   }
 
-  // Event bookings use the event's own price/title (can differ from the experience's
-  // base rate — promos, group rates, etc., see eventType.ts) — same priority the
-  // PayHere checkout route already uses server-side.
+  // Price only lives on the event now (experience.price was dropped) — every booking
+  // made through the current UI has an event attached (see EventBookingForm), so this
+  // is always populated in practice. title/image still fall back to the experience.
   const item = booking.event ?? booking.experience;
   const displayImage = booking.event?.flyerImage ?? booking.experience.heroImage;
-  const total = item.price * booking.groupSize;
+  const price = booking.event?.price ?? 0;
+  const total = price * booking.groupSize;
 
   return (
     <main className="bp-page">
@@ -182,7 +182,7 @@ function PaymentPortalInner() {
                   </div>
                   <div className="bp-fact-pill">
                     <span className="bp-fact-pill-label">Rate</span>
-                    <span className="bp-fact-pill-value">LKR {item.price.toLocaleString()} pp</span>
+                    <span className="bp-fact-pill-value">LKR {price.toLocaleString()} pp</span>
                   </div>
                 </div>
               </div>
@@ -193,7 +193,7 @@ function PaymentPortalInner() {
             <h2>Price breakdown</h2>
             <dl className="bp-quickfacts">
               <div className="bp-quickfacts-row">
-                <dt>Package ({booking.groupSize} × LKR {item.price.toLocaleString()})</dt>
+                <dt>Package ({booking.groupSize} × LKR {price.toLocaleString()})</dt>
                 <dd>LKR {total.toLocaleString()}</dd>
               </div>
               <div className="bp-quickfacts-row">
