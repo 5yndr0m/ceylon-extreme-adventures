@@ -28,8 +28,8 @@ export default function Contact() {
       <section className="page-hero">
         <div className="page-hero-bg">
           <img
-            src="https://images.unsplash.com/photo-1708649290066-5f617003b93f?fm=jpg&q=70&w=2200&auto=format&fit=crop"
-            alt="Contact Ceylon Extreme Adventures"
+            src="https://cdn.sanity.io/images/b5qf24u0/production/b867d54473a4a617897ff4d68df2024e12dc048c-864x1080.jpg?w=2200&auto=format"
+            alt="Hikers resting on the cliffs at Lakegala"
           />
           <div className="overlay"></div>
         </div>

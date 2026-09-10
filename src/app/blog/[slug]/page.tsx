@@ -34,7 +34,7 @@ export default async function BlogPostPage({
             />
           ) : (
             <img
-              src="https://images.unsplash.com/photo-1756136720412-b03a99998672?fm=jpg&q=70&w=2200&auto=format&fit=crop"
+              src="https://cdn.sanity.io/images/b5qf24u0/production/77c883843ebb49fb08120a5c1f2d535d35eb167a-1920x1080.jpg?w=2200&auto=format"
               alt=""
             />
           )}
