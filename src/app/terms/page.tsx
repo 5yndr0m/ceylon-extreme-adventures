@@ -11,8 +11,8 @@ export default function TermsPage() {
       <section className="page-hero">
         <div className="page-hero-bg">
           <img
-            src="https://images.unsplash.com/photo-1629248564797-8c5ba85da9d3?fm=jpg&q=70&w=2200&auto=format&fit=crop"
-            alt="Ceylon Extreme Adventures guides on a river"
+            src="https://cdn.sanity.io/images/b5qf24u0/production/4f51e3d3e21ba3987b430cc641c987eccfc2db38-1920x1080.jpg?w=2200&auto=format"
+            alt="Guide abseiling down a waterfall at Gartmore"
           />
           <div className="overlay"></div>
         </div>

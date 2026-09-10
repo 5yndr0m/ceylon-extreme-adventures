@@ -14,7 +14,7 @@ export default async function About() {
 {/* ================= PAGE HERO ================= */}
 <section className="page-hero">
   <div className="page-hero-bg">
-    <img src="https://images.unsplash.com/photo-1629248564797-8c5ba85da9d3?fm=jpg&q=70&w=2200&auto=format&fit=crop" alt="Ceylon Extreme Adventures guides kayaking on a Sri Lankan river" />
+    <img src="https://cdn.sanity.io/images/b5qf24u0/production/2ddce91af777934efcdb55624852c82eacca780c-1920x1080.jpg?w=2200&auto=format" alt="Kayakers landing on the beach at Kala Wewa" />
     <div className="overlay"></div>
   </div>
   <div className="container page-hero-inner">
@@ -29,7 +29,7 @@ export default async function About() {
 <section id="story">
   <div className="container about-grid">
     <Reveal className="about-img">
-      <img src="https://images.unsplash.com/photo-1621693113354-8b32a9e0ba39?fm=jpg&q=70&w=1000&auto=format&fit=crop" alt="Ceylon Extreme Adventures guide beside a waterfall" />
+      <img src="https://cdn.sanity.io/images/b5qf24u0/production/478d7eb45d23391e8d995a4f98a537203acb5135-2200x1467.jpg?w=1000&auto=format" alt="Ceylon Extreme Adventures guide abseiling down Bambarakanda Falls" />
     </Reveal>
     <Reveal className="about-text">
       <span className="eyebrow">Who we are</span>

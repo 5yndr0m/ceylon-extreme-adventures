@@ -51,7 +51,7 @@ export default async function MonthEventsPage({
             <img src={urlFor(banner.bannerImage).width(2200).height(1400).url()} alt={`${monthLabel} events`} />
           ) : (
             <img
-              src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?fm=jpg&q=70&w=2200&auto=format&fit=crop"
+              src="https://cdn.sanity.io/images/b5qf24u0/production/5b81b8b7050bc362e3966b1f17ca00d05fa187fd-1800x1440.jpg?w=2200&auto=format"
               alt=""
             />
           )}
