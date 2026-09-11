@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Footer() {
+export default function Footer({ hideStickyCta = false }: { hideStickyCta?: boolean }) {
   return (
     <>
       <footer>
@@ -84,7 +84,9 @@ export default function Footer() {
           </div>
         </div>
       </footer>
-      <div className='sticky-cta'><Link href='/#events' className='btn btn-primary'>Book Now</Link></div>
+      {!hideStickyCta && (
+        <div className='sticky-cta'><Link href='/#events' className='btn btn-primary'>Book Now</Link></div>
+      )}
     </>
   );
 }
