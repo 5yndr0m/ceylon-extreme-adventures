@@ -59,9 +59,14 @@ export default function ExperienceCategoryFilter({
     setSelectedCategory(category)
   }
 
+  // A homepage card can link to more than one category at once (e.g. "Rafting & Kayaking"
+  // -> category=Rafting,Kayaking) since some categories only have a single experience and
+  // aren't worth their own card — comma-separated values here are matched as an OR.
+  const selectedCategories = selectedCategory.split(',').map((c) => c.trim())
+
   const filteredExperiences = experiences
     .filter((experience) =>
-      selectedCategory === 'All' ? true : experience.category === selectedCategory
+      selectedCategory === 'All' ? true : !!experience.category && selectedCategories.includes(experience.category)
     )
     .filter((experience) =>
       searchQuery.trim()
@@ -92,7 +97,7 @@ export default function ExperienceCategoryFilter({
             type="button"
             onClick={() => updateCategory(category)}
             className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-              selectedCategory === category
+              selectedCategories.includes(category)
                 ? 'border-orange-600 bg-orange-600 text-white'
                 : 'border-stone-300 bg-white text-stone-700 hover:border-orange-400 hover:text-orange-600'
             }`}

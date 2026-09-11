@@ -39,7 +39,7 @@ export default async function About() {
       <span className="eyebrow">Who we are</span>
       <h2>From One Waterfall To A Nationwide Crew</h2>
       <p>Ceylon Extreme Adventures started with a handful of guides and one abseil line at Puna Ella, tired of watching visitors get sold "extreme" experiences by operators with no rescue plan and no local knowledge of the rock or the river.</p>
-      <p>Today we run waterfall abseiling, canyoning, white-water rafting, hiking, kayaking and diving across Sri Lanka&apos;s wet zone and highlands — but the standard hasn&apos;t moved: every route is one our guides have run themselves, every group gets a safety briefing before a single carabiner clips on, and every itinerary is built around your group, not a fixed script.</p>
+      <p>Today we run waterfall abseiling, canyoning, white-water rafting, hiking, and kayaking across Sri Lanka&apos;s wet zone and highlands — but the standard hasn&apos;t moved: every route is one our guides have run themselves, every group gets a safety briefing before a single carabiner clips on, and every itinerary is built around your group, not a fixed script.</p>
       <div className="stat-strip">
         <div className="stat"><span className="stat-num">500+</span><span className="stat-label">Adventures Led</span></div>
         <div className="stat"><span className="stat-num">98%</span><span className="stat-label">Recommend Us</span></div>

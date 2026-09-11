@@ -31,11 +31,14 @@ const activities: Activity[] = [
     href: '/experiences?category=Camping%20%26%20Trekking',
     image: 'https://cdn.sanity.io/images/b5qf24u0/production/3e7986011b8f4b3e2f83f488e2fa17f582357d97-800x1000.jpg?w=900&auto=format',
     alt: "Trekking group descending the ridge at Devil's Staircase",
-    title: 'Trekking & Camping',
+    title: 'Camping & Trekking',
     description: 'Multi-day treks with camp nights under the stars, far from the crowds.',
   },
   {
-    href: '/experiences?category=Rafting',
+    // Kayaking only has one experience of its own (not worth a separate card), so this
+    // card filters both categories at once — see ExperienceCategoryFilter's comma-separated
+    // category matching.
+    href: '/experiences?category=Rafting,Kayaking',
     image: 'https://cdn.sanity.io/images/b5qf24u0/production/0f2e1ddd73aba46ba6557314455200c1d99493d6-800x1000.jpg?w=900&auto=format',
     alt: 'Rafters running whitewater rapids on the Kelani River',
     title: 'Rafting & Kayaking',
