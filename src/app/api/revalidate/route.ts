@@ -1,6 +1,7 @@
 // src/app/api/revalidate/route.ts
 import {NextRequest, NextResponse} from 'next/server'
 import {revalidatePath} from 'next/cache'
+import {timingSafeEqualStr} from '@/lib/security'
 
 // Sanity Studio calls this on publish/update/delete (configure under Studio ->
 // API -> Webhooks, see the comment at the bottom of this file) so content shows up
@@ -11,7 +12,8 @@ import {revalidatePath} from 'next/cache'
 // missing a path.
 export async function POST(req: NextRequest) {
   const secret = req.headers.get('x-webhook-secret')
-  if (!secret || secret !== process.env.SANITY_REVALIDATE_SECRET) {
+  const expectedSecret = process.env.SANITY_REVALIDATE_SECRET
+  if (!secret || !expectedSecret || !timingSafeEqualStr(secret, expectedSecret)) {
     return NextResponse.json({error: 'Invalid secret'}, {status: 401})
   }
 

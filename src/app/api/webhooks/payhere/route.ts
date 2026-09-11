@@ -3,6 +3,7 @@ import {NextRequest, NextResponse} from 'next/server'
 import crypto from 'crypto'
 import {createClient} from '@sanity/client'
 import {Resend} from 'resend'
+import {timingSafeEqualStr} from '@/lib/security'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
     .digest('hex')
     .toUpperCase()
 
-  if (md5sig !== expectedSig) {
+  if (!md5sig || !timingSafeEqualStr(md5sig, expectedSig)) {
     console.error('PayHere webhook signature mismatch — possible spoofed request')
     return NextResponse.json({error: 'Invalid signature'}, {status: 400})
   }

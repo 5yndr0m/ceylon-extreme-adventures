@@ -15,7 +15,30 @@ const sanity = createClient({
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+// In-memory sliding-window rate limit, keyed by IP — no Redis/Upstash in this project,
+// so this is a pragmatic stopgap rather than a proper distributed limiter: it only
+// tracks requests seen by the current warm serverless instance and resets on cold
+// start/redeploy, so it won't catch a determined/distributed attacker. It does stop
+// the easy case (one script hammering this endpoint), which is the actual risk today —
+// revisit with Upstash/Vercel KV if real abuse shows up.
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
+const RATE_LIMIT_MAX = 5
+const requestLog = new Map<string, number[]>()
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const timestamps = (requestLog.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS)
+  timestamps.push(now)
+  requestLog.set(ip, timestamps)
+  return timestamps.length > RATE_LIMIT_MAX
+}
+
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  if (isRateLimited(ip)) {
+    return NextResponse.json({error: 'Too many requests — please try again later'}, {status: 429})
+  }
+
   const body = await req.json()
 
   const {eventId, experienceId, preferredDate} = body
