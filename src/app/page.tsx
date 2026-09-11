@@ -117,9 +117,11 @@ export default async function Home() {
                 return (
                   <Reveal2 className="month-card" key={banner._id}>
                     <Link href={`/events/${banner.monthSlug}`} className="month-banner">
-                      <img
+                      <Image
                         src={urlFor(banner.bannerImage).width(700).height(875).url()}
                         alt={`${monthLabel} events`}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                       />
                     </Link>
                     <div className="month-details">

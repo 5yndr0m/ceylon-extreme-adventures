@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
@@ -62,7 +63,13 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
           >
             <Link href={`/about/team/${founder.slug.current}`} className="founder-card-link">
               {founder.portraitImage ? (
-                <img src={urlFor(founder.portraitImage).width(600).height(760).url()} alt="" className="founder-img" />
+                <Image
+                  src={urlFor(founder.portraitImage).width(600).height(760).url()}
+                  alt=""
+                  fill
+                  sizes="(min-width: 640px) 200px, 33vw"
+                  className="founder-img"
+                />
               ) : (
                 <div className="founder-img founder-img-fallback" />
               )}

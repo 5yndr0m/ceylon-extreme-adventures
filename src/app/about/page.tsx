@@ -4,6 +4,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {getLeadershipProfiles, urlFor} from '../../lib/sanity';
 
+export const metadata = {
+  title: 'About Us',
+  description: "Ten years and 500+ adventures in, we're still the same crew that started it: local guides who'd rather turn a client away than take a shortcut with their safety.",
+};
 
 export default async function About() {
   const founders = await getLeadershipProfiles();
@@ -14,7 +18,7 @@ export default async function About() {
 {/* ================= PAGE HERO ================= */}
 <section className="page-hero">
   <div className="page-hero-bg">
-    <img src="https://cdn.sanity.io/images/b5qf24u0/production/2ddce91af777934efcdb55624852c82eacca780c-1920x1080.jpg?w=2200&auto=format" alt="Kayakers landing on the beach at Kala Wewa" />
+    <Image src="https://cdn.sanity.io/images/b5qf24u0/production/2ddce91af777934efcdb55624852c82eacca780c-1920x1080.jpg?w=2200&auto=format" alt="Kayakers landing on the beach at Kala Wewa" fill priority sizes="100vw" />
     <div className="overlay"></div>
   </div>
   <div className="container page-hero-inner">
@@ -29,13 +33,13 @@ export default async function About() {
 <section id="story">
   <div className="container about-grid">
     <Reveal className="about-img">
-      <img src="https://cdn.sanity.io/images/b5qf24u0/production/478d7eb45d23391e8d995a4f98a537203acb5135-2200x1467.jpg?w=1000&auto=format" alt="Ceylon Extreme Adventures guide abseiling down Bambarakanda Falls" />
+      <Image src="https://cdn.sanity.io/images/b5qf24u0/production/478d7eb45d23391e8d995a4f98a537203acb5135-2200x1467.jpg?w=1000&auto=format" alt="Ceylon Extreme Adventures guide abseiling down Bambarakanda Falls" fill sizes="(min-width: 768px) 50vw, 100vw" />
     </Reveal>
     <Reveal className="about-text">
       <span className="eyebrow">Who we are</span>
       <h2>From One Waterfall To A Nationwide Crew</h2>
       <p>Ceylon Extreme Adventures started with a handful of guides and one abseil line at Puna Ella, tired of watching visitors get sold "extreme" experiences by operators with no rescue plan and no local knowledge of the rock or the river.</p>
-      <p>Today we run waterfall abseiling, canyoning, white-water rafting, hiking, kayaking and diving across Sri Lanka&apos;s wet zone and highlands — but the standard hasn&apos;t moved: every route is one our guides have run themselves, every group gets a safety briefing before a single carabiner clips on, and every itinerary is built around your group, not a fixed script.</p>
+      <p>Today we run waterfall abseiling, canyoning, white-water rafting, hiking, and kayaking across Sri Lanka&apos;s wet zone and highlands — but the standard hasn&apos;t moved: every route is one our guides have run themselves, every group gets a safety briefing before a single carabiner clips on, and every itinerary is built around your group, not a fixed script.</p>
       <div className="stat-strip">
         <div className="stat"><span className="stat-num">500+</span><span className="stat-label">Adventures Led</span></div>
         <div className="stat"><span className="stat-num">98%</span><span className="stat-label">Recommend Us</span></div>

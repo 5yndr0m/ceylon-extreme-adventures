@@ -1,7 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Terms & Conditions | Ceylon Extreme Adventures',
+  title: 'Terms & Conditions',
   description: 'Booking, cancellation, and participant terms for Ceylon Extreme Adventures.',
 };
 
@@ -10,9 +11,12 @@ export default function TermsPage() {
     <main>
       <section className="page-hero">
         <div className="page-hero-bg">
-          <img
+          <Image
             src="https://cdn.sanity.io/images/b5qf24u0/production/4f51e3d3e21ba3987b430cc641c987eccfc2db38-1920x1080.jpg?w=2200&auto=format"
             alt="Guide abseiling down a waterfall at Gartmore"
+            fill
+            priority
+            sizes="100vw"
           />
           <div className="overlay"></div>
         </div>

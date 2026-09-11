@@ -4,6 +4,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { client, urlFor } from '../../lib/sanity';
 import { redirectToPayHere } from '../../lib/payhere';
 
@@ -158,10 +159,12 @@ function PaymentPortalInner() {
             <div className="bp-event-top" style={{ marginBottom: 0 }}>
               {displayImage && (
                 <div className="bp-flyer" style={{ maxWidth: 280, aspectRatio: '4/3' }}>
-                  <img
+                  <Image
                     src={urlFor(displayImage).width(700).height(525).url()}
                     alt={item.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    fill
+                    sizes="280px"
+                    style={{ objectFit: 'cover' }}
                   />
                 </div>
               )}

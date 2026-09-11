@@ -7,6 +7,23 @@ import EventBookingForm from './EventBookingForm'
 
 export const revalidate = 60
 
+export async function generateMetadata({params}: {params: Promise<{month: string; eventSlug: string}>}) {
+  const {eventSlug} = await params
+  const event = await getEventBySlug(eventSlug)
+  if (!event) return {}
+
+  const dateLabel = new Date(event.date).toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'})
+  const description = event.shortDescription || event.experience?.shortDescription || `Scheduled departure on ${dateLabel} — book your spot with Ceylon Extreme Adventures.`
+  const image = event.flyerImage ? urlFor(event.flyerImage).width(1200).height(1500).url() : undefined
+
+  return {
+    title: `${event.title} — ${dateLabel}`,
+    description,
+    openGraph: {title: event.title, description, ...(image ? {images: [{url: image, width: 1200, height: 1500, alt: event.title}]} : {})},
+    twitter: {title: event.title, description, ...(image ? {images: [image]} : {})},
+  }
+}
+
 export default async function EventDetailPage({
   params,
 }: {

@@ -1,35 +1,24 @@
-'use client';
-
+import Image from 'next/image';
 import Reveal from '../../components/Reveal';
+import ContactForm from './ContactForm';
+import ContactFaq from './ContactFaq';
+
+export const metadata = {
+  title: 'Contact Us',
+  description: "Call, WhatsApp, or send an enquiry — tell us your dates, group size, and experience level, and we'll build the itinerary around you.",
+};
 
 export default function Contact() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    alert('Thanks — this is a demo form, not yet connected to a backend.');
-  };
-
-  const handleFaqClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const item = e.currentTarget.closest('.faq-item');
-    if (!item) return;
-
-    const wasOpen = item.classList.contains('open');
-
-    document
-      .querySelectorAll('.faq-item.open')
-      .forEach((i) => i.classList.remove('open'));
-
-    if (!wasOpen) {
-      item.classList.add('open');
-    }
-  };
-
   return (
     <main>
       <section className="page-hero">
         <div className="page-hero-bg">
-          <img
+          <Image
             src="https://cdn.sanity.io/images/b5qf24u0/production/b867d54473a4a617897ff4d68df2024e12dc048c-864x1080.jpg?w=2200&auto=format"
             alt="Hikers resting on the cliffs at Lakegala"
+            fill
+            priority
+            sizes="100vw"
           />
           <div className="overlay"></div>
         </div>
@@ -166,89 +155,7 @@ export default function Contact() {
               </div>
             </Reveal>
 
-            <Reveal className="booking-form">
-              <form onSubmit={handleSubmit}>
-                <div className="field-row two">
-                  <div>
-                    <label htmlFor="fname">Full Name</label>
-                    <input
-                      id="fname"
-                      type="text"
-                      placeholder="Your full name"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="femail">Email</label>
-                    <input
-                      id="femail"
-                      type="email"
-                      placeholder="you@email.com"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="field-row two">
-                  <div>
-                    <label htmlFor="fphone">Phone</label>
-                    <input
-                      id="fphone"
-                      type="tel"
-                      placeholder="+94 7X XXX XXXX"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="fdate">Preferred Date</label>
-                    <input
-                      id="fdate"
-                      type="text"
-                      placeholder="DD / MM / YYYY"
-                    />
-                  </div>
-                </div>
-
-                <div className="field-row two">
-                  <div>
-                    <label htmlFor="factivity">Activity</label>
-                    <select id="factivity">
-                      <option value="">Select an experience</option>
-                      <option>Waterfall Abseiling</option>
-                      <option>Canyoning</option>
-                      <option>White-Water Rafting</option>
-                      <option>Hiking &amp; Trekking</option>
-                      <option>Kayaking</option>
-                      <option>Snorkeling &amp; Diving</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="fgroup">Group Size</label>
-                    <input
-                      id="fgroup"
-                      type="number"
-                      min="1"
-                      placeholder="e.g. 6"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="fmessage">Message</label>
-                  <textarea
-                    id="fmessage"
-                    placeholder="Tell us about your experience level, or any questions"
-                  ></textarea>
-                </div>
-
-                <button type="submit" className="btn btn-primary">
-                  Send Enquiry
-                </button>
-                <p className="form-note">
-                  We reply within one business day. For urgent or same-day
-                  bookings, please call or WhatsApp.
-                </p>
-              </form>
-            </Reveal>
+            <ContactForm />
           </div>
         </div>
       </section>
@@ -276,56 +183,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="faq" id="faq">
-        <div className="container">
-          <Reveal className="section-head">
-            <span className="eyebrow">Before you reach out</span>
-            <h2>Quick Answers</h2>
-          </Reveal>
-
-          <div className="faq-list">
-            <Reveal className="faq-item">
-              <button className="faq-q" onClick={handleFaqClick}>
-                How fast do you reply to enquiries?
-                <span className="plus">+</span>
-              </button>
-              <div className="faq-a">
-                <p>
-                  Within one business day for email and form enquiries. Call
-                  or WhatsApp for anything same-day or urgent.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal className="faq-item">
-              <button className="faq-q" onClick={handleFaqClick}>
-                Do you need a deposit to confirm a booking?
-                <span className="plus">+</span>
-              </button>
-              <div className="faq-a">
-                <p>
-                  Yes, a deposit secures your date once we&apos;ve confirmed
-                  activity, group size, and pricing over email or WhatsApp.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal className="faq-item">
-              <button className="faq-q" onClick={handleFaqClick}>
-                What's your cancellation policy?
-                <span className="plus">+</span>
-              </button>
-              <div className="faq-a">
-                <p>
-                  Cancel in writing to sales@extremeadventure.lk at least 7 days
-                  before your event for a full refund. Cancellations within 7
-                  days, or postponements, are treated as a rebooking.
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <ContactFaq />
     </main>
   );
 }

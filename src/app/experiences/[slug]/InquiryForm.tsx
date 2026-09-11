@@ -3,7 +3,7 @@
 
 import {useState} from 'react'
 
-const INQUIRY_EMAIL = 'info@extremeadventure.lk'
+const INQUIRY_EMAIL = 'sales@extremeadventure.lk'
 
 export default function InquiryForm({experienceTitle}: {experienceTitle: string}) {
   const [form, setForm] = useState({fullName: '', phone: '', email: '', message: ''})

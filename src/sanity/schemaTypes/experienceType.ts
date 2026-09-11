@@ -42,7 +42,6 @@ export const experienceType = defineType({
           'Canyoning',
           'Abseiling',
           'Kayaking',
-          'Caving',
           'River Expedition',
           // Added when backfilling the Camping & Trekking Adventures section from the
           // CEA Experience Guide PDF (Devil's Staircase, Baker's Bend) — these are

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Footer() {
+export default function Footer({ hideStickyCta = false }: { hideStickyCta?: boolean }) {
   return (
     <>
       <footer>
@@ -34,7 +34,7 @@ export default function Footer() {
               <h3>Experiences</h3>
               <Link href='/experiences?category=Abseiling'>Abseiling Adventures</Link>
               <Link href='/experiences?category=Hiking'>Hiking Adventures</Link>
-              <Link href='/experiences?category=Camping%20%26%20Trekking'>Trekking and Camping</Link>
+              <Link href='/experiences?category=Camping%20%26%20Trekking'>Camping &amp; Trekking</Link>
               <Link href='/experiences?category=Rafting'>Rafting Adventures</Link>
               <Link href='/experiences?category=Canyoning'>Canyoning Adventures</Link>
               <Link href='/experiences?category=River%20Expedition'>River Expedition</Link>
@@ -84,7 +84,9 @@ export default function Footer() {
           </div>
         </div>
       </footer>
-      <div className='sticky-cta'><Link href='/#events' className='btn btn-primary'>Book Now</Link></div>
+      {!hideStickyCta && (
+        <div className='sticky-cta'><Link href='/#events' className='btn btn-primary'>Book Now</Link></div>
+      )}
     </>
   );
 }

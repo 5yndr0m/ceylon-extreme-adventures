@@ -78,6 +78,7 @@ export default function EventBookingForm({
           <label htmlFor="ebf-phone">Phone</label>
           <input
             id="ebf-phone"
+            type="tel"
             placeholder="+94 7X XXX XXXX"
             value={form.phone}
             onChange={(e) => setForm({...form, phone: e.target.value})}

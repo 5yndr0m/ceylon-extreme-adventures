@@ -1,4 +1,5 @@
 // src/app/events/[month]/page.tsx
+import Image from 'next/image'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {getEventsForMonthSlug, isEventBookable, urlFor} from '@/lib/sanity'
@@ -48,11 +49,14 @@ export default async function MonthEventsPage({
       <section className="page-hero">
         <div className="page-hero-bg">
           {banner?.bannerImage ? (
-            <img src={urlFor(banner.bannerImage).width(2200).height(1400).url()} alt={`${monthLabel} events`} />
+            <Image src={urlFor(banner.bannerImage).width(2200).height(1400).url()} alt={`${monthLabel} events`} fill priority sizes="100vw" />
           ) : (
-            <img
+            <Image
               src="https://cdn.sanity.io/images/b5qf24u0/production/5b81b8b7050bc362e3966b1f17ca00d05fa187fd-1800x1440.jpg?w=2200&auto=format"
               alt=""
+              fill
+              priority
+              sizes="100vw"
             />
           )}
           <div className="overlay"></div>
@@ -80,7 +84,12 @@ export default async function MonthEventsPage({
                 <article className="event-card" key={event._id}>
                   <div className="event-card-img">
                     {event.flyerImage && (
-                      <img src={urlFor(event.flyerImage).width(700).height(875).url()} alt={event.title} />
+                      <Image
+                        src={urlFor(event.flyerImage).width(700).height(875).url()}
+                        alt={event.title}
+                        fill
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                      />
                     )}
                     <span className="event-date">
                       <span className="event-date-mon">{formatDate(event.date).split(' ')[1]}</span>

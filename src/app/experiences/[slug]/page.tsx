@@ -7,6 +7,23 @@ import ExperienceTabs from './ExperienceTabs'
 
 export const revalidate = 60
 
+export async function generateMetadata({params}: {params: Promise<{slug: string}>}) {
+  const {slug} = await params
+  const exp = await getExperienceBySlug(slug)
+  if (!exp) return {}
+
+  const description =
+    exp.shortDescription || `${exp.category ?? 'Adventure'} experience${exp.locationName ? ` in ${exp.locationName}` : ''} with Ceylon Extreme Adventures.`
+  const image = exp.heroImage ? urlFor(exp.heroImage).width(1200).height(630).url() : undefined
+
+  return {
+    title: exp.title,
+    description,
+    openGraph: {title: exp.title, description, ...(image ? {images: [{url: image, width: 1200, height: 630, alt: exp.title}]} : {})},
+    twitter: {title: exp.title, description, ...(image ? {images: [image]} : {})},
+  }
+}
+
 export default async function ExperienceDetailPage({
   params,
 }: {
