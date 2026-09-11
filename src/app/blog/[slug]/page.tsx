@@ -11,6 +11,22 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'})
 }
 
+export async function generateMetadata({params}: {params: Promise<{slug: string}>}) {
+  const {slug} = await params
+  const post = await getPostBySlug(slug)
+  if (!post) return {}
+
+  const description = post.excerpt || 'A trip-planning guide from Ceylon Extreme Adventures.'
+  const image = post.image ? urlFor(post.image).width(1200).height(630).url() : undefined
+
+  return {
+    title: post.title,
+    description,
+    openGraph: {title: post.title, description, type: 'article', ...(image ? {images: [{url: image, width: 1200, height: 630, alt: post.title}]} : {})},
+    twitter: {title: post.title, description, ...(image ? {images: [image]} : {})},
+  }
+}
+
 export default async function BlogPostPage({
   params,
 }: {

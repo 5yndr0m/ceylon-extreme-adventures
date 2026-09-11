@@ -18,6 +18,23 @@ type Profile = {
   phone?: string
 }
 
+export async function generateMetadata({params}: {params: Promise<{slug: string}>}) {
+  const {slug} = await params
+  const profile: Profile | null = await getProfileBySlug(slug)
+  if (!profile) return {}
+
+  const description = profile.bio || `${profile.role ?? 'Team member'} at Ceylon Extreme Adventures.`
+  const heroImage = profile.coverImage || profile.portraitImage
+  const image = heroImage ? urlFor(heroImage).width(1200).height(630).url() : undefined
+
+  return {
+    title: profile.name,
+    description,
+    openGraph: {title: profile.name, description, ...(image ? {images: [{url: image, width: 1200, height: 630, alt: profile.name}]} : {})},
+    twitter: {title: profile.name, description, ...(image ? {images: [image]} : {})},
+  }
+}
+
 export default async function FounderProfilePage({
   params,
 }: {

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Terms & Conditions | Ceylon Extreme Adventures',
+  title: 'Terms & Conditions',
   description: 'Booking, cancellation, and participant terms for Ceylon Extreme Adventures.',
 };
 

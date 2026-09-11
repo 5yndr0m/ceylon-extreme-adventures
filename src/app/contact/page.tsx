@@ -1,55 +1,13 @@
-'use client';
-
-import { useState } from 'react';
 import Reveal from '../../components/Reveal';
+import ContactForm from './ContactForm';
+import ContactFaq from './ContactFaq';
 
-const ENQUIRY_EMAIL = 'sales@extremeadventure.lk';
+export const metadata = {
+  title: 'Contact Us',
+  description: "Call, WhatsApp, or send an enquiry — tell us your dates, group size, and experience level, and we'll build the itinerary around you.",
+};
 
 export default function Contact() {
-  const [form, setForm] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    preferredDate: '',
-    activity: '',
-    groupSize: '',
-    message: '',
-  });
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const subject = form.activity ? `Enquiry: ${form.activity}` : 'Enquiry via website';
-    const body = [
-      `Name: ${form.fullName}`,
-      `Email: ${form.email}`,
-      form.phone && `Phone: ${form.phone}`,
-      form.preferredDate && `Preferred date: ${form.preferredDate}`,
-      form.activity && `Activity: ${form.activity}`,
-      form.groupSize && `Group size: ${form.groupSize}`,
-      '',
-      'Message:',
-      form.message || '(none)',
-    ]
-      .filter(Boolean)
-      .join('\n');
-    window.location.href = `mailto:${ENQUIRY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
-
-  const handleFaqClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const item = e.currentTarget.closest('.faq-item');
-    if (!item) return;
-
-    const wasOpen = item.classList.contains('open');
-
-    document
-      .querySelectorAll('.faq-item.open')
-      .forEach((i) => i.classList.remove('open'));
-
-    if (!wasOpen) {
-      item.classList.add('open');
-    }
-  };
-
   return (
     <main>
       <section className="page-hero">
@@ -193,106 +151,7 @@ export default function Contact() {
               </div>
             </Reveal>
 
-            <Reveal className="booking-form">
-              <form onSubmit={handleSubmit}>
-                <div className="field-row two">
-                  <div>
-                    <label htmlFor="fname">Full Name</label>
-                    <input
-                      id="fname"
-                      type="text"
-                      placeholder="Your full name"
-                      required
-                      value={form.fullName}
-                      onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="femail">Email</label>
-                    <input
-                      id="femail"
-                      type="email"
-                      placeholder="you@email.com"
-                      required
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="field-row two">
-                  <div>
-                    <label htmlFor="fphone">Phone</label>
-                    <input
-                      id="fphone"
-                      type="tel"
-                      placeholder="+94 7X XXX XXXX"
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="fdate">Preferred Date</label>
-                    <input
-                      id="fdate"
-                      type="text"
-                      placeholder="DD / MM / YYYY"
-                      value={form.preferredDate}
-                      onChange={(e) => setForm({ ...form, preferredDate: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="field-row two">
-                  <div>
-                    <label htmlFor="factivity">Activity</label>
-                    <select
-                      id="factivity"
-                      value={form.activity}
-                      onChange={(e) => setForm({ ...form, activity: e.target.value })}
-                    >
-                      <option value="">Select an experience</option>
-                      <option>Abseiling</option>
-                      <option>Hiking</option>
-                      <option>Camping &amp; Trekking</option>
-                      <option>Rafting</option>
-                      <option>Canyoning</option>
-                      <option>Kayaking</option>
-                      <option>River Expedition</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="fgroup">Group Size</label>
-                    <input
-                      id="fgroup"
-                      type="number"
-                      min="1"
-                      placeholder="e.g. 6"
-                      value={form.groupSize}
-                      onChange={(e) => setForm({ ...form, groupSize: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="fmessage">Message</label>
-                  <textarea
-                    id="fmessage"
-                    placeholder="Tell us about your experience level, or any questions"
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  ></textarea>
-                </div>
-
-                <button type="submit" className="btn btn-primary">
-                  Send Enquiry
-                </button>
-                <p className="form-note">
-                  We reply within one business day. For urgent or same-day
-                  bookings, please call or WhatsApp.
-                </p>
-              </form>
-            </Reveal>
+            <ContactForm />
           </div>
         </div>
       </section>
@@ -320,56 +179,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="faq" id="faq">
-        <div className="container">
-          <Reveal className="section-head">
-            <span className="eyebrow">Before you reach out</span>
-            <h2>Quick Answers</h2>
-          </Reveal>
-
-          <div className="faq-list">
-            <Reveal className="faq-item">
-              <button className="faq-q" onClick={handleFaqClick}>
-                How fast do you reply to enquiries?
-                <span className="plus">+</span>
-              </button>
-              <div className="faq-a">
-                <p>
-                  Within one business day for email and form enquiries. Call
-                  or WhatsApp for anything same-day or urgent.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal className="faq-item">
-              <button className="faq-q" onClick={handleFaqClick}>
-                Do you need a deposit to confirm a booking?
-                <span className="plus">+</span>
-              </button>
-              <div className="faq-a">
-                <p>
-                  Yes, a deposit secures your date once we&apos;ve confirmed
-                  activity, group size, and pricing over email or WhatsApp.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal className="faq-item">
-              <button className="faq-q" onClick={handleFaqClick}>
-                What's your cancellation policy?
-                <span className="plus">+</span>
-              </button>
-              <div className="faq-a">
-                <p>
-                  Cancel in writing to sales@extremeadventure.lk at least 7 days
-                  before your event for a full refund. Cancellations within 7
-                  days, or postponements, are treated as a rebooking.
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <ContactFaq />
     </main>
   );
 }

@@ -4,6 +4,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {getLeadershipProfiles, urlFor} from '../../lib/sanity';
 
+export const metadata = {
+  title: 'About Us',
+  description: "Ten years and 500+ adventures in, we're still the same crew that started it: local guides who'd rather turn a client away than take a shortcut with their safety.",
+};
 
 export default async function About() {
   const founders = await getLeadershipProfiles();

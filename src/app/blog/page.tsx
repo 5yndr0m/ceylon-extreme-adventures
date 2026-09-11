@@ -5,6 +5,11 @@ import {getAllPosts, urlFor} from '@/lib/sanity'
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
 
+export const metadata = {
+  title: 'Notes From The Trail',
+  description: "Trip-planning guides, company news, and beginner's advice from the guides who run these routes every week.",
+}
+
 type PostSummary = {
   _id: string
   title: string

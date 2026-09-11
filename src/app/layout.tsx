@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   // Resolves any relative URLs elsewhere in metadata (images, canonical links) into
   // absolute ones — without this Next.js falls back to localhost as the base.
   metadataBase: new URL('https://extremeadventure.lk'),
-  title: SITE_TITLE,
+  title: { default: SITE_TITLE, template: `%s | ${SITE_TITLE}` },
   description: SITE_DESCRIPTION,
   // Default social-share preview (WhatsApp, Facebook, Slack, iMessage, etc). Individual
   // pages can override `openGraph`/`twitter` with their own image (e.g. an experience's

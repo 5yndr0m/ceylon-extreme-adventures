@@ -3,6 +3,11 @@ import ExperienceCategoryFilter from '@/components/ExperienceCategoryFilter'
 
 export const revalidate = 60
 
+export const metadata = {
+  title: 'Experiences',
+  description: 'Browse waterfall abseiling, whitewater rafting, canyoning, hiking, and kayaking adventures across Sri Lanka.',
+}
+
 export default async function ExperiencesPage({
   searchParams,
 }: {
