@@ -41,7 +41,12 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json()
 
-  const {eventId, experienceId, preferredDate} = body
+  // eventId is the only supported booking path — the site's UI (EventBookingForm) always
+  // sends one. A previous version of this route also accepted a bare experienceId with a
+  // customer-chosen date, skipping every isEventBookable/registration-closed check below
+  // (those only ran inside the eventId branch); nothing calls that path anymore, so it's
+  // removed rather than left as a latent bypass for whatever might POST here directly.
+  const {eventId} = body
   const fullName = typeof body.fullName === 'string' ? body.fullName.trim() : ''
   const email = typeof body.email === 'string' ? body.email.trim() : ''
   const phone = typeof body.phone === 'string' ? body.phone.trim() : ''
@@ -62,54 +67,42 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({error: 'Group size must be a positive whole number'}, {status: 400})
   }
 
+  if (!eventId) {
+    return NextResponse.json({error: 'Missing required fields'}, {status: 400})
+  }
+
   try {
-    let resolvedExperienceId = experienceId
-    let resolvedPreferredDate = preferredDate
+    const event = await sanity.fetch<{
+      _id: string
+      date: string
+      registrationOpen: boolean
+      experience?: {_id: string}
+    } | null>(
+      `*[_type == "event" && _id == $eventId][0]{_id, date, registrationOpen, experience->{_id}}`,
+      {eventId}
+    )
 
-    // Booking from an event flyer: the departure date is fixed by the event, not
-    // chosen by the customer, and the experience is derived from it rather than
-    // passed directly — this is the primary booking flow per the client's events page.
-    if (eventId) {
-      const event = await sanity.fetch<{
-        _id: string
-        date: string
-        registrationOpen: boolean
-        experience?: {_id: string}
-      } | null>(
-        `*[_type == "event" && _id == $eventId][0]{_id, date, registrationOpen, experience->{_id}}`,
-        {eventId}
-      )
-
-      if (!event) {
-        return NextResponse.json({error: 'Event not found'}, {status: 404})
-      }
-      // Re-checked here server-side, not just trusted from what the page rendered —
-      // registration can close (day-before cutoff or manual toggle) between page load
-      // and form submit
-      if (!isEventBookable(event)) {
-        return NextResponse.json({error: 'Registration is closed for this event'}, {status: 400})
-      }
-      if (!event.experience?._id) {
-        return NextResponse.json({error: 'Event is not linked to an experience'}, {status: 400})
-      }
-
-      resolvedExperienceId = event.experience._id
-      resolvedPreferredDate = event.date
+    if (!event) {
+      return NextResponse.json({error: 'Event not found'}, {status: 404})
     }
-
-    // Minimal server-side validation — don't trust the client form alone
-    if (!resolvedExperienceId || !resolvedPreferredDate) {
-      return NextResponse.json({error: 'Missing required fields'}, {status: 400})
+    // Re-checked here server-side, not just trusted from what the page rendered —
+    // registration can close (day-before cutoff or manual toggle) between page load
+    // and form submit
+    if (!isEventBookable(event)) {
+      return NextResponse.json({error: 'Registration is closed for this event'}, {status: 400})
+    }
+    if (!event.experience?._id) {
+      return NextResponse.json({error: 'Event is not linked to an experience'}, {status: 400})
     }
 
     const booking = await sanity.create({
       _type: 'booking',
-      experience: {_type: 'reference', _ref: resolvedExperienceId},
-      ...(eventId ? {event: {_type: 'reference', _ref: eventId}} : {}),
+      experience: {_type: 'reference', _ref: event.experience._id},
+      event: {_type: 'reference', _ref: eventId},
       fullName,
       email,
       phone,
-      preferredDate: resolvedPreferredDate,
+      preferredDate: event.date,
       groupSize,
       message,
       paymentStatus: 'Pending',
