@@ -13,13 +13,30 @@ const sanity = createClient({
   useCdn: false,
 })
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export async function POST(req: NextRequest) {
   const body = await req.json()
 
-  const {eventId, experienceId, fullName, email, phone, preferredDate, groupSize, message} = body
+  const {eventId, experienceId, preferredDate} = body
+  const fullName = typeof body.fullName === 'string' ? body.fullName.trim() : ''
+  const email = typeof body.email === 'string' ? body.email.trim() : ''
+  const phone = typeof body.phone === 'string' ? body.phone.trim() : ''
+  const message = typeof body.message === 'string' ? body.message.trim() : ''
 
   if (!fullName || !email) {
     return NextResponse.json({error: 'Missing required fields'}, {status: 400})
+  }
+  if (!EMAIL_RE.test(email)) {
+    return NextResponse.json({error: 'Invalid email address'}, {status: 400})
+  }
+
+  // groupSize defaults to 1 (matches the booking form's own minimum) rather than being
+  // silently coerced from a bad value — reject anything that isn't a real positive integer
+  // instead of letting 0/negative/non-numeric values reach Sanity or the PayHere amount calc.
+  const groupSize = body.groupSize === undefined || body.groupSize === null || body.groupSize === '' ? 1 : Number(body.groupSize)
+  if (!Number.isInteger(groupSize) || groupSize < 1) {
+    return NextResponse.json({error: 'Group size must be a positive whole number'}, {status: 400})
   }
 
   try {

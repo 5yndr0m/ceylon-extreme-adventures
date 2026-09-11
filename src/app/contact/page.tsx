@@ -1,11 +1,38 @@
 'use client';
 
+import { useState } from 'react';
 import Reveal from '../../components/Reveal';
 
+const ENQUIRY_EMAIL = 'sales@extremeadventure.lk';
+
 export default function Contact() {
+  const [form, setForm] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    preferredDate: '',
+    activity: '',
+    groupSize: '',
+    message: '',
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert('Thanks — this is a demo form, not yet connected to a backend.');
+    const subject = form.activity ? `Enquiry: ${form.activity}` : 'Enquiry via website';
+    const body = [
+      `Name: ${form.fullName}`,
+      `Email: ${form.email}`,
+      form.phone && `Phone: ${form.phone}`,
+      form.preferredDate && `Preferred date: ${form.preferredDate}`,
+      form.activity && `Activity: ${form.activity}`,
+      form.groupSize && `Group size: ${form.groupSize}`,
+      '',
+      'Message:',
+      form.message || '(none)',
+    ]
+      .filter(Boolean)
+      .join('\n');
+    window.location.href = `mailto:${ENQUIRY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const handleFaqClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -176,6 +203,8 @@ export default function Contact() {
                       type="text"
                       placeholder="Your full name"
                       required
+                      value={form.fullName}
+                      onChange={(e) => setForm({ ...form, fullName: e.target.value })}
                     />
                   </div>
                   <div>
@@ -185,6 +214,8 @@ export default function Contact() {
                       type="email"
                       placeholder="you@email.com"
                       required
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
                     />
                   </div>
                 </div>
@@ -196,6 +227,8 @@ export default function Contact() {
                       id="fphone"
                       type="tel"
                       placeholder="+94 7X XXX XXXX"
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     />
                   </div>
                   <div>
@@ -204,6 +237,8 @@ export default function Contact() {
                       id="fdate"
                       type="text"
                       placeholder="DD / MM / YYYY"
+                      value={form.preferredDate}
+                      onChange={(e) => setForm({ ...form, preferredDate: e.target.value })}
                     />
                   </div>
                 </div>
@@ -211,14 +246,19 @@ export default function Contact() {
                 <div className="field-row two">
                   <div>
                     <label htmlFor="factivity">Activity</label>
-                    <select id="factivity">
+                    <select
+                      id="factivity"
+                      value={form.activity}
+                      onChange={(e) => setForm({ ...form, activity: e.target.value })}
+                    >
                       <option value="">Select an experience</option>
-                      <option>Waterfall Abseiling</option>
+                      <option>Abseiling</option>
+                      <option>Hiking</option>
+                      <option>Camping &amp; Trekking</option>
+                      <option>Rafting</option>
                       <option>Canyoning</option>
-                      <option>White-Water Rafting</option>
-                      <option>Hiking &amp; Trekking</option>
                       <option>Kayaking</option>
-                      <option>Snorkeling &amp; Diving</option>
+                      <option>River Expedition</option>
                     </select>
                   </div>
                   <div>
@@ -228,6 +268,8 @@ export default function Contact() {
                       type="number"
                       min="1"
                       placeholder="e.g. 6"
+                      value={form.groupSize}
+                      onChange={(e) => setForm({ ...form, groupSize: e.target.value })}
                     />
                   </div>
                 </div>
@@ -237,6 +279,8 @@ export default function Contact() {
                   <textarea
                     id="fmessage"
                     placeholder="Tell us about your experience level, or any questions"
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
                   ></textarea>
                 </div>
 

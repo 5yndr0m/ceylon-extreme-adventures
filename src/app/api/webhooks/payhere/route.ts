@@ -14,6 +14,18 @@ const sanity = createClient({
 
 const resend = new Resend(process.env.RESEND_API_KEY!)
 
+// Every value below comes from customer-submitted booking data (fullName, groupSize, etc.)
+// — escape before interpolating into HTML email bodies so a booking can't inject markup/links
+// into an email sent from our own verified domain.
+function escapeHtml(value: unknown): string {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 // PayHere calls this as a server-to-server POST (notify_url) after payment —
 // this is the source of truth, NOT the browser redirect to return_url, which
 // can be interrupted if the customer closes the tab. Same reasoning as the Stripe webhook.
@@ -72,7 +84,14 @@ export async function POST(req: NextRequest) {
       // An event-based booking is a fixed departure — say so plainly rather than the
       // more open-ended "we'll call to confirm logistics" wording used for a direct
       // experience enquiry with a customer-chosen date.
-      const itemTitle = booking.event?.title ?? booking.experience.title
+      // Raw for use in email subject lines (plain text, no HTML escaping needed there —
+      // escaping would literally show "&amp;" for a title like "Rafting & Canyoning").
+      const itemTitleRaw = booking.event?.title ?? booking.experience.title
+      const itemTitle = escapeHtml(itemTitleRaw)
+      const fullName = escapeHtml(booking.fullName)
+      const groupSize = escapeHtml(booking.groupSize)
+      const email = escapeHtml(booking.email)
+      const paymentId = escapeHtml(data.payment_id)
       const dateLabel = new Date(booking.preferredDate).toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'long',
@@ -83,18 +102,18 @@ export async function POST(req: NextRequest) {
       const customerResult = await resend.emails.send({
         from: 'Ceylon Extreme Adventures <bookings@extremeadventure.lk>',
         to: booking.email,
-        subject: `Booking Confirmed — ${itemTitle}`,
+        subject: `Booking Confirmed — ${itemTitleRaw}`,
         html: booking.event
           ? `
-          <p>Hi ${booking.fullName},</p>
+          <p>Hi ${fullName},</p>
           <p>Your spot for <strong>${itemTitle}</strong> on <strong>${dateLabel}</strong> is confirmed.</p>
-          <p>Group size: ${booking.groupSize}</p>
+          <p>Group size: ${groupSize}</p>
           <p>Our team will call you within 24 hours to confirm logistics.</p>
         `
           : `
-          <p>Hi ${booking.fullName},</p>
+          <p>Hi ${fullName},</p>
           <p>Your booking for <strong>${itemTitle}</strong> is confirmed.</p>
-          <p>Date: ${dateLabel}<br/>Group size: ${booking.groupSize}</p>
+          <p>Date: ${dateLabel}<br/>Group size: ${groupSize}</p>
           <p>Our team will call you within 24 hours to confirm logistics.</p>
         `,
       })
@@ -110,13 +129,13 @@ export async function POST(req: NextRequest) {
       const internalResult = await resend.emails.send({
         from: 'Ceylon Extreme Adventures Site <bookings@extremeadventure.lk>',
         to: process.env.CLIENT_NOTIFICATION_EMAIL!, // set this in env, not hardcoded — client's inbox may change
-        subject: `New Paid Booking — ${itemTitle}`,
+        subject: `New Paid Booking — ${itemTitleRaw}`,
         html: `
           <p>New booking received:</p>
-          <p>${booking.fullName} (${booking.email})<br/>
-          ${itemTitle} — ${dateLabel} — ${booking.groupSize} people</p>
+          <p>${fullName} (${email})<br/>
+          ${itemTitle} — ${dateLabel} — ${groupSize} people</p>
           ${booking.event ? '<p>Booked via the events page (fixed departure).</p>' : ''}
-          <p>Payment reference: ${data.payment_id}</p>
+          <p>Payment reference: ${paymentId}</p>
         `,
       })
       if (internalResult.error) {
