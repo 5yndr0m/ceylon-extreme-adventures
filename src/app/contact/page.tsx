@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Reveal from '../../components/Reveal';
 import ContactForm from './ContactForm';
 import ContactFaq from './ContactFaq';
@@ -12,9 +13,12 @@ export default function Contact() {
     <main>
       <section className="page-hero">
         <div className="page-hero-bg">
-          <img
+          <Image
             src="https://cdn.sanity.io/images/b5qf24u0/production/b867d54473a4a617897ff4d68df2024e12dc048c-864x1080.jpg?w=2200&auto=format"
             alt="Hikers resting on the cliffs at Lakegala"
+            fill
+            priority
+            sizes="100vw"
           />
           <div className="overlay"></div>
         </div>

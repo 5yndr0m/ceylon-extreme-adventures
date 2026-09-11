@@ -18,7 +18,7 @@ export default async function About() {
 {/* ================= PAGE HERO ================= */}
 <section className="page-hero">
   <div className="page-hero-bg">
-    <img src="https://cdn.sanity.io/images/b5qf24u0/production/2ddce91af777934efcdb55624852c82eacca780c-1920x1080.jpg?w=2200&auto=format" alt="Kayakers landing on the beach at Kala Wewa" />
+    <Image src="https://cdn.sanity.io/images/b5qf24u0/production/2ddce91af777934efcdb55624852c82eacca780c-1920x1080.jpg?w=2200&auto=format" alt="Kayakers landing on the beach at Kala Wewa" fill priority sizes="100vw" />
     <div className="overlay"></div>
   </div>
   <div className="container page-hero-inner">
@@ -33,7 +33,7 @@ export default async function About() {
 <section id="story">
   <div className="container about-grid">
     <Reveal className="about-img">
-      <img src="https://cdn.sanity.io/images/b5qf24u0/production/478d7eb45d23391e8d995a4f98a537203acb5135-2200x1467.jpg?w=1000&auto=format" alt="Ceylon Extreme Adventures guide abseiling down Bambarakanda Falls" />
+      <Image src="https://cdn.sanity.io/images/b5qf24u0/production/478d7eb45d23391e8d995a4f98a537203acb5135-2200x1467.jpg?w=1000&auto=format" alt="Ceylon Extreme Adventures guide abseiling down Bambarakanda Falls" fill sizes="(min-width: 768px) 50vw, 100vw" />
     </Reveal>
     <Reveal className="about-text">
       <span className="eyebrow">Who we are</span>

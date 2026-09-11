@@ -31,9 +31,12 @@ export default async function BlogPage() {
     <main>
       <section className="page-hero">
         <div className="page-hero-bg">
-          <img
+          <Image
             src="https://cdn.sanity.io/images/b5qf24u0/production/77c883843ebb49fb08120a5c1f2d535d35eb167a-1920x1080.jpg?w=2200&auto=format"
             alt="Group celebrating at the top of Kotaganga Ella"
+            fill
+            priority
+            sizes="100vw"
           />
           <div className="overlay"></div>
         </div>

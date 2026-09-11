@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
 type Activity = {
@@ -156,7 +157,13 @@ export default function ActivitiesCarousel() {
           {activities.map((a) => (
             <div className="activity-card" key={a.title}>
               <a href={a.href} className="activity-card-link">
-                <img src={a.image} alt={a.alt} draggable={false} />
+                <Image
+                  src={a.image}
+                  alt={a.alt}
+                  fill
+                  sizes="(min-width: 960px) 33vw, (min-width: 768px) 50vw, 78vw"
+                  draggable={false}
+                />
                 <div className="activity-card-content glass">
                   <h3>{a.title}</h3>
                   <p>{a.description}</p>
