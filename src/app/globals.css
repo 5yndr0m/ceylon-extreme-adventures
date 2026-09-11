@@ -349,8 +349,11 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 .testi-nav:hover{ background:var(--adrenaline-orange); border-color:var(--adrenaline-orange); color:#fff; }
 .testi-nav.prev{ left:0; }
 .testi-nav.next{ right:0; }
-.testi-dots{ display:flex; justify-content:center; gap:9px; margin-top:22px; }
-.testi-dots button{ width:8px; height:8px; padding:0; border:0; border-radius:50%; background:rgba(20,24,26,.25); }
+.testi-dots{ display:flex; justify-content:center; margin-top:22px; }
+/* Visible dot stays 8px, but the actual button (hit target) is padded out to the
+   24px minimum touch-target size — background-clip keeps the padding transparent
+   so nothing looks different, it's just easier to tap accurately. */
+.testi-dots button{ width:8px; height:8px; padding:8px; box-sizing:content-box; border:0; border-radius:50%; background:rgba(20,24,26,.25); background-clip:content-box; }
 .testi-dots button.active{ background:var(--adrenaline-orange); transform:scale(1.35); }
 @media(max-width:767px){
   .testi-carousel{ padding:0 42px; }
@@ -400,7 +403,7 @@ label{ display:block; font-size:13px; font-weight:700; letter-spacing:.3px; text
 /* ============ FOOTER ============ */
 footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px 0 26px; }
 .footer-grid{ display:grid; gap:34px; margin-bottom:40px; }
-.footer-col h4{ color:#fff; font-size:14px; letter-spacing:.5px; text-transform:uppercase; margin-bottom:16px; }
+.footer-col h3{ color:#fff; font-size:14px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; margin-bottom:16px; }
 .footer-col a{ display:block; font-size:14px; padding:5px 0; color:rgba(255,255,255,.65); }
 .footer-col a:hover{ color:var(--adrenaline-orange); }
 .footer-col .footer-contact-link{ display:flex; align-items:flex-start; gap:10px; }
