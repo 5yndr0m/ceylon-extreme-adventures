@@ -60,9 +60,9 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
             key={founder._id}
             className={`founder-card slot-${slotOf[i]} ${wrapping.has(i) ? 'is-wrapping' : ''}`}
           >
-            <Link href={`/about/team/${founder.slug.current}`} className="founder-card-link" aria-label={`View ${founder.name}'s profile`}>
+            <Link href={`/about/team/${founder.slug.current}`} className="founder-card-link">
               {founder.portraitImage ? (
-                <img src={urlFor(founder.portraitImage).width(600).height(760).url()} alt={founder.name} className="founder-img" />
+                <img src={urlFor(founder.portraitImage).width(600).height(760).url()} alt="" className="founder-img" />
               ) : (
                 <div className="founder-img founder-img-fallback" />
               )}

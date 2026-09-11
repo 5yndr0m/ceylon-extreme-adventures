@@ -31,7 +31,7 @@ export default function Footer() {
               </div>
             </div>
             <div className='footer-col'>
-              <h4>Experiences</h4>
+              <h3>Experiences</h3>
               <Link href='/experiences?category=Abseiling'>Abseiling Adventures</Link>
               <Link href='/experiences?category=Hiking'>Hiking Adventures</Link>
               <Link href='/experiences?category=Camping%20%26%20Trekking'>Trekking and Camping</Link>
@@ -40,7 +40,7 @@ export default function Footer() {
               <Link href='/experiences?category=River%20Expedition'>River Expedition</Link>
             </div>
             <div className='footer-col'>
-              <h4>Support</h4>
+              <h3>Support</h3>
               <Link href='/contact#faq'>FAQ</Link>
               <Link href='/blog'>Trip Planning Guides</Link>
               {/* No standalone Safety Policy / Terms pages exist yet — routing to Contact
@@ -49,7 +49,7 @@ export default function Footer() {
               <Link href='/terms'>Terms &amp; Conditions</Link>
             </div>
             <div className='footer-col'>
-              <h4>Contact</h4>
+              <h3>Contact</h3>
               <Link href='/contact#location' className='footer-contact-link'>
                 <svg className='footer-contact-icon' viewBox='0 0 24 24' aria-hidden='true' fill='none' stroke='currentColor' strokeWidth='1.8'>
                   <path d='M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z' />
