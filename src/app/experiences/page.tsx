@@ -3,22 +3,22 @@ import ExperienceCategoryFilter from '@/components/ExperienceCategoryFilter'
 
 export const revalidate = 60
 
+// Deliberately not reading `searchParams` here. In the App Router, a page that reads
+// searchParams is forced into fully dynamic (server-rendered-per-request) mode --
+// the `revalidate` export above is silently ignored the moment that happens, so this
+// page was hitting Sanity fresh on every single request (bot, prefetch, or otherwise),
+// confirmed via Vercel runtime logs showing 100% cache=MISS and bursts of a dozen+
+// requests in the same second. ExperienceCategoryFilter is a client component that
+// already reads the ?category= URL param itself via useSearchParams() in a useEffect
+// (see its own file) -- initialCategory here is purely a same-frame default to avoid
+// a flash of "All" before that effect runs, not the source of truth. Hardcoding it
+// lets this page be a normal static/ISR page again.
 export const metadata = {
   title: 'Experiences',
   description: 'Browse waterfall abseiling, whitewater rafting, canyoning, hiking, and kayaking adventures across Sri Lanka.',
 }
 
-export default async function ExperiencesPage({
-  searchParams,
-}: {
-  searchParams?: Promise<{category?: string}> | {category?: string}
-}) {
-  const resolvedSearchParams = await searchParams
-  const initialCategory =
-    typeof resolvedSearchParams?.category === 'string' && resolvedSearchParams.category.trim()
-      ? resolvedSearchParams.category
-      : 'All'
-
+export default async function ExperiencesPage() {
   const experiences = await getAllExperiences()
 
   return (
@@ -42,7 +42,7 @@ export default async function ExperiencesPage({
       <section className="reveal-on-load mx-auto max-w-7xl px-6 py-12 md:py-16">
         <div className="mb-8 h-1 w-16 rounded-full bg-[var(--adrenaline-orange)]" />
 
-        <ExperienceCategoryFilter experiences={experiences} initialCategory={initialCategory} />
+        <ExperienceCategoryFilter experiences={experiences} initialCategory="All" />
       </section>
     </main>
   )
