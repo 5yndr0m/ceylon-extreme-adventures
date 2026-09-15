@@ -1,3 +1,4 @@
+import {Suspense} from 'react'
 import {getAllExperiences} from '@/lib/sanity'
 import ExperienceCategoryFilter from '@/components/ExperienceCategoryFilter'
 
@@ -13,6 +14,13 @@ export const revalidate = 60
 // (see its own file) -- initialCategory here is purely a same-frame default to avoid
 // a flash of "All" before that effect runs, not the source of truth. Hardcoding it
 // lets this page be a normal static/ISR page again.
+//
+// Removing the server-side searchParams read means Next.js now attempts full static
+// generation for this page -- which requires wrapping ExperienceCategoryFilter's
+// useSearchParams() call in a Suspense boundary, or the build fails outright with
+// "useSearchParams() should be wrapped in a suspense boundary". Confirmed by actually
+// running `next build` locally, not just tsc/eslint -- neither of those exercises the
+// static-generation path where this specific error surfaces.
 export const metadata = {
   title: 'Experiences',
   description: 'Browse waterfall abseiling, whitewater rafting, canyoning, hiking, and kayaking adventures across Sri Lanka.',
@@ -42,7 +50,9 @@ export default async function ExperiencesPage() {
       <section className="reveal-on-load mx-auto max-w-7xl px-6 py-12 md:py-16">
         <div className="mb-8 h-1 w-16 rounded-full bg-[var(--adrenaline-orange)]" />
 
-        <ExperienceCategoryFilter experiences={experiences} initialCategory="All" />
+        <Suspense fallback={null}>
+          <ExperienceCategoryFilter experiences={experiences} initialCategory="All" />
+        </Suspense>
       </section>
     </main>
   )
