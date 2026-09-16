@@ -262,7 +262,7 @@ function PaymentPortalInner() {
       <div className="container" style={{ padding: '24px 0 48px', borderTop: '1px solid var(--cloud-gray)', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 14, fontSize: 13, color: 'var(--stone-gray)' }}>
         <span>© 2026 Ceylon Extreme Adventures (Pvt) Ltd.</span>
         <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
-          <Link href="/contact">Refund Policy</Link>
+          <Link href="/refund-policy">Refund Policy</Link>
           <Link href="/terms">Terms &amp; Conditions</Link>
           <a href="mailto:sales@extremeadventure.lk">sales@extremeadventure.lk</a>
         </div>
