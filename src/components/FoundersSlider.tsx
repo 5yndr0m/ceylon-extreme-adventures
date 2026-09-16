@@ -105,16 +105,18 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
         }
         .founder-card {
           position: absolute;
-          top: 0;
-          width: 30%;
+          top: 50%;
+          /* Matches the 600x760 crop urlFor() requests for portraitImage, so object-fit:
+             cover never has to crop away most of the photo's width to fill the box —
+             that mismatch was what made the portraits look vertically stretched. */
+          aspect-ratio: 600 / 760;
+          transform: translateY(-50%);
           border-radius: var(--radius-md);
           overflow: hidden;
           background: var(--cloud-gray);
           box-shadow: 0 16px 34px -22px rgba(20, 24, 26, 0.35);
           transition:
             left 0.8s cubic-bezier(0.65, 0, 0.35, 1),
-            top 0.8s cubic-bezier(0.65, 0, 0.35, 1),
-            height 0.8s cubic-bezier(0.65, 0, 0.35, 1),
             width 0.8s cubic-bezier(0.65, 0, 0.35, 1),
             box-shadow 0.4s ease;
         }
@@ -122,23 +124,20 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
         /* left slot */
         .slot-0 {
           left: 0%;
-          height: 300px;
-          top: 40px;
+          width: 42.3%;
           z-index: 1;
         }
         /* middle slot (tall) */
         .slot-1 {
-          left: 35%;
-          height: 380px;
-          top: 0;
+          left: 23.2%;
+          width: 53.6%;
           z-index: 2;
           box-shadow: 0 22px 44px -20px rgba(242, 98, 46, 0.45);
         }
         /* right slot */
         .slot-2 {
-          left: 70%;
-          height: 300px;
-          top: 40px;
+          left: 57.7%;
+          width: 42.3%;
           z-index: 1;
         }
 
@@ -227,15 +226,7 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
 
         @media (max-width: 640px) {
           .founders-track {
-            height: 260px;
-          }
-          .slot-1 {
-            height: 260px;
-          }
-          .slot-0,
-          .slot-2 {
-            height: 200px;
-            top: 30px;
+            height: 230px;
           }
         }
       `}</style>
