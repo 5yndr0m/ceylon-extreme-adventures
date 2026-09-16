@@ -101,7 +101,7 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
           position: relative;
           width: 100%;
           max-width: 560px;
-          height: 380px;
+          height: 420px;
         }
         .founder-card {
           position: absolute;
@@ -127,10 +127,14 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
           width: 42.3%;
           z-index: 1;
         }
-        /* middle slot (tall) */
+        /* middle slot (tall) — a taller aspect ratio than the side cards (rather than
+           just a wider one at the same ratio) so it actually reads as "stretched",
+           not just "bigger". object-fit:cover on .founder-img means this only crops
+           more of the portrait, it never distorts it. */
         .slot-1 {
           left: 23.2%;
           width: 53.6%;
+          aspect-ratio: 600 / 900;
           z-index: 2;
           box-shadow: 0 22px 44px -20px rgba(242, 98, 46, 0.45);
         }
@@ -226,7 +230,7 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
 
         @media (max-width: 640px) {
           .founders-track {
-            height: 230px;
+            height: 260px;
           }
         }
       `}</style>
