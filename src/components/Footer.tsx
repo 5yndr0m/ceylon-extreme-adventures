@@ -43,9 +43,8 @@ export default function Footer({ hideStickyCta = false }: { hideStickyCta?: bool
               <h3>Support</h3>
               <Link href='/contact#faq'>FAQ</Link>
               <Link href='/blog'>Trip Planning Guides</Link>
-              {/* No standalone Safety Policy / Terms pages exist yet — routing to Contact
-                  rather than leaving a dead href="#" until those pages are written */}
-              <Link href='/contact'>Safety Policy</Link>
+              <Link href='/privacy-policy'>Privacy Policy</Link>
+              <Link href='/refund-policy'>Refund Policy</Link>
               <Link href='/terms'>Terms &amp; Conditions</Link>
             </div>
             <div className='footer-col'>

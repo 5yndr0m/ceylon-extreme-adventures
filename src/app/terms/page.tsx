@@ -45,11 +45,38 @@ export default function TermsPage() {
           </div>
 
           <div className="terms-block">
+            <h3>Use of This Website</h3>
+            <ul>
+              <li>You must be at least 18 years old to make a booking on this website, or booking on behalf of a minor with the consent of a parent or legal guardian.</li>
+              <li>You&apos;re responsible for providing accurate, current contact details during booking so we can reach you about your event.</li>
+              <li>You may not use this website for any unlawful or unauthorized purpose.</li>
+            </ul>
+          </div>
+
+          <div className="terms-block">
+            <h3>Experience Information &amp; Pricing</h3>
+            <ul>
+              <li>We do our best to keep experience descriptions, images, and pricing accurate and up to date, but we don&apos;t guarantee they&apos;re free of error at every moment.</li>
+              <li>Prices are subject to change without notice. Any promotions or discounted rates apply only for the period stated and may carry their own conditions.</li>
+            </ul>
+          </div>
+
+          <div className="terms-block">
+            <h3>Bookings &amp; Payments</h3>
+            <ul>
+              <li>Submitting a booking is an offer to reserve a place on that event, which we confirm once payment is received.</li>
+              <li>We reserve the right to refuse or cancel a booking for reasons including event availability, a pricing or listing error, or suspected fraudulent activity.</li>
+              <li>Payment is processed securely by PayHere. We never see or store your card details — PayHere handles your payment information directly.</li>
+            </ul>
+          </div>
+
+          <div className="terms-block">
             <h3>Client Cancellation Policy</h3>
             <ul>
               <li>All client cancellations must be made in writing at least 7 days prior to the date of the event and sent to sales@extremeadventure.lk.</li>
               <li>A full refund will be offered for client cancellations made prior to 7 days before the date of the event.</li>
               <li>A postponement from the client&apos;s end will be treated as a cancellation and re-booking.</li>
+              <li>See our <Link href="/refund-policy">Refund Policy</Link> for the full cancellation and refund process.</li>
             </ul>
           </div>
 
@@ -85,11 +112,40 @@ export default function TermsPage() {
           </div>
 
           <div className="terms-block">
+            <h3>Intellectual Property</h3>
+            <ul>
+              <li>All content on this website, including text, photos, videos, and logos, belongs to Ceylon Extreme Adventures or its licensors.</li>
+              <li>You may not reproduce, distribute, or otherwise reuse content from this website without our prior written consent.</li>
+            </ul>
+          </div>
+
+          <div className="terms-block">
+            <h3>Limitation of Liability (Website Use)</h3>
+            <ul>
+              <li>We aren&apos;t liable for indirect or consequential losses arising from your use of this website, separate from the physical safety and injury liability terms set out above.</li>
+              <li>We make no warranty that this website, or the information on it, will be error-free or available without interruption.</li>
+            </ul>
+          </div>
+
+          <div className="terms-block">
             <h3>Complaints</h3>
             <ul>
               <li>Complaints should first be discussed directly with the CEA Chief Instructor during or after the event so corrective measures can be taken.</li>
               <li>If not raised at the time, complaints made afterward must be submitted in writing within 28 days.</li>
             </ul>
+          </div>
+
+          <div className="terms-block">
+            <h3>Governing Law</h3>
+            <p>These Terms &amp; Conditions are governed by the laws of Sri Lanka.</p>
+          </div>
+
+          <div className="terms-block">
+            <h3>Amendments</h3>
+            <p>
+              We may update these Terms &amp; Conditions from time to time. Continued use of this website or our services
+              after a change means you accept the updated terms. We recommend checking this page periodically.
+            </p>
           </div>
         </div>
       </section>

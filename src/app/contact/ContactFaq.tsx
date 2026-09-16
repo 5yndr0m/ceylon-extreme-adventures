@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Reveal from '../../components/Reveal';
 
 const handleFaqClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -62,7 +63,8 @@ export default function ContactFaq() {
               <p>
                 Cancel in writing to sales@extremeadventure.lk at least 7 days
                 before your event for a full refund. Cancellations within 7
-                days, or postponements, are treated as a rebooking.
+                days, or postponements, are treated as a rebooking. See our{' '}
+                <Link href="/refund-policy">Refund Policy</Link> for full details.
               </p>
             </div>
           </Reveal>

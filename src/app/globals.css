@@ -666,6 +666,9 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .terms-block li{ color:var(--stone-gray); font-size:15px; line-height:1.6; padding-left:18px; position:relative; }
 .terms-block li::before{ content:'—'; position:absolute; left:0; color:var(--adrenaline-orange); font-weight:700; }
 .terms-block strong{ color:var(--basalt-black); }
+.terms-block p{ color:var(--stone-gray); font-size:15px; line-height:1.6; }
+.terms-block p + p{ margin-top:10px; }
+.terms-block a{ color:var(--jungle-green); font-weight:700; text-decoration:underline; }
 
 /* ============ BOOKING PAGE (experience detail) ============ */
 .bp-page{ background:#fff; padding-bottom:90px; }
