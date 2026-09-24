@@ -67,8 +67,10 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
                   src={urlFor(founder.portraitImage).width(600).height(760).url()}
                   alt=""
                   fill
-                  sizes="(min-width: 640px) 200px, 33vw"
+                  sizes="(min-width: 640px) 300px, 55vw"
+                  quality={90}
                   className="founder-img"
+                  style={{ objectFit: 'cover' }}
                 />
               ) : (
                 <div className="founder-img founder-img-fallback" />
@@ -86,7 +88,7 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
         <span className="founder-desc-name">{activeFounder.name}</span>
         <span className="founder-desc-role">{activeFounder.role}</span>
         <p className="founder-desc-bio">{activeFounder.bio}</p>
-        <Link href={`/about/team/${activeFounder.slug.current}`} className="founder-profile-link">View full profile <span aria-hidden="true">→</span></Link>
+        <Link href={`/about/team/${activeFounder.slug.current}`} className="founder-profile-link">View full profile</Link>
       </div>
 
       <style jsx>{`
@@ -151,12 +153,14 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
           z-index: 0 !important;
         }
 
-        .founder-img {
+        /* <Image> and <Link> are components, so styled-jsx never adds its scope class to
+           the elements they render — these need :global() or the rules silently don't apply. */
+        :global(.founder-img) {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
-        .founder-card-link {
+        :global(.founder-card-link) {
           display: block;
           width: 100%;
           height: 100%;
@@ -217,7 +221,7 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
           font-size: 15px;
           line-height: 1.6;
         }
-        .founder-profile-link {
+        :global(.founder-profile-link) {
           display: inline-flex;
           gap: 8px;
           margin-top: 14px;
