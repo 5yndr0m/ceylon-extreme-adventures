@@ -346,11 +346,11 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); padding:12px 0
 .testi-nav.prev{ left:0; }
 .testi-nav.next{ right:0; }
 .testi-dots{ display:flex; justify-content:center; margin-top:22px; }
-/* Visible dot is small (6px), but the actual button (hit target) is padded out to the
+/* Visible dot is small (4px), but the actual button (hit target) is padded out to the
    24px minimum touch-target size — background-clip keeps the padding transparent
    so nothing looks different, it's just easier to tap accurately. */
-.testi-dots button{ width:6px; height:6px; padding:9px; box-sizing:content-box; border:0; border-radius:50%; background:rgba(20,24,26,.25); background-clip:content-box; }
-.testi-dots button.active{ background:var(--adrenaline-orange); transform:scale(1.3); }
+.testi-dots button{ width:4px; height:4px; padding:10px; box-sizing:content-box; border:0; border-radius:50%; background:rgba(20,24,26,.25); background-clip:content-box; }
+.testi-dots button.active{ background:var(--adrenaline-orange); transform:scale(1.25); }
 @media(max-width:767px){
   .testi-carousel{ padding:0 42px; }
   .testi-track{ height:auto; min-height:292px; }
