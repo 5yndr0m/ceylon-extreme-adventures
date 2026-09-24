@@ -67,8 +67,10 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
                   src={urlFor(founder.portraitImage).width(600).height(760).url()}
                   alt=""
                   fill
-                  sizes="(min-width: 640px) 200px, 33vw"
+                  sizes="(min-width: 640px) 300px, 55vw"
+                  quality={90}
                   className="founder-img"
+                  style={{ objectFit: 'cover' }}
                 />
               ) : (
                 <div className="founder-img founder-img-fallback" />
@@ -86,154 +88,9 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
         <span className="founder-desc-name">{activeFounder.name}</span>
         <span className="founder-desc-role">{activeFounder.role}</span>
         <p className="founder-desc-bio">{activeFounder.bio}</p>
-        <Link href={`/about/team/${activeFounder.slug.current}`} className="founder-profile-link">View full profile <span aria-hidden="true">→</span></Link>
+        <Link href={`/about/team/${activeFounder.slug.current}`} className="founder-profile-link">View full profile</Link>
       </div>
 
-      <style jsx>{`
-        .founders-slider {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 24px;
-          width: 100%;
-        }
-        .founders-track {
-          position: relative;
-          width: 100%;
-          max-width: 560px;
-          height: 420px;
-        }
-        .founder-card {
-          position: absolute;
-          top: 50%;
-          /* Matches the 600x760 crop urlFor() requests for portraitImage, so object-fit:
-             cover never has to crop away most of the photo's width to fill the box —
-             that mismatch was what made the portraits look vertically stretched. */
-          aspect-ratio: 600 / 760;
-          transform: translateY(-50%);
-          border-radius: var(--radius-md);
-          overflow: hidden;
-          background: var(--cloud-gray);
-          box-shadow: 0 16px 34px -22px rgba(20, 24, 26, 0.35);
-          transition:
-            left 0.8s cubic-bezier(0.65, 0, 0.35, 1),
-            width 0.8s cubic-bezier(0.65, 0, 0.35, 1),
-            box-shadow 0.4s ease;
-        }
-
-        /* left slot */
-        .slot-0 {
-          left: 0%;
-          width: 42.3%;
-          z-index: 1;
-        }
-        /* middle slot (tall) — a taller aspect ratio than the side cards (rather than
-           just a wider one at the same ratio) so it actually reads as "stretched",
-           not just "bigger". object-fit:cover on .founder-img means this only crops
-           more of the portrait, it never distorts it. */
-        .slot-1 {
-          left: 23.2%;
-          width: 53.6%;
-          aspect-ratio: 600 / 900;
-          z-index: 2;
-          box-shadow: 0 22px 44px -20px rgba(242, 98, 46, 0.45);
-        }
-        /* right slot */
-        .slot-2 {
-          left: 57.7%;
-          width: 42.3%;
-          z-index: 1;
-        }
-
-        /* forced behind everything else for the whole duration of the
-           right -> left wrap-around move, regardless of DOM order */
-        .founder-card.is-wrapping {
-          z-index: 0 !important;
-        }
-
-        .founder-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .founder-card-link {
-          display: block;
-          width: 100%;
-          height: 100%;
-        }
-        .founder-img-fallback {
-          background: var(--jungle-green);
-        }
-        .founder-overlay {
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          padding: 16px 14px;
-          background: linear-gradient(180deg, transparent 0%, rgba(10, 12, 11, 0.88) 100%);
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          text-align: left;
-        }
-        .founder-name {
-          color: #fff;
-          font-weight: 700;
-          font-size: 15px;
-        }
-        .founder-role {
-          color: var(--adrenaline-orange);
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-        }
-
-        .founder-desc {
-          max-width: 100%;
-          text-align: center;
-          border-top: 1px solid var(--cloud-gray);
-          padding-top: 18px;
-        }
-        .founder-desc-name {
-          display: block;
-          font-family: var(--font-display);
-          font-size: 22px;
-          color: var(--jungle-green);
-          text-transform: uppercase;
-        }
-        .founder-desc-role {
-          display: block;
-          margin-top: 4px;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 1.5px;
-          text-transform: uppercase;
-          color: var(--adrenaline-orange);
-        }
-        .founder-desc-bio {
-          margin-top: 14px;
-          color: var(--stone-gray);
-          font-size: 15px;
-          line-height: 1.6;
-        }
-        .founder-profile-link {
-          display: inline-flex;
-          gap: 8px;
-          margin-top: 14px;
-          color: var(--jungle-green);
-          font-size: 13px;
-          font-weight: 700;
-          letter-spacing: .4px;
-          text-transform: uppercase;
-        }
-
-        @media (max-width: 640px) {
-          .founders-track {
-            height: 260px;
-          }
-        }
-      `}</style>
     </div>
   );
 }

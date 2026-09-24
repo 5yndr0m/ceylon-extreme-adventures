@@ -161,7 +161,8 @@ export default function ActivitiesCarousel() {
                   src={a.image}
                   alt={a.alt}
                   fill
-                  sizes="(min-width: 960px) 33vw, (min-width: 768px) 50vw, 78vw"
+                  sizes="(min-width: 960px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  quality={90}
                   draggable={false}
                 />
                 <div className="activity-card-content glass">

@@ -103,7 +103,7 @@ export default async function About() {
               <h3>{founder.name}</h3>
               <span className="team-role">{founder.role}</span>
               <p>{founder.bio}</p>
-              <span className="team-card-cta">View profile <span aria-hidden="true">→</span></span>
+              <span className="team-card-cta">View profile</span>
             </div>
           </Link>
         </Reveal>
