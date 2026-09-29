@@ -87,11 +87,11 @@ export default function EventBookingForm({
       </div>
 
       <div className="bp-form-row">
-        <label>Slots</label>
-        <div style={{display: 'flex', alignItems: 'center', gap: 12}}>
+        <div className="bp-label" id="slots-label">Slots</div>
+        <div style={{display: 'flex', alignItems: 'center', gap: 12}} role="group" aria-labelledby="slots-label">
           <div className="bp-stepper">
             <button type="button" onClick={() => updateGroupSize(-1)} aria-label="Decrease group size">−</button>
-            <span>{form.groupSize}</span>
+            <span aria-live="polite">{form.groupSize}</span>
             <button type="button" onClick={() => updateGroupSize(1)} aria-label="Increase group size">+</button>
           </div>
           {remainingSlots !== null && remainingSlots !== undefined && (

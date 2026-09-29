@@ -1,7 +1,8 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/SanityImage'
 import { useEffect, useRef, useState } from 'react'
+import { useReducedMotion } from './useReducedMotion'
 
 type Activity = {
   href: string
@@ -67,6 +68,7 @@ const SWIPE_THRESHOLD = 40
 export default function ActivitiesCarousel() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
+  const reducedMotion = useReducedMotion()
   const [dragOffset, setDragOffset] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -88,13 +90,13 @@ export default function ActivitiesCarousel() {
   }
 
   useEffect(() => {
-    if (!isMobile) return
+    if (!isMobile || reducedMotion) return
     stopAutoplay()
     autoplayRef.current = setInterval(() => {
       setActiveIndex((i) => (i + 1) % activities.length)
     }, AUTOPLAY_MS)
     return stopAutoplay
-  }, [isMobile])
+  }, [isMobile, reducedMotion])
 
   const goTo = (i: number) => {
     stopAutoplay()
@@ -154,8 +156,8 @@ export default function ActivitiesCarousel() {
           onTouchEnd={onTouchEnd}
           style={sliderStyle}
         >
-          {activities.map((a) => (
-            <div className="activity-card" key={a.title}>
+          {activities.map((a, i) => (
+            <div className="activity-card" key={a.title} inert={isMobile && i !== activeIndex}>
               <a href={a.href} className="activity-card-link">
                 <Image
                   src={a.image}

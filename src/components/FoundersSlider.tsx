@@ -1,8 +1,9 @@
 'use client';
 
-import Image from 'next/image';
+import Image from '@/components/SanityImage';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { useReducedMotion } from './useReducedMotion';
 
 type Founder = {
   _id: string;
@@ -22,8 +23,12 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
   const [slotOf, setSlotOf] = useState<number[]>([0, 1, 2]);
   const [wrapping, setWrapping] = useState<Set<number>>(new Set());
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hovered, setHovered] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const autoplay = !hovered && !reducedMotion;
 
   useEffect(() => {
+    if (!autoplay) return;
     const interval = setInterval(() => {
       setSlotOf((prev) => {
         // whichever founder is currently at the far-right slot (2) is about
@@ -46,15 +51,22 @@ export default function FoundersSlider({ founders }: { founders: Founder[] }) {
     return () => {
       clearInterval(interval);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setWrapping(new Set());
     };
-  }, []);
+  }, [autoplay]);
 
   if (visibleFounders.length === 0) return null;
 
   const activeFounder = visibleFounders[slotOf.indexOf(1) % visibleFounders.length];
 
   return (
-    <div className="founders-slider">
+    <div
+      className="founders-slider"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+    >
       <div className="founders-track">
         {visibleFounders.map((founder, i) => (
           <div

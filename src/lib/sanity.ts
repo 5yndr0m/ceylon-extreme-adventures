@@ -72,7 +72,11 @@ export async function getAllExperiences() {
       durationHours,
       locationName,
       status,
-      heroImage
+      heroImage,
+      levelGroup,
+      levelName,
+      levelOrder,
+      levelGroupSummary
     }
   `)
 }
@@ -94,6 +98,11 @@ export async function getExperienceBySlug(slug: string) {
       maxGroupSize,
       activityTags,
       status,
+      levelGroup,
+      levelName,
+      "levels": select(defined(levelGroup) => *[_type == "experience" && levelGroup == ^.levelGroup && status != "retired"] | order(levelOrder asc) {
+        _id, levelName, "slug": slug.current
+      }, []),
       shortDescription,
       fullDescription,
       quickFacts,
@@ -210,7 +219,6 @@ type MonthlyBanner = {
   _id: string
   month: string
   bannerImage?: any
-  tagline?: string
 }
 
 // Homepage: the next `limit` months that have a poster uploaded in Studio, each with
@@ -220,7 +228,7 @@ export async function getUpcomingMonthlyBanners(limit = 3) {
 
   const banners: MonthlyBanner[] = await client.fetch(
     `*[_type == "monthlyEventBanner" && month >= $startOfThisMonth] | order(month asc) [0...$limit] {
-      _id, month, bannerImage, tagline
+      _id, month, bannerImage
     }`,
     {startOfThisMonth, limit}
   )
@@ -249,7 +257,7 @@ export async function getEventsForMonthSlug(monthSlug: string) {
   const [banner, events] = await Promise.all([
     client.fetch(
       `*[_type == "monthlyEventBanner" && month >= $start && month < $end][0]{
-        _id, month, bannerImage, tagline
+        _id, month, bannerImage
       }`,
       {start, end}
     ),

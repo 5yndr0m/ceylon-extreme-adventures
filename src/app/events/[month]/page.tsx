@@ -1,5 +1,5 @@
 // src/app/events/[month]/page.tsx
-import Image from 'next/image'
+import Image from '@/components/SanityImage'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {getEventsForMonthSlug, isEventBookable, urlFor} from '@/lib/sanity'
@@ -65,9 +65,8 @@ export default async function MonthEventsPage({
           <div className="breadcrumb">
             <Link href="/">Home</Link> / <Link href="/#events">Upcoming Adventures</Link> / <span>{monthLabel}</span>
           </div>
-          <span className="eyebrow" style={{color: 'var(--adrenaline-orange)'}}>{events.length} scheduled {events.length === 1 ? 'departure' : 'departures'}</span>
+          <span className="eyebrow" style={{color: 'var(--accent-text)'}}>{events.length} scheduled {events.length === 1 ? 'departure' : 'departures'}</span>
           <h1>{monthLabel}</h1>
-          {banner?.tagline && <p className="page-hero-sub body-lg">{banner.tagline}</p>}
         </div>
       </section>
 

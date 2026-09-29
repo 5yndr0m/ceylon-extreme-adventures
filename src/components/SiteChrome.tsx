@@ -15,8 +15,20 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
   // on top of it and hide it entirely, so suppress it just on those pages.
   const isExperienceDetail = pathname?.startsWith('/experiences/');
 
+  const skipToContent = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const main = document.querySelector('main');
+    if (!main) return;
+    main.setAttribute('tabindex', '-1');
+    main.focus();
+    main.scrollIntoView();
+  };
+
   return (
     <ScrollEffects>
+      {!hideChrome && (
+        <a href="#main" className="skip-link" onClick={skipToContent}>Skip to content</a>
+      )}
       {!hideChrome && <Header />}
       {children}
       {!hideChrome && <Footer hideStickyCta={isExperienceDetail} />}

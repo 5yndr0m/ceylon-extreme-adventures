@@ -40,16 +40,19 @@ export default function ScrollEffects({ children }: { children: React.ReactNode 
 
     revealTargets.forEach((target) => revealObserver.observe(target));
 
-    const parallaxTargets = Array.from(document.querySelectorAll<HTMLElement>(parallaxSelector));
     const updateParallax = () => {
       frame = 0;
       if (reduceMotion.matches) return;
 
+      // Queried per frame (not once on mount) because the hero video mounts after page load.
+      // Reads are batched before writes so the loop never forces layout mid-way.
       const viewportCenter = window.innerHeight / 2;
-      parallaxTargets.forEach((target) => {
+      const offsets = Array.from(document.querySelectorAll<HTMLElement>(parallaxSelector)).map((target) => {
         const bounds = target.parentElement?.getBoundingClientRect() ?? target.getBoundingClientRect();
         const speed = Number(target.dataset.parallax ?? (target.closest('.page-hero-bg') ? 0.12 : 0.08));
-        const offset = (bounds.top + bounds.height / 2 - viewportCenter) * speed;
+        return { target, offset: (bounds.top + bounds.height / 2 - viewportCenter) * speed };
+      });
+      offsets.forEach(({ target, offset }) => {
         target.style.setProperty('--parallax-offset', `${offset.toFixed(2)}px`);
       });
     };

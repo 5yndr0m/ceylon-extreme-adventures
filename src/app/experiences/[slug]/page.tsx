@@ -1,5 +1,5 @@
 // src/app/experiences/[slug]/page.tsx
-import Image from 'next/image'
+import Image from '@/components/SanityImage'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {getExperienceBySlug, urlFor} from '@/lib/sanity'
@@ -42,6 +42,24 @@ export default async function ExperienceDetailPage({
           <Link href="/">Home</Link> / <Link href="/experiences">Experiences</Link> / <span>{exp.title}</span>
         </div>
         <h1 className="bp-title">{exp.title}</h1>
+        {exp.levels && exp.levels.length > 1 && (
+          <nav className="level-switch" aria-label={`${exp.levelGroup} levels`}>
+            <span className="level-switch-label">{exp.levelGroup}, choose your level</span>
+            <ul>
+              {exp.levels.map((level: {_id: string; levelName?: string; slug: string}) => (
+                <li key={level._id}>
+                  <Link
+                    href={`/experiences/${level.slug}`}
+                    className={level._id === exp._id ? 'active' : undefined}
+                    aria-current={level._id === exp._id ? 'page' : undefined}
+                  >
+                    {level.levelName || level.slug}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
         <div className="bp-subline">
           {exp.category && <span className="bp-tag">{exp.category}</span>}
           {exp.status === 'new' && <span className="bp-new-badge">New</span>}

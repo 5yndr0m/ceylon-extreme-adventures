@@ -1,8 +1,9 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/SanityImage'
 import { useEffect, useState } from 'react'
 import { urlFor } from '../lib/sanity'
+import { useReducedMotion } from './useReducedMotion'
 
 type Testimonial = {
   _id: string
@@ -33,7 +34,7 @@ function TestimonialCard({testimonial}: {testimonial: Testimonial}) {
 
   return (
     <article className="testi-card">
-      <div className="stars">{'★'.repeat(rating)}{'☆'.repeat(5 - rating)}</div>
+      <div className="stars" role="img" aria-label={`${rating} out of 5 stars`}>{'★'.repeat(rating)}{'☆'.repeat(5 - rating)}</div>
       <p className="testi-quote">
         &quot;{text}&quot;
         {truncated && (
@@ -78,14 +79,17 @@ function TestimonialCard({testimonial}: {testimonial: Testimonial}) {
 
 export default function TestimonialsCarousel({testimonials}: {testimonials: Testimonial[]}) {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [hovered, setHovered] = useState(false)
+  const reducedMotion = useReducedMotion()
+  const autoplay = testimonials.length > 1 && !hovered && !reducedMotion
 
   useEffect(() => {
-    if (testimonials.length < 2) return
+    if (!autoplay) return
     const interval = setInterval(() => {
       setActiveIndex((index) => (index + 1) % testimonials.length)
     }, AUTOPLAY_MS)
     return () => clearInterval(interval)
-  }, [testimonials.length])
+  }, [autoplay, testimonials.length])
 
   if (testimonials.length === 0) {
     return <p style={{color: 'var(--stone-gray)'}}>Reviews coming soon.</p>
@@ -97,7 +101,14 @@ export default function TestimonialsCarousel({testimonials}: {testimonials: Test
   const getTestimonial = (offset: number) => testimonials[(activeIndex + offset + testimonials.length) % testimonials.length]
 
   return (
-    <div className="testi-carousel" aria-label="Customer testimonials">
+    <div
+      className="testi-carousel"
+      aria-label="Customer testimonials"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+    >
       <button className="testi-nav prev" onClick={() => goTo(activeIndex - 1)} aria-label="Previous testimonial">‹</button>
       <div className="testi-track">
         {[-1, 0, 1].map((offset) => {

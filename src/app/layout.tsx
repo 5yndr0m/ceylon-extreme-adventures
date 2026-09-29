@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Anton, Inter, Dancing_Script } from 'next/font/google';
+import { Anton, Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
@@ -8,7 +8,6 @@ import { DEFAULT_HERO_IMAGE_URL } from '../lib/sanity';
 
 const anton = Anton({ weight: '400', subsets: ['latin'], variable: '--font-display' });
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
-const dancingScript = Dancing_Script({ weight: '700', subsets: ['latin'], variable: '--font-accent' });
 
 const SITE_TITLE = 'Ceylon Extreme Adventures';
 const SITE_DESCRIPTION = 'Chase Freedom, One Adventure at a Time';
@@ -40,7 +39,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en' className={`${anton.variable} ${inter.variable} ${dancingScript.variable}`}>
+    <html lang='en' className={`${anton.variable} ${inter.variable}`}>
       <body>
         <SiteChrome>{children}</SiteChrome>
         {/* Both are no-ops locally/in preview unless the Vercel project has Analytics

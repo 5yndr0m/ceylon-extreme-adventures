@@ -55,6 +55,37 @@ export const experienceType = defineType({
       name: 'shortDescription',
       type: 'text',
     }),
+    // Levels: experiences that share the same "level group" appear as ONE card in the
+    // /experiences list (with a chip per level) and get a level switcher on their pages.
+    // Each level stays its own experience so it keeps its own facts, gallery, events and price.
+    defineField({
+      name: 'levelGroup',
+      title: 'Level group',
+      type: 'string',
+      description: 'Give every level of the same activity the same name (e.g. "White Water Rafting") to show them as one card. Leave empty for a normal experience.',
+    }),
+    defineField({
+      name: 'levelName',
+      title: 'Level name',
+      type: 'string',
+      description: 'Shown on the level chip, e.g. Beginner, Extreme, Full Day.',
+      hidden: ({document}) => !document?.levelGroup,
+    }),
+    defineField({
+      name: 'levelOrder',
+      title: 'Level order',
+      type: 'number',
+      description: '1 shows first. The lowest-numbered level supplies the card photo.',
+      hidden: ({document}) => !document?.levelGroup,
+    }),
+    defineField({
+      name: 'levelGroupSummary',
+      title: 'Group card summary',
+      type: 'text',
+      rows: 2,
+      description: 'One or two sentences for the combined card. Only read from the level with the lowest order.',
+      hidden: ({document}) => !document?.levelGroup,
+    }),
     defineField({
       name: 'fullDescription',
       type: 'array',

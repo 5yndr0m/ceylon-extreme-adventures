@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/SanityImage'
 import Link from 'next/link'
 import {useRouter, useSearchParams} from 'next/navigation'
 import {useEffect, useMemo, useState} from 'react'
@@ -13,9 +13,187 @@ type ExperienceCard = {
   category?: string | null
   locationName?: string | null
   heroImage?: any
+  levelGroup?: string | null
+  levelName?: string | null
+  levelOrder?: number | null
+  levelGroupSummary?: string | null
+}
+
+type Level = {_id: string; name: string; slug: string}
+
+// One list entry: either a normal experience, or several experiences that share a level group
+type ListItem = {
+  key: string
+  title: string
+  category?: string | null
+  locationName?: string | null
+  heroImage?: any
+  summary?: string | null
+  slug?: string
+  levels?: Level[]
+}
+
+function toListItems(experiences: ExperienceCard[]): ListItem[] {
+  const items: ListItem[] = []
+  const groups = new Map<string, ExperienceCard[]>()
+  for (const exp of experiences) {
+    if (exp.levelGroup) {
+      groups.set(exp.levelGroup, [...(groups.get(exp.levelGroup) ?? []), exp])
+    } else {
+      items.push({
+        key: exp._id,
+        title: exp.title,
+        category: exp.category,
+        locationName: exp.locationName,
+        heroImage: exp.heroImage,
+        slug: exp.slug?.current,
+      })
+    }
+  }
+  groups.forEach((members, group) => {
+    const ordered = [...members].sort((a, b) => (a.levelOrder ?? 99) - (b.levelOrder ?? 99))
+    const first = ordered[0]
+    items.push({
+      key: `group-${group}`,
+      title: group,
+      category: first.category,
+      locationName: first.locationName,
+      heroImage: ordered.find((m) => m.heroImage)?.heroImage,
+      summary: first.levelGroupSummary,
+      levels: ordered
+        .filter((m) => m.slug?.current)
+        .map((m) => ({_id: m._id, name: m.levelName || m.title, slug: m.slug!.current!})),
+    })
+  })
+  return items.sort((a, b) => a.title.localeCompare(b.title))
 }
 
 type ViewMode = 'grid' | 'list'
+
+function LevelChips({exp, tone}: {exp: ListItem; tone: 'dark' | 'light'}) {
+  const base =
+    tone === 'dark'
+      ? 'border border-white/60 bg-black/30 text-white hover:bg-white hover:text-stone-900'
+      : 'border border-stone-300 bg-white text-stone-800 hover:border-[var(--orange-ink)] hover:text-[var(--orange-ink)]'
+  return (
+    <div className="flex flex-wrap gap-2" role="group" aria-label={`${exp.title} levels`}>
+      {exp.levels!.map((level) => (
+        <Link
+          key={level._id}
+          href={`/experiences/${level.slug}`}
+          className={`inline-flex min-h-[44px] items-center rounded-full px-4 text-sm font-semibold transition-colors ${base}`}
+        >
+          {level.name}
+        </Link>
+      ))}
+    </div>
+  )
+}
+
+function GridCard({exp}: {exp: ListItem}) {
+  const image = exp.heroImage ? (
+    <Image
+      src={urlFor(exp.heroImage).width(600).height(750).url()}
+      alt={exp.levels ? '' : exp.title}
+      fill
+      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+      className="object-cover group-hover:scale-105 transition-transform duration-300"
+    />
+  ) : (
+    <div className="w-full h-full bg-gray-300" />
+  )
+  const meta = (
+    <>
+      <p className="text-xs uppercase tracking-wide text-[var(--orange-on-dark)] mb-1">{exp.category || 'Adventure'}</p>
+      <h2 className="text-xl font-bold mb-1">{exp.title}</h2>
+      {exp.locationName && <p className="text-sm text-white/80 mb-2">{exp.locationName}</p>}
+    </>
+  )
+
+  if (exp.levels) {
+    return (
+      <div className="group relative rounded-xl overflow-hidden aspect-[4/5]">
+        {image}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+          {meta}
+          {exp.summary && <p className="text-sm text-white/85 mb-3">{exp.summary}</p>}
+          <p className="text-xs font-semibold uppercase tracking-wide text-white/80 mb-2">Choose your level</p>
+          <LevelChips exp={exp} tone="dark" />
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <Link
+      href={exp.slug ? `/experiences/${exp.slug}` : '#'}
+      className="group relative rounded-xl overflow-hidden aspect-[4/5] block"
+    >
+      {image}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+        {meta}
+        <div className="flex items-center justify-end text-sm">
+          <span className="underline">View Details</span>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+function ListRow({exp}: {exp: ListItem}) {
+  const thumb = (
+    <div className="relative h-32 w-32 sm:h-36 sm:w-48 flex-shrink-0 overflow-hidden rounded-lg">
+      {exp.heroImage ? (
+        <Image
+          src={urlFor(exp.heroImage).width(400).height(400).url()}
+          alt={exp.levels ? '' : exp.title}
+          fill
+          sizes="192px"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      ) : (
+        <div className="w-full h-full bg-gray-300" />
+      )}
+    </div>
+  )
+  const heading = (
+    <>
+      <p className="text-xs uppercase tracking-wide text-[var(--orange-ink)] font-semibold mb-1">{exp.category || 'Adventure'}</p>
+      <h2 className="text-lg sm:text-xl font-bold text-stone-900 mb-1">{exp.title}</h2>
+      {exp.locationName && <p className="text-sm text-stone-500 mb-2">{exp.locationName}</p>}
+    </>
+  )
+
+  if (exp.levels) {
+    return (
+      <div className="group flex gap-5 rounded-xl border border-stone-200 bg-white p-3">
+        {thumb}
+        <div className="flex flex-1 flex-col justify-center py-1">
+          {heading}
+          {exp.summary && <p className="text-sm text-stone-600 mb-3">{exp.summary}</p>}
+          <LevelChips exp={exp} tone="light" />
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <Link
+      href={exp.slug ? `/experiences/${exp.slug}` : '#'}
+      className="group flex gap-5 rounded-xl border border-stone-200 bg-white p-3 hover:border-orange-300 hover:shadow-md transition-all"
+    >
+      {thumb}
+      <div className="flex flex-1 flex-col justify-center py-1">
+        {heading}
+        <div className="mt-auto flex items-center justify-end text-sm">
+          <span className="text-[var(--orange-ink)] underline">View Details</span>
+        </div>
+      </div>
+    </Link>
+  )
+}
 
 export default function ExperienceCategoryFilter({
   experiences,
@@ -34,6 +212,8 @@ export default function ExperienceCategoryFilter({
     const categoryFromUrl = searchParams.get('category')
     setSelectedCategory(categoryFromUrl || 'All')
   }, [searchParams])
+
+  const listItems = useMemo(() => toListItems(experiences), [experiences])
 
   const categories = useMemo(() => {
     const uniqueCategories = new Set(
@@ -64,7 +244,7 @@ export default function ExperienceCategoryFilter({
   // aren't worth their own card — comma-separated values here are matched as an OR.
   const selectedCategories = selectedCategory.split(',').map((c) => c.trim())
 
-  const filteredExperiences = experiences
+  const filteredExperiences = listItems
     .filter((experience) =>
       selectedCategory === 'All' ? true : !!experience.category && selectedCategories.includes(experience.category)
     )
@@ -177,73 +357,13 @@ export default function ExperienceCategoryFilter({
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredExperiences.map((exp) => (
-            <Link
-              key={exp._id}
-              href={exp.slug?.current ? `/experiences/${exp.slug.current}` : '#'}
-              className="group relative rounded-xl overflow-hidden aspect-[4/5] block"
-            >
-              {exp.heroImage ? (
-                <Image
-                  src={urlFor(exp.heroImage).width(600).height(750).url()}
-                  alt={exp.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-300" />
-              )}
-
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                <p className="text-xs uppercase tracking-wide text-orange-400 mb-1">
-                  {exp.category || 'Adventure'}
-                </p>
-                <h2 className="text-xl font-bold mb-1">{exp.title}</h2>
-                {exp.locationName && (
-                  <p className="text-sm text-white/80 mb-2">{exp.locationName}</p>
-                )}
-                <div className="flex items-center justify-end text-sm">
-                  <span className="underline">View Details</span>
-                </div>
-              </div>
-            </Link>
+            <GridCard key={exp.key} exp={exp} />
           ))}
         </div>
       ) : (
         <div className="flex flex-col gap-4">
           {filteredExperiences.map((exp) => (
-            <Link
-              key={exp._id}
-              href={exp.slug?.current ? `/experiences/${exp.slug.current}` : '#'}
-              className="group flex gap-5 rounded-xl border border-stone-200 bg-white p-3 hover:border-orange-300 hover:shadow-md transition-all"
-            >
-              <div className="relative h-32 w-32 sm:h-36 sm:w-48 flex-shrink-0 overflow-hidden rounded-lg">
-                {exp.heroImage ? (
-                  <Image
-                    src={urlFor(exp.heroImage).width(400).height(400).url()}
-                    alt={exp.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-300" />
-                )}
-              </div>
-
-              <div className="flex flex-1 flex-col justify-center py-1">
-                <p className="text-xs uppercase tracking-wide text-orange-600 font-semibold mb-1">
-                  {exp.category || 'Adventure'}
-                </p>
-                <h2 className="text-lg sm:text-xl font-bold text-stone-900 mb-1">{exp.title}</h2>
-                {exp.locationName && (
-                  <p className="text-sm text-stone-500 mb-2">{exp.locationName}</p>
-                )}
-                <div className="mt-auto flex items-center justify-end text-sm">
-                  <span className="text-orange-600 underline">View Details</span>
-                </div>
-              </div>
-            </Link>
+            <ListRow key={exp.key} exp={exp} />
           ))}
         </div>
       )}

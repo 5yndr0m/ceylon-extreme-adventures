@@ -27,12 +27,6 @@ export const monthlyEventBannerType = defineType({
       description: 'The full designed poster for the month, e.g. the "September Events" collage',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'tagline',
-      title: 'Tagline',
-      type: 'string',
-      description: 'e.g. "In Search Of Freedom"',
-    }),
   ],
   preview: {
     select: {month: 'month', media: 'bannerImage'},

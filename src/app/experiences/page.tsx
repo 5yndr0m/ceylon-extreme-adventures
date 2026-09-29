@@ -33,7 +33,7 @@ export default async function ExperiencesPage() {
     <main className="min-h-screen bg-[var(--mist-white)]">
       <section className="reveal-on-load relative overflow-hidden bg-[var(--jungle-green)] px-6 pb-14 pt-32 text-white md:pb-20">
         <div className="relative z-10 mx-auto max-w-7xl">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[2.5px] text-[var(--adrenaline-orange)]">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[2.5px] text-[var(--orange-on-dark)]">
             What We Run
           </p>
           <h1 className="mb-4 max-w-3xl text-4xl font-normal uppercase tracking-wide md:text-6xl">

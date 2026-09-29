@@ -3,7 +3,8 @@ import Reveal2 from '../components/Reveal';
 import ActivitiesCarousel from '../components/ActivitiesCarousel';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import FoundersSlider from '../components/FoundersSlider';
-import Image from 'next/image';
+import HeroMedia from '../components/HeroMedia';
+import Image from '@/components/SanityImage';
 import { getAllPosts, getFeaturedTestimonials, getLeadershipProfiles, getUpcomingMonthlyBanners, urlFor, DEFAULT_HERO_IMAGE_URL } from '../lib/sanity';
 
 const TRIPADVISOR_URL = 'https://www.tripadvisor.com/Attraction_Review-g304138-d26849088-Reviews-Ceylon_Extreme_Adventure_Pvt_Ltd-Kandy_Kandy_District_Central_Province.html'
@@ -23,7 +24,6 @@ type MonthlyBannerCard = {
   month: string
   monthSlug: string
   bannerImage?: any
-  tagline?: string
   events: {_id: string; title: string; slug: {current: string}; date: string; price: number}[]
 }
 
@@ -53,12 +53,7 @@ export default async function Home() {
     <main>
 
       <section className="hero" id="top">
-        <div className="hero-bg" style={{backgroundImage: `url(${DEFAULT_HERO_IMAGE_URL})`}}>
-          <video autoPlay muted loop playsInline preload="auto" poster={DEFAULT_HERO_IMAGE_URL} aria-hidden="true">
-            <source src={HERO_VIDEO_URL} type="video/mp4" />
-          </video>
-          <div className="overlay"></div>
-        </div>
+        <HeroMedia posterUrl={DEFAULT_HERO_IMAGE_URL} videoUrl={HERO_VIDEO_URL} />
         <div className="container hero-inner">
           <div className="hero-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 8.5L21 9.5L16 14L17.5 21L12 17.5L6.5 21L8 14L3 9.5L9.5 8.5L12 2Z" fill="#F2622E" /></svg>
@@ -95,7 +90,7 @@ export default async function Home() {
 
           <ActivitiesCarousel />
 
-          <Reveal2 className="activities-cta"><a href="/experiences">See All Experiences</a></Reveal2>
+          <Reveal2 className="activities-cta"><Link href="/experiences">See All Experiences</Link></Reveal2>
         </div>
       </section>
 
@@ -126,7 +121,6 @@ export default async function Home() {
                     </Link>
                     <div className="month-details">
                       <h3>{monthLabel}</h3>
-                      {banner.tagline && <p className="month-tagline">{banner.tagline}</p>}
                       <p className="month-count">{eventCount} {eventCount === 1 ? 'departure' : 'departures'} scheduled</p>
                       <Link href={`/events/${banner.monthSlug}`} className="view-link">See More</Link>
                     </div>

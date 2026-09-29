@@ -10,6 +10,15 @@ export default function Header() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen]);
+
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
     };
@@ -26,8 +35,7 @@ export default function Header() {
       <header id='siteHeader' className={headerClass}>
         <div className='container nav-row'>
           <Link href='/' className='logo'>
-            <Image src='/logo-mark.png' alt='Ceylon Extreme Adventures' width={700} height={262} className='logo-mark' priority />
-            <Image src='/logo-tagline.png' alt='' width={500} height={85} className='logo-tagline' priority />
+            <Image src='/logo-full.png' alt='Ceylon Extreme Adventures' width={900} height={449} sizes='120px' className='logo-mark' priority />
           </Link>
           <nav className='nav-links'>
             <Link href='/experiences' className={pathname === '/experiences' ? 'active' : ''}>Experiences</Link>
@@ -40,15 +48,16 @@ export default function Header() {
           <button 
             className={`hamburger ${isOpen ? 'open' : ''}`}
             onClick={() => setIsOpen(!isOpen)}
-            aria-label='Open menu'
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
+            aria-controls='mobileMenu'
           >
             <span></span><span></span><span></span>
           </button>
         </div>
       </header>
 
-      <div className={`mobile-menu ${isOpen ? 'open' : ''}`} id='mobileMenu'>
+      <div className={`mobile-menu ${isOpen ? 'open' : ''}`} id='mobileMenu' inert={!isOpen}>
         <Link href='/experiences' onClick={() => setIsOpen(false)}>Experiences</Link>
         <Link href={isHome ? '#events' : '/#events'} onClick={() => setIsOpen(false)}>Events</Link>
         <Link href='/about' onClick={() => setIsOpen(false)}>About Us</Link>
