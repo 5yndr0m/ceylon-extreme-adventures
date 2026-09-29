@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/components/SanityImage';
 import Link from 'next/link';
 
 export const metadata = {
@@ -22,7 +22,7 @@ export default function TermsPage() {
         </div>
         <div className="container page-hero-inner">
           <div className="breadcrumb"><Link href="/">Home</Link> / <span>Terms &amp; Conditions</span></div>
-          <span className="eyebrow" style={{ color: 'var(--adrenaline-orange)' }}>Legal</span>
+          <span className="eyebrow" style={{ color: 'var(--accent-text)' }}>Legal</span>
           <h1>Terms &amp; Conditions</h1>
           <p className="page-hero-sub body-lg">
             Please read these terms before booking any Ceylon Extreme Adventures experience.

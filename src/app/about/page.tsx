@@ -1,7 +1,7 @@
 
 import Reveal from '../../components/Reveal';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from '@/components/SanityImage';
 import {getLeadershipProfiles, urlFor} from '../../lib/sanity';
 
 export const metadata = {
@@ -23,7 +23,7 @@ export default async function About() {
   </div>
   <div className="container page-hero-inner">
     <div className="breadcrumb"><a href="/">Home</a> / <span>About Us</span></div>
-    <span className="eyebrow" style={{color: 'var(--adrenaline-orange)'}}>Our story</span>
+    <span className="eyebrow" style={{color: 'var(--accent-text)'}}>Our story</span>
     <h1>Freedom Is Built On Trust</h1>
     <p className="page-hero-sub body-lg">Ten years and 500+ adventures in, we're still the same crew that started it: local guides who'd rather turn a client away than take a shortcut with their safety.</p>
   </div>

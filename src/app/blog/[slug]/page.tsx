@@ -1,6 +1,6 @@
 // src/app/blog/[slug]/page.tsx
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/SanityImage'
 import {notFound} from 'next/navigation'
 import {PortableText} from '@portabletext/react'
 import {getPostBySlug, urlFor} from '@/lib/sanity'
@@ -64,7 +64,7 @@ export default async function BlogPostPage({
             <Link href="/">Home</Link> / <Link href="/blog">Blog</Link> / <span>{post.title}</span>
           </div>
           {post.category && (
-            <span className="eyebrow" style={{color: 'var(--adrenaline-orange)'}}>{post.category}</span>
+            <span className="eyebrow" style={{color: 'var(--accent-text)'}}>{post.category}</span>
           )}
           <h1>{post.title}</h1>
           <p className="page-hero-sub body-lg">{formatDate(post.publishedAt)}</p>

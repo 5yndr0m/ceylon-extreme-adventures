@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/components/SanityImage';
 import Link from 'next/link';
 
 export const metadata = {
@@ -22,7 +22,7 @@ export default function RefundPolicyPage() {
         </div>
         <div className="container page-hero-inner">
           <div className="breadcrumb"><Link href="/">Home</Link> / <span>Refund Policy</span></div>
-          <span className="eyebrow" style={{ color: 'var(--adrenaline-orange)' }}>Legal</span>
+          <span className="eyebrow" style={{ color: 'var(--accent-text)' }}>Legal</span>
           <h1>Refund Policy</h1>
           <p className="page-hero-sub body-lg">
             How cancellations, postponements, and refunds work for bookings made with Ceylon Extreme Adventures.

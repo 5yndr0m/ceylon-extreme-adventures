@@ -1,6 +1,6 @@
 // src/app/blog/page.tsx
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/SanityImage'
 import {getAllPosts, urlFor} from '@/lib/sanity'
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
@@ -44,7 +44,7 @@ export default async function BlogPage() {
           <div className="breadcrumb">
             <Link href="/">Home</Link> / <span>Blog</span>
           </div>
-          <span className="eyebrow" style={{color: 'var(--adrenaline-orange)'}}>Trip planning &amp; stories</span>
+          <span className="eyebrow" style={{color: 'var(--accent-text)'}}>Trip planning &amp; stories</span>
           <h1>Notes From The Trail</h1>
           <p className="page-hero-sub body-lg">
             Trip-planning guides, company news, and beginner&apos;s advice from the guides who run these routes every week.

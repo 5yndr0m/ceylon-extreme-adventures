@@ -1,5 +1,5 @@
 // src/app/events/[month]/[eventSlug]/page.tsx
-import Image from 'next/image'
+import Image from '@/components/SanityImage'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {getEventBySlug, isEventBookable, urlFor} from '@/lib/sanity'

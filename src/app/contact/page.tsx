@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/components/SanityImage';
 import Reveal from '../../components/Reveal';
 import ContactForm from './ContactForm';
 import ContactFaq from './ContactFaq';
@@ -28,7 +28,7 @@ export default function Contact() {
           </div>
           <span
             className="eyebrow"
-            style={{ color: 'var(--adrenaline-orange)' }}
+            style={{ color: 'var(--accent-text)' }}
           >
             Let&apos;s plan it
           </span>

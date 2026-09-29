@@ -4,7 +4,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from '@/components/SanityImage';
 import { client, urlFor } from '../../lib/sanity';
 import { redirectToPayHere } from '../../lib/payhere';
 
