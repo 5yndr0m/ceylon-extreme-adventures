@@ -346,7 +346,15 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); box-shadow:0 2
 .testimonials{ background:var(--cloud-gray); }
 
 .testi-carousel{ position:relative; max-width:1120px; margin:0 auto 38px; padding:0 48px; }
-.testi-track{ position:relative; height:380px; }
+/* `contain:layout` scopes the reflow this track's width/left transition causes to this
+   380px box alone -- the browser never has to consider it when laying out anything
+   outside. Safe here because the track's height is fixed and its children are already
+   out-of-flow (position:absolute), so containment changes nothing visually. */
+.testi-track{ position:relative; height:380px; contain:layout; }
+/* left/width (not just transform/opacity) are deliberately animated: the coverflow
+   effect needs the center card to occupy real extra horizontal space (36% vs 28%) so
+   its text gets a wider wrap measure, not just a bigger scale -- transform alone can't
+   reproduce that. The `contain` above is what keeps this cheap. */
 .testi-slide{ position:absolute; top:50%; width:28%; opacity:.58; transform:translateY(-50%) scale(.88); transition:left .8s cubic-bezier(.65,0,.35,1), width .8s cubic-bezier(.65,0,.35,1), transform .8s cubic-bezier(.65,0,.35,1), opacity .4s ease; }
 .testi-slot-0{ left:0; }
 .testi-slot-1{ left:32%; width:36%; opacity:1; transform:translateY(-50%) scale(1); z-index:1; }
@@ -615,6 +623,58 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .blog-card-body p{ font-size:14px; color:var(--stone-gray); }
 .blog-card-date{ font-size:12px; color:var(--stone-gray); margin-top:4px; }
 
+/* ============ EXPERIENCES LISTING ============ */
+.exp-list{ background:var(--mist-white); }
+.exp-toolbar{ display:flex; flex-direction:column; gap:16px; margin-bottom:32px; }
+.exp-filters{ display:flex; flex-wrap:wrap; gap:10px; }
+.exp-filter-pill{
+  display:inline-flex; align-items:center; min-height:44px; padding:0 18px; border-radius:var(--radius-pill);
+  border:1px solid var(--cloud-gray); background:#fff; color:var(--basalt-black); font-size:13px; font-weight:600;
+  transition:border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
+}
+.exp-filter-pill:hover{ border-color:var(--accent-ink); color:var(--accent-ink); }
+.exp-filter-pill.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.exp-search-wrap{ position:relative; width:100%; max-width:360px; }
+.exp-search-wrap svg{ position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--stone-gray); pointer-events:none; }
+.exp-search{
+  width:100%; padding:11px 16px 11px 40px; border-radius:8px; border:1px solid var(--cloud-gray);
+  background:var(--mist-white); color:var(--basalt-black); font-size:16px; font-family:inherit;
+}
+.exp-search:focus{ outline:2px solid var(--accent-text); outline-offset:1px; background:#fff; }
+
+.exp-grid{ display:grid; gap:24px; grid-template-columns:1fr; }
+@media(min-width:768px){ .exp-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(min-width:1280px){ .exp-grid{ grid-template-columns:repeat(3,1fr); } }
+
+.exp-card{
+  display:flex; flex-direction:column; height:100%; background:#fff; border-radius:var(--radius-md); overflow:hidden;
+  box-shadow:0 16px 40px -28px rgba(20,24,26,.3); transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.exp-card:hover{ transform:translateY(-4px); box-shadow:0 22px 46px -24px rgba(20,24,26,.35); }
+.exp-card-img{ position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--cloud-gray); }
+.exp-card-img img{ transition:transform .5s var(--ease); }
+.exp-card:hover .exp-card-img img{ transform:scale(1.06); }
+.exp-card-img-fallback{ width:100%; height:100%; background:var(--cloud-gray); }
+.exp-card-body{ padding:20px 22px 22px; display:flex; flex-direction:column; gap:8px; flex:1; }
+.exp-card-body .tag{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent-text); }
+.exp-card-body h3{ color:var(--basalt-black); }
+.exp-card-location{ font-size:13px; color:var(--stone-gray); display:flex; align-items:center; gap:5px; }
+.exp-card-summary{ font-size:13px; color:var(--stone-gray); }
+.exp-card-footer{ margin-top:auto; padding-top:10px; }
+.exp-card-levels-label{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-gray); margin-bottom:10px; }
+.exp-level-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+.exp-level-chip{
+  display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border-radius:var(--radius-pill);
+  border:1px solid var(--cloud-gray); background:var(--mist-white); color:var(--basalt-black); font-size:13px; font-weight:600;
+  transition:border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
+}
+.exp-level-chip:hover{ border-color:var(--accent-ink); color:var(--accent-ink); background:#fff; }
+
+.exp-empty{
+  grid-column:1/-1; text-align:center; padding:48px 24px; color:var(--stone-gray);
+  border:1px dashed var(--cloud-gray); border-radius:var(--radius-md);
+}
+
 .blog-detail{ background:#fff; }
 .blog-detail-grid{ display:grid; gap:44px; max-width:920px; }
 @media(min-width:960px){ .blog-detail-grid{ grid-template-columns:1fr 280px; max-width:none; align-items:start; } }
@@ -763,6 +823,9 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-section:last-child{ border-bottom:none; }
 .bp-section h2{ font-size:22px; color:var(--basalt-black); margin-bottom:18px; }
 .bp-section h2.bp-section-subhead{ margin-top:32px; }
+/* h3 variant: used when this subhead sits under a Quick Facts h2 in the same section,
+   so the heading level actually nests instead of placing two h2s in one visual group. */
+.bp-section h3.bp-section-subhead{ font-size:22px; color:var(--basalt-black); margin-bottom:18px; margin-top:32px; }
 
 .bp-facts-row{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:22px; }
 .bp-fact-pill{ background:var(--mist-white); border-radius:var(--radius-sm); padding:12px 18px; min-width:120px; }
@@ -790,6 +853,22 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-book-unit{ font-size:13px; color:var(--stone-gray); }
 .bp-book-note{ text-align:center; font-size:12px; color:var(--stone-gray); margin-top:16px; }
 
+/* Upcoming departures sit above the inquiry form in the same sticky card, since
+   "what does this cost and when does it run" is the question a visitor needs
+   answered before deciding whether to enquire at all. */
+.bp-departures{ margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid var(--cloud-gray); }
+.bp-departures-title{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-gray); margin-bottom:10px; }
+.bp-departures-list{ display:flex; flex-direction:column; gap:8px; }
+.bp-departure-row{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:10px 12px; border-radius:8px; background:var(--mist-white); border:1px solid transparent;
+  transition:border-color .2s var(--ease), background .2s var(--ease);
+}
+.bp-departure-row:hover{ border-color:var(--accent-ink); background:#fff; }
+.bp-departure-date{ font-size:14px; font-weight:700; color:var(--basalt-black); }
+.bp-departure-price{ font-family:var(--font-display); font-size:15px; color:var(--jungle-green); }
+.bp-departures-empty{ font-size:13px; color:var(--stone-gray); line-height:1.5; margin:0; }
+
 .bp-form{ display:grid; gap:14px; }
 .bp-form-row label, .bp-form-row .bp-label{ display:block; font-size:12px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; color:var(--basalt-black); margin-bottom:6px; }
 .bp-form-row input, .bp-form-row textarea{
@@ -809,6 +888,11 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 
 .bp-submit{ width:100%; margin-top:4px; }
 .bp-form-error{ color:crimson; font-size:13px; margin:0; }
+.bp-form-success{
+  background:var(--mist-white); border:1px solid var(--cloud-gray); border-radius:8px;
+  padding:20px; font-size:14px; color:var(--stone-gray); line-height:1.6;
+}
+.bp-form-success a{ color:var(--accent-text); font-weight:600; }
 
 .bp-mobile-cta{
   position:fixed; bottom:0; left:0; right:0; z-index:90; background:#fff;
@@ -842,9 +926,13 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .bp-months-legend-item{ display:flex; align-items:center; gap:7px; }
 .bp-months-legend-swatch{ width:12px; height:12px; border-radius:3px; display:inline-block; }
 
-.bp-gallery-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-@media(min-width:768px){ .bp-gallery-grid{ grid-template-columns:repeat(3,1fr); } }
-.bp-gallery-item{ position:relative; display:block; aspect-ratio:4/3; border-radius:var(--radius-sm); overflow:hidden; }
+/* Masonry via CSS multi-column (not grid): each photo keeps its own real aspect ratio
+   (set inline per-item from Sanity's asset dimensions — see ExperienceTabs.tsx), and
+   columns let a short landscape shot and a tall portrait shot sit side by side without
+   the row-locked gap a same-height grid would leave under the shorter one. */
+.bp-gallery-grid{ columns:2; column-gap:10px; }
+@media(min-width:768px){ .bp-gallery-grid{ columns:3; } }
+.bp-gallery-item{ position:relative; display:block; width:100%; margin-bottom:10px; break-inside:avoid; border-radius:var(--radius-sm); overflow:hidden; }
 .bp-gallery-item img{ transition:transform .4s var(--ease); }
 .bp-gallery-item:hover img{ transform:scale(1.06); }
 
@@ -859,11 +947,17 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
   gap: 24px;
   width: 100%;
 }
+/* `contain:layout` scopes the reflow this track's width/left transition causes to
+   this 420px box alone -- same treatment as .testi-track, and for the same reason:
+   the browser never has to consider it when laying out anything outside. Safe here
+   because the track's height is fixed and its children are already out-of-flow
+   (position:absolute). */
 .founders-track {
   position: relative;
   width: 100%;
   max-width: 560px;
   height: 420px;
+  contain: layout;
 }
 .founder-card {
   position: absolute;
@@ -877,6 +971,10 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
   overflow: hidden;
   background: var(--cloud-gray);
   box-shadow: 0 16px 34px -22px rgba(20, 24, 26, 0.35);
+  /* left/width (not just box-shadow) are deliberately animated: the middle slot is a
+     genuinely wider, taller card (53.6% + a taller aspect-ratio), not just a scaled-up
+     one, so transform alone can't reproduce it -- same reasoning as .testi-slide. The
+     contain:layout above is what keeps this cheap. */
   transition:
     left 0.8s cubic-bezier(0.65, 0, 0.35, 1),
     width 0.8s cubic-bezier(0.65, 0, 0.35, 1),

@@ -1,4 +1,4 @@
-// src/middleware.ts
+// src/proxy.ts
 //
 // Edge-level traffic filter, added after the Vercel account was suspended for a 300%
 // spike in Edge Requests. The Vercel Observability dashboard (checked once the account
@@ -102,7 +102,7 @@ function isRateLimited(ip: string): boolean {
   return timestamps.length > MAX_REQUESTS_PER_WINDOW
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const userAgent = req.headers.get('user-agent') ?? ''
 
   if (!userAgent || BLOCKED_UA_PATTERNS.some((pattern) => pattern.test(userAgent))) {

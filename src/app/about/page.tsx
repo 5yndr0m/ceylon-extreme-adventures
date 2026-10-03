@@ -60,21 +60,21 @@ export default async function About() {
     <div className="values-grid">
       <Reveal className="value-card">
         <div className="value-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F2622E" strokeWidth="2"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4z"/><path d="m9 12 2 2 4-4"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-on-dark)" strokeWidth="2"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4z"/><path d="m9 12 2 2 4-4"/></svg>
         </div>
         <h3>Safety First, Always</h3>
         <p>Certified guides, maintained gear, and a hard stop on any activity if conditions turn. We&apos;d rather reschedule than risk it.</p>
       </Reveal>
       <Reveal className="value-card">
         <div className="value-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F2622E" strokeWidth="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-on-dark)" strokeWidth="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
         </div>
         <h3>Local, Not Franchised</h3>
         <p>Every guide grew up near the rivers and cliffs they lead you through. You&apos;re getting their trails, not a tour-company script.</p>
       </Reveal>
       <Reveal className="value-card">
         <div className="value-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F2622E" strokeWidth="2"><path d="M12 21c-4.4-2.8-8-6.2-8-10.5A5.5 5.5 0 0 1 9.5 5c1 0 2 .4 2.5 1.1C12.5 5.4 13.5 5 14.5 5A5.5 5.5 0 0 1 20 10.5C20 14.8 16.4 18.2 12 21z"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-on-dark)" strokeWidth="2"><path d="M12 21c-4.4-2.8-8-6.2-8-10.5A5.5 5.5 0 0 1 9.5 5c1 0 2 .4 2.5 1.1C12.5 5.4 13.5 5 14.5 5A5.5 5.5 0 0 1 20 10.5C20 14.8 16.4 18.2 12 21z"/></svg>
         </div>
         <h3>Built Around Your Group</h3>
         <p>First-timers, families, or seasoned climbers — pace, route, and briefing are matched to the people actually showing up.</p>

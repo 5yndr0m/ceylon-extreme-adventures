@@ -2,10 +2,17 @@
 'use client'
 
 import {useState} from 'react'
+import Link from 'next/link'
 import Image from '@/components/SanityImage'
 import {PortableText} from '@portabletext/react'
-import {urlFor} from '@/lib/sanity'
+import {urlFor, monthSlugFor} from '@/lib/sanity'
 import InquiryForm from './InquiryForm'
+
+const MAX_DEPARTURES_SHOWN = 4
+
+function formatDepartureDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'})
+}
 
 const MONTHS: {key: string; label: string}[] = [
   {key: 'jan', label: 'Jan'},
@@ -42,14 +49,35 @@ export default function ExperienceTabs({exp}: {exp: any}) {
 
   const [active, setActive] = useState<TabKey>('overview')
 
+  // Standard ARIA tabs keyboard pattern: arrow keys move focus and activate the
+  // newly-focused tab (automatic activation), Home/End jump to the ends.
+  function handleTabKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    const index = tabs.findIndex((t) => t.key === active)
+    let nextIndex: number | null = null
+    if (e.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length
+    else if (e.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length
+    else if (e.key === 'Home') nextIndex = 0
+    else if (e.key === 'End') nextIndex = tabs.length - 1
+    if (nextIndex === null) return
+    e.preventDefault()
+    const nextTab = tabs[nextIndex]
+    setActive(nextTab.key)
+    document.getElementById(`tab-${nextTab.key}`)?.focus()
+  }
+
   return (
     <>
       <div className="bp-tabbar">
-        <div className="container bp-tabbar-inner">
+        <div className="container bp-tabbar-inner" role="tablist" aria-label="Experience details" onKeyDown={handleTabKeyDown}>
           {tabs.map((tab) => (
             <button
               key={tab.key}
+              id={`tab-${tab.key}`}
               type="button"
+              role="tab"
+              aria-selected={active === tab.key}
+              aria-controls={`panel-${tab.key}`}
+              tabIndex={active === tab.key ? 0 : -1}
               className={`bp-tab ${active === tab.key ? 'active' : ''}`}
               onClick={() => setActive(tab.key)}
             >
@@ -62,7 +90,7 @@ export default function ExperienceTabs({exp}: {exp: any}) {
       <div className="container bp-grid">
         <div className="bp-main">
           {active === 'overview' && (
-            <section className="bp-section">
+            <section className="bp-section" role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabIndex={0}>
               <h2>Overview</h2>
               <div className="bp-facts-row">
                 <div className="bp-fact-pill">
@@ -98,7 +126,7 @@ export default function ExperienceTabs({exp}: {exp: any}) {
           )}
 
           {active === 'facts' && hasFactsTab && (
-            <section className="bp-section">
+            <section className="bp-section" role="tabpanel" id="panel-facts" aria-labelledby="tab-facts" tabIndex={0}>
               {hasQuickFacts && (
                 <>
                   <h2>Quick Facts</h2>
@@ -124,7 +152,11 @@ export default function ExperienceTabs({exp}: {exp: any}) {
 
               {exp.suitableMonths && (
                 <>
-                  <h2 className={hasQuickFacts ? 'bp-section-subhead' : undefined}>Best months to visit</h2>
+                  {hasQuickFacts ? (
+                    <h3 className="bp-section-subhead">Best months to visit</h3>
+                  ) : (
+                    <h2>Best months to visit</h2>
+                  )}
                   <div className="bp-months-grid">
                     {MONTHS.map(({key, label}) => {
                       const rating = exp.suitableMonths[key]
@@ -150,31 +182,39 @@ export default function ExperienceTabs({exp}: {exp: any}) {
           )}
 
           {active === 'gallery' && fullGallery.length > 0 && (
-            <section className="bp-section">
+            <section className="bp-section" role="tabpanel" id="panel-gallery" aria-labelledby="tab-gallery" tabIndex={0}>
               <h2>Gallery</h2>
               <div className="bp-gallery-grid">
-                {fullGallery.map((img: {_key?: string; alt?: string} & Record<string, unknown>, i: number) => (
-                  <a
-                    key={img._key ?? i}
-                    href={urlFor(img).width(1600).url()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bp-gallery-item"
-                  >
-                    <Image
-                      src={urlFor(img).width(600).height(450).url()}
-                      alt={img.alt || `${exp.title} photo ${i + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </a>
-                ))}
+                {fullGallery.map((img: {_key?: string; alt?: string; dims?: {width: number; height: number}} & Record<string, unknown>, i: number) => {
+                  // Real aspect ratio per photo (falls back to a 4:3 guess for the rare
+                  // asset with no metadata) instead of forcing every tile to the same
+                  // shape — portrait and landscape shots now each keep their own frame.
+                  const ratio = img.dims ? img.dims.width / img.dims.height : 4 / 3
+                  return (
+                    <a
+                      key={img._key ?? i}
+                      href={urlFor(img).width(1600).url()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bp-gallery-item"
+                      style={{aspectRatio: ratio}}
+                    >
+                      <Image
+                        src={urlFor(img).width(700).url()}
+                        alt={img.alt || `${exp.title} photo ${i + 1}`}
+                        fill
+                        sizes="(min-width: 768px) 33vw, 50vw"
+                        className="object-cover"
+                      />
+                    </a>
+                  )
+                })}
               </div>
             </section>
           )}
 
           {active === 'included' && (
-            <section className="bp-section">
+            <section className="bp-section" role="tabpanel" id="panel-included" aria-labelledby="tab-included" tabIndex={0}>
               <h2>What's included</h2>
               <ul className="bp-included-list">
                 <li>
@@ -198,7 +238,7 @@ export default function ExperienceTabs({exp}: {exp: any}) {
           )}
 
           {active === 'guide' && exp.guide && (
-            <section className="bp-section">
+            <section className="bp-section" role="tabpanel" id="panel-guide" aria-labelledby="tab-guide" tabIndex={0}>
               <h2>Your guide</h2>
               <div className="bp-guide-card">
                 {exp.guide.portraitImage && (
@@ -222,6 +262,31 @@ export default function ExperienceTabs({exp}: {exp: any}) {
         {/* -------- Sticky inquiry card -------- */}
         <aside className="bp-book-col" id="book">
           <div className="bp-book-card">
+            <div className="bp-departures">
+              <p className="bp-departures-title">Upcoming departures</p>
+              {exp.upcomingEvents && exp.upcomingEvents.length > 0 ? (
+                <ul className="bp-departures-list">
+                  {exp.upcomingEvents.slice(0, MAX_DEPARTURES_SHOWN).map((event: {_id: string; slug: string; date: string; price: number}) => (
+                    <li key={event._id}>
+                      <Link href={`/events/${monthSlugFor(new Date(event.date))}/${event.slug}`} className="bp-departure-row">
+                        <span className="bp-departure-date">{formatDepartureDate(event.date)}</span>
+                        <span className="bp-departure-price">LKR {event.price.toLocaleString()}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="bp-departures-empty">
+                  No fixed departures scheduled right now — send an enquiry below and we&apos;ll arrange a date.
+                </p>
+              )}
+              {exp.upcomingEvents && exp.upcomingEvents.length > MAX_DEPARTURES_SHOWN && (
+                <p className="bp-departures-empty" style={{marginTop: 8}}>
+                  +{exp.upcomingEvents.length - MAX_DEPARTURES_SHOWN} more — ask us below for the full schedule.
+                </p>
+              )}
+            </div>
+
             <InquiryForm experienceTitle={exp.title} />
             <p className="bp-book-note">We&apos;ll reply within 1 business day</p>
           </div>
