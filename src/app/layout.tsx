@@ -1,13 +1,23 @@
 import type { Metadata } from 'next';
-import { Anton, Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 import SiteChrome from '../components/SiteChrome';
 import { DEFAULT_HERO_IMAGE_URL } from '../lib/sanity';
 
-const anton = Anton({ weight: '400', subsets: ['latin'], variable: '--font-display' });
-const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
+// Self-hosted brand fonts supplied by the client (CEA Fonts pack), replacing the earlier
+// placeholder Google Fonts (Anton/Inter) that were never part of the approved brand kit.
+const north = localFont({ src: './fonts/North.otf', weight: '400', variable: '--font-display', display: 'swap' });
+const lato = localFont({
+  src: [
+    { path: './fonts/Lato-Regular.ttf', weight: '400', style: 'normal' },
+    { path: './fonts/Lato-Bold.ttf', weight: '700', style: 'normal' },
+    { path: './fonts/Lato-Black.ttf', weight: '900', style: 'normal' },
+  ],
+  variable: '--font-body',
+  display: 'swap',
+});
 
 const SITE_TITLE = 'Ceylon Extreme Adventures';
 const SITE_DESCRIPTION = 'Chase Freedom, One Adventure at a Time';
@@ -39,7 +49,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en' className={`${anton.variable} ${inter.variable}`}>
+    <html lang='en' className={`${north.variable} ${lato.variable}`}>
       <body>
         <SiteChrome>{children}</SiteChrome>
         {/* Both are no-ops locally/in preview unless the Vercel project has Analytics
