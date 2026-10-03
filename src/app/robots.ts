@@ -30,6 +30,15 @@ const BLOCKED_BOTS = [
   'Bytespider',
   'Amazonbot',
   'Applebot-Extended',
+  // Meta's AI/crawling family -- confirmed (2026-10-03, via Vercel's bot-category
+  // breakdown) as the actual cause of a 300%-over-limit Edge Requests suspension:
+  // meta-externalagent and meta-webindexer alone accounted for >99% of all CDN
+  // requests in a 12h window. Distinct from facebookexternalhit (the real Open Graph
+  // link-preview bot), which stays allowed below.
+  'meta-externalagent',
+  'meta-externalfetcher',
+  'meta-webindexer',
+  'FacebookBot',
 ]
 
 export default function robots(): MetadataRoute.Robots {
