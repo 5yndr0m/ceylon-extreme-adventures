@@ -56,7 +56,7 @@ export default async function Home() {
         <HeroMedia posterUrl={DEFAULT_HERO_IMAGE_URL} videoUrl={HERO_VIDEO_URL} />
         <div className="container hero-inner">
           <div className="hero-badge">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 8.5L21 9.5L16 14L17.5 21L12 17.5L6.5 21L8 14L3 9.5L9.5 8.5L12 2Z" fill="#F2622E" /></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 8.5L21 9.5L16 14L17.5 21L12 17.5L6.5 21L8 14L3 9.5L9.5 8.5L12 2Z" fill="var(--accent-on-dark)" /></svg>
             SATA Gold Winner 2023, 2024 &amp; 2025 — Leading Adventure Sports Operator, South Asia
           </div>
           <h1>

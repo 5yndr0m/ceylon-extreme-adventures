@@ -108,13 +108,13 @@ export async function getExperienceBySlug(slug: string) {
       quickFacts,
       suitableMonths,
       heroImage,
-      gallery,
+      "gallery": gallery[]{..., "dims": asset->metadata.dimensions{width, height}},
       guide->{name, portraitImage, bio, phone},
       "testimonials": *[_type == "testimonial" && references(^._id)] | order(featured desc) {
         _id, customerName, quote, rating, source, photo
       },
       "upcomingEvents": *[_type == "event" && references(^._id) && date >= now() && registrationOpen == true] | order(date asc) {
-        _id, title, slug, date, price
+        _id, title, "slug": slug.current, date, price
       }
     }
   `,

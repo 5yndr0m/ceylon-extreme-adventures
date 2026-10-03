@@ -49,7 +49,7 @@ export default function Contact() {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1L6.6 10.8z"
-                    fill="#F2622E"
+                    fill="var(--accent-ink)"
                   />
                 </svg>
               </div>
@@ -71,7 +71,7 @@ export default function Contact() {
                   height="20"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#F2622E"
+                  stroke="var(--accent-ink)"
                   strokeWidth="2"
                 >
                   <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -99,7 +99,7 @@ export default function Contact() {
                   height="20"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#F2622E"
+                  stroke="var(--accent-ink)"
                   strokeWidth="2"
                 >
                   <path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z" />
@@ -137,7 +137,7 @@ export default function Contact() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1L6.6 10.8z"
-                    fill="#F2622E"
+                    fill="var(--accent-on-dark)"
                   />
                 </svg>
                 Call +94 707 900 700 / +94 707 900 701 or WhatsApp us

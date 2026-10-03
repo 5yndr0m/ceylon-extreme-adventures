@@ -222,7 +222,7 @@ function PaymentPortalInner() {
               <span className="bp-book-unit">total due</span>
             </div>
             <p className="bp-book-note" style={{ marginTop: 0, marginBottom: 20 }}>
-              Payment is processed securely by PayHere — we never see or store your card details.
+              Your card details go directly to PayHere — they never pass through our servers.
             </p>
 
             <button
@@ -231,20 +231,25 @@ function PaymentPortalInner() {
               onClick={proceedToPayment}
               disabled={redirecting}
             >
-              {redirecting ? 'Redirecting…' : `Proceed to Pay LKR ${total.toLocaleString()}`}
+              {redirecting ? 'Redirecting…' : `Continue to PayHere — LKR ${total.toLocaleString()}`}
             </button>
             {error && <p className="bp-form-error" style={{ marginTop: 10, textAlign: 'center' }}>{error}</p>}
 
-            <p className="bp-book-note">Accepts Visa, Mastercard, and Amex — LKR and international cards.</p>
+            <p className="bp-book-note">
+              Online card payment is in final setup with PayHere. If anything looks unfamiliar on their
+              checkout page, or your card doesn&apos;t go through, call or WhatsApp us at{' '}
+              <a href="tel:+94707900700">+94 707 900 700</a> and we&apos;ll confirm your booking and
+              payment directly.
+            </p>
 
             <ul className="bp-included-list" style={{ marginTop: 20, paddingTop: 20, borderTop: '1px solid var(--cloud-gray)' }}>
               <li>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                Secure checkout via PayHere
+                Card details handled entirely by PayHere, not by us
               </li>
               <li>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4z"/></svg>
-                PCI-DSS compliant, we never see your card
+                PayHere is PCI-DSS compliant
               </li>
               <li>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 6 9 17l-5-5"/></svg>
