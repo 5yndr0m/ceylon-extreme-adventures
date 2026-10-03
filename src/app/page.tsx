@@ -154,7 +154,7 @@ export default async function Home() {
       <section className="testimonials">
         <div className="container">
           <Reveal2 className="section-head">
-            <span className="eyebrow" style={{ color: 'var(--rapids-blue)' }}>Reviews</span>
+            <span className="eyebrow" style={{ color: 'var(--accent-ink)' }}>Reviews</span>
             <h2>Stories from the Trail</h2>
           </Reveal2>
           <TestimonialsCarousel testimonials={testimonials} />

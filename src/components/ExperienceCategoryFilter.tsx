@@ -74,7 +74,7 @@ function LevelChips({exp, tone}: {exp: ListItem; tone: 'dark' | 'light'}) {
   const base =
     tone === 'dark'
       ? 'border border-white/60 bg-black/30 text-white hover:bg-white hover:text-stone-900'
-      : 'border border-stone-300 bg-white text-stone-800 hover:border-[var(--orange-ink)] hover:text-[var(--orange-ink)]'
+      : 'border border-stone-300 bg-white text-stone-800 hover:border-[var(--accent-ink)] hover:text-[var(--accent-ink)]'
   return (
     <div className="flex flex-wrap gap-2" role="group" aria-label={`${exp.title} levels`}>
       {exp.levels!.map((level) => (
@@ -104,7 +104,7 @@ function GridCard({exp}: {exp: ListItem}) {
   )
   const meta = (
     <>
-      <p className="text-xs uppercase tracking-wide text-[var(--orange-on-dark)] mb-1">{exp.category || 'Adventure'}</p>
+      <p className="text-xs uppercase tracking-wide text-[var(--accent-on-dark)] mb-1">{exp.category || 'Adventure'}</p>
       <h2 className="text-xl font-bold mb-1">{exp.title}</h2>
       {exp.locationName && <p className="text-sm text-white/80 mb-2">{exp.locationName}</p>}
     </>
@@ -160,7 +160,7 @@ function ListRow({exp}: {exp: ListItem}) {
   )
   const heading = (
     <>
-      <p className="text-xs uppercase tracking-wide text-[var(--orange-ink)] font-semibold mb-1">{exp.category || 'Adventure'}</p>
+      <p className="text-xs uppercase tracking-wide text-[var(--accent-ink)] font-semibold mb-1">{exp.category || 'Adventure'}</p>
       <h2 className="text-lg sm:text-xl font-bold text-stone-900 mb-1">{exp.title}</h2>
       {exp.locationName && <p className="text-sm text-stone-500 mb-2">{exp.locationName}</p>}
     </>
@@ -182,13 +182,13 @@ function ListRow({exp}: {exp: ListItem}) {
   return (
     <Link
       href={exp.slug ? `/experiences/${exp.slug}` : '#'}
-      className="group flex gap-5 rounded-xl border border-stone-200 bg-white p-3 hover:border-orange-300 hover:shadow-md transition-all"
+      className="group flex gap-5 rounded-xl border border-stone-200 bg-white p-3 hover:border-[var(--blue-4)] hover:shadow-md transition-all"
     >
       {thumb}
       <div className="flex flex-1 flex-col justify-center py-1">
         {heading}
         <div className="mt-auto flex items-center justify-end text-sm">
-          <span className="text-[var(--orange-ink)] underline">View Details</span>
+          <span className="text-[var(--accent-ink)] underline">View Details</span>
         </div>
       </div>
     </Link>
@@ -264,8 +264,8 @@ export default function ExperienceCategoryFilter({
           onClick={() => updateCategory('All')}
           className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
             selectedCategory === 'All'
-              ? 'border-orange-600 bg-orange-600 text-white'
-              : 'border-stone-300 bg-white text-stone-700 hover:border-orange-400 hover:text-orange-600'
+              ? 'border-[var(--accent-action)] bg-[var(--accent-action)] text-white'
+              : 'border-stone-300 bg-white text-stone-700 hover:border-[var(--accent-ink)] hover:text-[var(--accent-ink)]'
           }`}
         >
           All
@@ -278,8 +278,8 @@ export default function ExperienceCategoryFilter({
             onClick={() => updateCategory(category)}
             className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
               selectedCategories.includes(category)
-                ? 'border-orange-600 bg-orange-600 text-white'
-                : 'border-stone-300 bg-white text-stone-700 hover:border-orange-400 hover:text-orange-600'
+                ? 'border-[var(--accent-action)] bg-[var(--accent-action)] text-white'
+                : 'border-stone-300 bg-white text-stone-700 hover:border-[var(--accent-ink)] hover:text-[var(--accent-ink)]'
             }`}
           >
             {category}
@@ -309,7 +309,7 @@ export default function ExperienceCategoryFilter({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name or location..."
-              className="w-full rounded-full border border-stone-300 bg-white py-2 pl-9 pr-4 text-sm text-stone-800 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full rounded-full border border-stone-300 bg-white py-2 pl-9 pr-4 text-sm text-stone-800 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[var(--accent-action)]"
             />
           </div>
         </div>
@@ -321,7 +321,7 @@ export default function ExperienceCategoryFilter({
             onClick={() => setViewMode('grid')}
             aria-label="Grid view"
             className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
-              viewMode === 'grid' ? 'bg-orange-600 text-white' : 'text-stone-600 hover:text-orange-600'
+              viewMode === 'grid' ? 'bg-[var(--accent-action)] text-white' : 'text-stone-600 hover:text-[var(--accent-ink)]'
             }`}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -337,7 +337,7 @@ export default function ExperienceCategoryFilter({
             onClick={() => setViewMode('list')}
             aria-label="List view"
             className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
-              viewMode === 'list' ? 'bg-orange-600 text-white' : 'text-stone-600 hover:text-orange-600'
+              viewMode === 'list' ? 'bg-[var(--accent-action)] text-white' : 'text-stone-600 hover:text-[var(--accent-ink)]'
             }`}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
