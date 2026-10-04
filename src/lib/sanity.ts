@@ -223,15 +223,34 @@ type MonthlyBanner = {
 
 // Homepage: the next `limit` months that have a poster uploaded in Studio, each with
 // its event count + a short preview list for the "details below the flyer" row.
+//
+// The client wants exactly `limit` months shown whenever that many banners exist at
+// all -- even already-passed ones -- rather than the row shrinking to however many are
+// still upcoming. With only 1-2 banners ever uploaded in Studio so far, a strict
+// "upcoming only" filter meant the row showed just 1 banner once the current month's
+// was the only one left in the future. Backfilled months are the most recent past
+// ones, oldest-to-newest, so the row still reads left-to-right as a timeline.
 export async function getUpcomingMonthlyBanners(limit = 3) {
   const {start: startOfThisMonth} = monthRangeFromDate(new Date())
 
-  const banners: MonthlyBanner[] = await client.fetch(
+  const upcoming: MonthlyBanner[] = await client.fetch(
     `*[_type == "monthlyEventBanner" && month >= $startOfThisMonth] | order(month asc) [0...$limit] {
       _id, month, bannerImage
     }`,
     {startOfThisMonth, limit}
   )
+
+  let banners = upcoming
+  if (banners.length < limit) {
+    const need = limit - banners.length
+    const past: MonthlyBanner[] = await client.fetch(
+      `*[_type == "monthlyEventBanner" && month < $startOfThisMonth] | order(month desc) [0...$need] {
+        _id, month, bannerImage
+      }`,
+      {startOfThisMonth, need}
+    )
+    banners = [...past.reverse(), ...banners]
+  }
 
   return Promise.all(
     banners.map(async (banner) => {
