@@ -225,7 +225,7 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); box-shadow:0 2
 .activities .eyebrow{ color:var(--accent-text); }
 
 .card-scroller{
-  display:flex; gap:18px; padding-bottom:10px;
+  display:flex; align-items:flex-start; gap:18px; padding-bottom:10px;
   margin:0 calc(var(--gutter) * -1); padding-left:var(--gutter); padding-right:var(--gutter);
 }
 .activity-card{
@@ -727,8 +727,16 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
     margin:0; padding:0;
     touch-action: pan-y; /* let vertical page scroll pass through, but claim horizontal swipes */
   }
+  /* align-items:flex-start on both this and .card-scroller above: with the default
+     align-items:stretch, a flex item sized by aspect-ratio (the card, below) is in a
+     genuinely inconsistent cross-browser spot -- the item can get stretched to an
+     ambiguous cross-size instead of sizing from its own aspect-ratio, collapsing its
+     height to near-zero. Confirmed on a real device via live mode: the whole activities
+     container (heading + carousel + CTA) was computing to 310px total -- the cards were
+     rendering at effectively zero height, present and clickable, just invisible. */
   .card-scroller-track{
     display:flex;
+    align-items:flex-start;
     transition:transform .5s var(--ease);
   }
   .activity-card{
