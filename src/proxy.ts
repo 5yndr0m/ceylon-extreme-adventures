@@ -105,7 +105,16 @@ function isRateLimited(ip: string): boolean {
 export function proxy(req: NextRequest) {
   const userAgent = req.headers.get('user-agent') ?? ''
 
-  if (!userAgent || BLOCKED_UA_PATTERNS.some((pattern) => pattern.test(userAgent))) {
+  // Deliberately NOT blocking a missing/empty User-Agent (only pattern matches below).
+  // Next's own image optimizer re-fetches a local /public asset through this same
+  // origin to process it (e.g. the header/footer logo's `next/image` call), and that
+  // internal request carries no User-Agent header at all -- the old `!userAgent` check
+  // 403'd it, so the optimizer received a "Forbidden" text body instead of image bytes
+  // and failed with "not a valid image", breaking the logo sitewide for every visitor.
+  // None of the confirmed bots in the original incident (meta-externalagent, etc.) ever
+  // omitted their User-Agent -- they were always identifiable by name -- so this loses
+  // no real protection.
+  if (BLOCKED_UA_PATTERNS.some((pattern) => pattern.test(userAgent))) {
     return new NextResponse('Forbidden', {status: 403})
   }
 

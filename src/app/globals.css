@@ -948,15 +948,24 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
   width: 100%;
 }
 /* `contain:layout` scopes the reflow this track's width/left transition causes to
-   this 420px box alone -- same treatment as .testi-track, and for the same reason:
-   the browser never has to consider it when laying out anything outside. Safe here
-   because the track's height is fixed and its children are already out-of-flow
-   (position:absolute). */
+   this box alone -- same treatment as .testi-track, and for the same reason: the
+   browser never has to consider it when laying out anything outside. Safe here
+   because the track's size is still definite (aspect-ratio-derived, not
+   content-dependent) and its children are already out-of-flow (position:absolute).
+
+   Height is aspect-ratio-driven, not a fixed px value, because a fixed height
+   doesn't scale with the track's actual width across viewports: .slot-1 (the
+   center card) is 53.6% wide at a 600:900 (2:3) aspect-ratio, so it needs
+   height = width * 0.536 * 1.5 = width * 0.804 to fit without overflowing --
+   250:201 is exactly that ratio. A fixed 420px/260px (the previous mobile value)
+   only happened to fit at one specific width each; at most real phone widths the
+   center card was 10-20px taller than the track, bleeding into the founder
+   name/role text block that sits right below it in normal document flow. */
 .founders-track {
   position: relative;
   width: 100%;
   max-width: 560px;
-  height: 420px;
+  aspect-ratio: 250 / 201;
   contain: layout;
 }
 .founder-card {
@@ -1088,11 +1097,6 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
   text-transform: uppercase;
 }
 
-@media (max-width: 640px) {
-  .founders-track {
-    height: 260px;
-  }
-}
 
 /* ============ ACCESSIBILITY SURFACES ============ */
 ::selection{ background:var(--accent-action); color:#fff; }

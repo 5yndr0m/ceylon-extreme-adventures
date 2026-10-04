@@ -1,4 +1,3 @@
-import {Suspense} from 'react'
 import Link from 'next/link'
 import Image from '@/components/SanityImage'
 import {getAllExperiences, DEFAULT_HERO_IMAGE_URL} from '@/lib/sanity'
@@ -11,18 +10,12 @@ export const revalidate = 60
 // the `revalidate` export above is silently ignored the moment that happens, so this
 // page was hitting Sanity fresh on every single request (bot, prefetch, or otherwise),
 // confirmed via Vercel runtime logs showing 100% cache=MISS and bursts of a dozen+
-// requests in the same second. ExperienceCategoryFilter is a client component that
-// already reads the ?category= URL param itself via useSearchParams() in a useEffect
-// (see its own file) -- initialCategory here is purely a same-frame default to avoid
-// a flash of "All" before that effect runs, not the source of truth. Hardcoding it
-// lets this page be a normal static/ISR page again.
-//
-// Removing the server-side searchParams read means Next.js now attempts full static
-// generation for this page -- which requires wrapping ExperienceCategoryFilter's
-// useSearchParams() call in a Suspense boundary, or the build fails outright with
-// "useSearchParams() should be wrapped in a suspense boundary". Confirmed by actually
-// running `next build` locally, not just tsc/eslint -- neither of those exercises the
-// static-generation path where this specific error surfaces.
+// requests in the same second. initialCategory here is purely a same-frame default;
+// ExperienceCategoryFilter reads the real ?category= value client-side from
+// window.location (not next/navigation's useSearchParams -- that hook would force
+// this whole component to exist only inside a Suspense fallback in the static HTML,
+// which is exactly what made the live page's entire card grid invisible until JS
+// hydrated. See that file's own comment for the full story.)
 export const metadata = {
   title: 'Experiences',
   description: 'Browse waterfall abseiling, whitewater rafting, canyoning, hiking, and kayaking adventures across Sri Lanka.',
@@ -52,9 +45,7 @@ export default async function ExperiencesPage() {
 
       <section className="exp-list">
         <div className="container" style={{paddingTop: 48, paddingBottom: 64}}>
-          <Suspense fallback={null}>
-            <ExperienceCategoryFilter experiences={experiences} initialCategory="All" />
-          </Suspense>
+          <ExperienceCategoryFilter experiences={experiences} initialCategory="All" />
         </div>
       </section>
     </main>
