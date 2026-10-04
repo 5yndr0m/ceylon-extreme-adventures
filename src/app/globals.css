@@ -744,6 +744,21 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
     width:100%;
   }
 
+  /* TEMPORARY DIAGNOSTIC TEST (mobile only) -- the align-items fix above didn't resolve
+     it on a real device, so this strips the card down to just text with no image, no
+     aspect-ratio, no absolute-positioned overlay, to isolate whether the image/overlay
+     mechanism is still the problem or something else entirely is. Revert this whole
+     block once we know which. */
+  .activity-card{ aspect-ratio:auto; background:var(--jungle-green); min-height:160px; }
+  .activity-card img{ display:none; }
+  .activity-card::after{ display:none; }
+  .activity-card-content{ position:static; padding:22px; }
+  .activity-card-content.glass{
+    position:static; left:auto; right:auto; bottom:auto;
+    background:transparent; backdrop-filter:none; -webkit-backdrop-filter:none;
+    box-shadow:none; border-radius:0;
+  }
+
   .activities-nav{
     display:flex; position:absolute; top:38%; z-index:2; width:44px; height:44px; border-radius:50%;
     border:1.5px solid rgba(255,255,255,.4); background:rgba(20,24,26,.6); color:#fff;
