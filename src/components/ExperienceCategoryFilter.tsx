@@ -2,7 +2,7 @@
 
 import Image from '@/components/SanityImage'
 import Link from 'next/link'
-import {useRouter, useSearchParams} from 'next/navigation'
+import {useRouter} from 'next/navigation'
 import {useEffect, useMemo, useState} from 'react'
 import {urlFor} from '@/lib/sanity'
 
@@ -140,14 +140,21 @@ export default function ExperienceCategoryFilter({
   initialCategory?: string
 }) {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [selectedCategory, setSelectedCategory] = useState(initialCategory)
   const [searchQuery, setSearchQuery] = useState('')
 
+  // Reading the category from window.location directly (instead of next/navigation's
+  // useSearchParams) deliberately avoids the Suspense boundary that hook requires on a
+  // statically-generated page: with useSearchParams, this entire component -- every
+  // card, not just the category sync -- only exists in the static HTML as its fallback
+  // (null), and depends entirely on client JS hydrating before any content appears at
+  // all. Confirmed on the live site: the server-rendered /experiences page had no card
+  // markup whatsoever, only the hero, because of exactly this. window.location has no
+  // such restriction, so the grid now renders in the initial static HTML every time.
   useEffect(() => {
-    const categoryFromUrl = searchParams.get('category')
+    const categoryFromUrl = new URLSearchParams(window.location.search).get('category')
     setSelectedCategory(categoryFromUrl || 'All')
-  }, [searchParams])
+  }, [])
 
   const listItems = useMemo(() => toListItems(experiences), [experiences])
 
@@ -162,7 +169,7 @@ export default function ExperienceCategoryFilter({
   }, [experiences])
 
   const updateCategory = (category: string) => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(window.location.search)
 
     if (category === 'All') {
       params.delete('category')
