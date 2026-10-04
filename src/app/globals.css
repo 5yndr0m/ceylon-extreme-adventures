@@ -728,35 +728,26 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
     touch-action: pan-y; /* let vertical page scroll pass through, but claim horizontal swipes */
   }
   /* align-items:flex-start on both this and .card-scroller above: with the default
-     align-items:stretch, a flex item sized by aspect-ratio (the card, below) is in a
-     genuinely inconsistent cross-browser spot -- the item can get stretched to an
-     ambiguous cross-size instead of sizing from its own aspect-ratio, collapsing its
-     height to near-zero. Confirmed on a real device via live mode: the whole activities
-     container (heading + carousel + CTA) was computing to 310px total -- the cards were
-     rendering at effectively zero height, present and clickable, just invisible. */
+     align-items:stretch, a flex item relying on aspect-ratio for its height is in a
+     genuinely inconsistent cross-browser spot -- real fix, confirmed needed, but not
+     the whole story (see below). */
   .card-scroller-track{
     display:flex;
     align-items:flex-start;
     transition:transform .5s var(--ease);
   }
+  /* aspect-ratio itself turned out to be the part not working on the real device this
+     was tested on -- confirmed by a diagnostic pass that dropped aspect-ratio entirely
+     (min-height instead) and the card rendered correctly. Replaced with the same ratio
+     computed via calc()/vw, which doesn't depend on the aspect-ratio property at all:
+     card width here is always 100vw minus the two 20px gutters (.container's max-width
+     never binds below a 1280px viewport, well above this 767px breakpoint), so
+     height = width * 5/4 is exact, not an approximation. */
   .activity-card{
     flex:0 0 100%;
     width:100%;
-  }
-
-  /* TEMPORARY DIAGNOSTIC TEST (mobile only) -- the align-items fix above didn't resolve
-     it on a real device, so this strips the card down to just text with no image, no
-     aspect-ratio, no absolute-positioned overlay, to isolate whether the image/overlay
-     mechanism is still the problem or something else entirely is. Revert this whole
-     block once we know which. */
-  .activity-card{ aspect-ratio:auto; background:var(--jungle-green); min-height:160px; }
-  .activity-card img{ display:none; }
-  .activity-card::after{ display:none; }
-  .activity-card-content{ position:static; padding:22px; }
-  .activity-card-content.glass{
-    position:static; left:auto; right:auto; bottom:auto;
-    background:transparent; backdrop-filter:none; -webkit-backdrop-filter:none;
-    box-shadow:none; border-radius:0;
+    aspect-ratio:auto;
+    height:calc((100vw - 40px) * 1.25);
   }
 
   .activities-nav{
