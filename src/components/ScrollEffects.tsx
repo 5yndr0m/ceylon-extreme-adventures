@@ -29,6 +29,14 @@ export default function ScrollEffects({ children }: { children: React.ReactNode 
       immediateTargets.forEach((target) => target.classList.add('is-visible'));
     });
 
+    // threshold:0 (not a fraction like the old 0.08) -- a fraction is relative to the
+    // TARGET's own height, not the viewport. A short hero clears 8% easily, but a long
+    // section (e.g. the full experiences grid, 30+ cards, 10,000px+ tall on mobile) can
+    // never get 8% of itself on screen at once -- at most one viewport-height shows,
+    // which is a much smaller fraction of a section that tall. That section stayed at
+    // opacity:0 forever: present and clickable, just permanently invisible. rootMargin
+    // alone (viewport-relative, not target-relative) already gives the "wait until
+    // meaningfully scrolled up, not just barely peeking in" delay this wants.
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -36,7 +44,7 @@ export default function ScrollEffects({ children }: { children: React.ReactNode 
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
 
     revealTargets.forEach((target) => revealObserver.observe(target));
 
