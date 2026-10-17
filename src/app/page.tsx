@@ -99,7 +99,7 @@ export default async function Home() {
           <Reveal2 className="section-head">
             <span className="eyebrow">YOUR NEXT ADVENTURE STARTS HERE</span>
             <h2>Upcoming Adventures</h2>
-            <p>Explore our upcoming adventure calendar and find your next experience in Sri Lanka. From challenging mountain hikes and waterfall abseiling to white-water rafting and wilderness expeditions, choose your adventure and reserve your place.</p>
+            <p>Explore our upcoming adventure calendar and find your next experience in Sri Lanka. From challenging mountain hikes and waterfall abseiling to white-water rafting and wilderness expeditions, choose your adventure and reserve your slots.</p>
           </Reveal2>
 
           {monthlyBanners.length === 0 ? (
@@ -153,10 +153,11 @@ export default async function Home() {
 
       <section className="testimonials">
         <div className="container">
-          <Reveal2 className="section-head">
-            <span className="eyebrow" style={{ color: 'var(--accent-ink)' }}>Reviews</span>
-            <h2>Stories from the Trail</h2>
-          </Reveal2>
+        <Reveal2 className="section-head">
+          <span className="eyebrow" style={{ color: 'var(--rapids-blue)' }}>Reviews</span>
+          <h2>Stories from the Trail</h2>
+          <p>Every adventure leaves a story. Discover what our guests have to say about their experiences with Ceylon Extreme Adventures.</p>
+        </Reveal2>
           <TestimonialsCarousel testimonials={testimonials} />
           <Reveal2 className="activities-cta">
             <a href={TRIPADVISOR_URL} target="_blank" rel="noopener">View More Reviews</a>
