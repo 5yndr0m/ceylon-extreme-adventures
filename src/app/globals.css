@@ -1130,3 +1130,36 @@ main:focus{ outline:none; }
 }
 .level-switch a:hover{ border-color:var(--accent-ink); color:var(--accent-ink); }
 .level-switch a.active{ background:var(--jungle-green); border-color:var(--jungle-green); color:#fff; }
+
+
+/* Center brand column on desktop */
+@media (min-width: 768px) {
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-brand .footer-logo {
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-brand p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-brand .social-row {
+    justify-content: center;
+  }
+}
+
+/* "Follow us on" text */
+.follow-us-text {
+  font-size: 13px;
+  margin: 12px 0 8px;
+  opacity: 0.85;
+  letter-spacing: 0.02em;
+}

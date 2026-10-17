@@ -35,11 +35,10 @@ export default async function ExperiencesPage() {
           <div className="breadcrumb">
             <Link href="/">Home</Link> / <span>Experiences</span>
           </div>
-          <span className="eyebrow" style={{color: 'var(--accent-text)'}}>What we run</span>
+          <span className="eyebrow" style={{color: 'var(--accent-text)'}}>EXPLORE SRI LANKA</span>
           <h1>All Experiences</h1>
           <p className="page-hero-sub body-lg">
-            Choose your next way into Sri Lanka&apos;s rivers, waterfalls, trails, and wild places.
-          </p>
+          From breathtaking waterfalls and misty mountain trails to wild rivers and hidden wilderness, discover extraordinary adventures that challenge your limits, connect you with nature, and leave you with more than memories.</p>
         </div>
       </section>
 

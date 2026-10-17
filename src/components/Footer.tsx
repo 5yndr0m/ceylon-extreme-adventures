@@ -7,11 +7,12 @@ export default function Footer({ hideStickyCta = false }: { hideStickyCta?: bool
       <footer>
         <div className='container'>
           <div className='footer-grid'>
-            <div className='footer-col'>
+            <div className='footer-col footer-brand'>
               <div className='footer-logo'>
                 <Image src='/logo-full.png' alt='Ceylon Extreme Adventures' width={900} height={449} />
               </div>
               <p style={{ fontSize: '14px', maxWidth: '32ch' }}>In search of freedom</p>
+              <p className='follow-us-text'>Follow us on</p>
               <div className='social-row'>
                 <a href='https://www.facebook.com/extremeadventure.lk' target='_blank' rel='noopener' aria-label='Facebook'>
                   <svg width='16' height='16' viewBox='0 0 24 24' fill='#fff'><path d='M13.5 21v-7.5H16l.5-3H13.5V8.3c0-.87.24-1.46 1.5-1.46H16.5V4.2C16.2 4.16 15.2 4 14 4c-2.4 0-4 1.47-4 4.16v2.34H7.5v3H10V21h3.5z'/></svg>
