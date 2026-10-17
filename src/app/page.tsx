@@ -162,9 +162,6 @@ export default async function Home() {
           <Reveal2 className="activities-cta">
             <a href={TRIPADVISOR_URL} target="_blank" rel="noopener">View More Reviews</a>
           </Reveal2>
-          <Reveal2 className="section-head">
-          <span className="eyebrow" style={{ color: 'var(--rapids-blue)' }}>Reviews</span>
-          </Reveal2>
         </div>
       </section>
 
