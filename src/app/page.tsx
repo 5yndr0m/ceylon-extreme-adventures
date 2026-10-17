@@ -161,6 +161,11 @@ export default async function Home() {
           <Reveal2 className="activities-cta">
             <a href={TRIPADVISOR_URL} target="_blank" rel="noopener">View More Reviews</a>
           </Reveal2>
+          <Reveal2 className="section-head">
+          <span className="eyebrow" style={{ color: 'var(--rapids-blue)' }}>Reviews</span>
+          <h2>Notes from the Trail</h2>
+          <p>Explore Sri Lanka through practical trip-planning guides, local insights, adventure stories and expert advice from the people who know these trails best.</p>
+        </Reveal2>
         </div>
       </section>
 
@@ -199,7 +204,7 @@ export default async function Home() {
                   </Link>
                 ))}
               </Reveal2>
-              <Reveal2 className="activities-cta"><Link href="/blog">Read More Stories</Link></Reveal2>
+              <Reveal2 className="activities-cta"><Link href="/blog">Explore All Articles</Link></Reveal2>
             </>
           )}
         </div>

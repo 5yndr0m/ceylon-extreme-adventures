@@ -453,6 +453,7 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
   display:flex; align-items:center; justify-content:center; padding:0;
 }
 .social-row a:hover{ border-color:var(--accent); background:rgba(28,86,110,.15); }
+.social-caption{ width:212px; margin:8px 0 0; text-align:center; font-size:13px; color:rgba(255,255,255,.65); }
 .footer-bottom{ border-top:1px solid rgba(255,255,255,.12); padding-top:22px; font-size:13px; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; }
 
 @media(min-width:768px){ .footer-grid{ grid-template-columns:1.4fr 1fr 1fr 1fr; } }
