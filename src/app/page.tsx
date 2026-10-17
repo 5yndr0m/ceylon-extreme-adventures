@@ -164,9 +164,7 @@ export default async function Home() {
           </Reveal2>
           <Reveal2 className="section-head">
           <span className="eyebrow" style={{ color: 'var(--rapids-blue)' }}>Reviews</span>
-          <h2>Notes from the Trail</h2>
-          <p>Explore Sri Lanka through practical trip-planning guides, local insights, adventure stories and expert advice from the people who know these trails best.</p>
-        </Reveal2>
+          </Reveal2>
         </div>
       </section>
 
@@ -175,7 +173,7 @@ export default async function Home() {
           <Reveal2 className="section-head">
             <span className="eyebrow">From the trail</span>
             <h2>Notes From The Trail</h2>
-            <p>Trip-planning guides, company news, and beginner&apos;s advice from the guides who run these routes every week.</p>
+            <p>Explore Sri Lanka through practical trip-planning guides, local insights, adventure stories and expert advice from the people who know these trails best.</p>
           </Reveal2>
           {latestPosts.length === 0 ? (
             <p style={{ color: 'var(--stone-gray)' }}>No posts published yet — check back soon.</p>
