@@ -66,7 +66,7 @@ button{ font-family:inherit; cursor:pointer; }
 }
 
 h1, .h1{ font-family:var(--font-display); font-weight:400; letter-spacing:.5px;
-  font-size:clamp(2rem, 1.55rem + 2.2vw, 4rem); line-height:1.27; margin:0; text-transform:uppercase; }
+  font-size:clamp(2rem, 1.55rem + 1.3vw, 4rem); line-height:1.27; margin:0; text-transform:uppercase; }
 h2, .h2{ font-family:var(--font-display); font-weight:400; letter-spacing:.3px;
   font-size:clamp(1.65rem, 1.4rem + 1.3vw, 2.6rem); line-height:1.1; margin:0; text-transform:uppercase; }
 h3, .h3{ font-family:var(--font-body); font-weight:600;
