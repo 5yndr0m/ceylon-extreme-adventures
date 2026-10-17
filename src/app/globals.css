@@ -66,7 +66,7 @@ button{ font-family:inherit; cursor:pointer; }
 }
 
 h1, .h1{ font-family:var(--font-display); font-weight:400; letter-spacing:.5px;
-  font-size:clamp(2rem, 1.55rem + 2.2vw, 4rem); line-height:1.05; margin:0; text-transform:uppercase; }
+  font-size:clamp(2rem, 1.55rem + 2.2vw, 4rem); line-height:1.27; margin:0; text-transform:uppercase; }
 h2, .h2{ font-family:var(--font-display); font-weight:400; letter-spacing:.3px;
   font-size:clamp(1.65rem, 1.4rem + 1.3vw, 2.6rem); line-height:1.1; margin:0; text-transform:uppercase; }
 h3, .h3{ font-family:var(--font-body); font-weight:600;
@@ -99,7 +99,7 @@ section{ padding:64px 0; }
 @media(min-width:768px){ section{ padding:88px 0; } }
 @media(min-width:1280px){ section{ padding:120px 0; } }
 
-.section-head{ max-width:640px; margin-bottom:40px; }
+.section-head{ max-width:660px; margin-bottom:40px; }
 .section-head .eyebrow{ display:block; margin-bottom:10px; }
 .section-head p{ margin-top:14px; color:var(--stone-gray); }
 .section-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
@@ -202,17 +202,17 @@ header.transparent-mode.scrolled { background:rgba(20,24,26,.92); box-shadow:0 2
 .hero-badge{
   display:inline-flex; align-items:center; gap:8px; background:rgba(247,245,240,.14);
   border:1px solid rgba(255,255,255,.35); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
-  padding:8px 16px; border-radius:var(--radius-pill); font-size:12px; font-weight:600;
+  padding:8px 8px; border-radius:var(--radius-pill); font-size:12px; font-weight:600;
   margin-bottom:22px; letter-spacing:.3px;
 }
 .hero-badge svg{ flex-shrink:0; }
-.hero h1{ color:#fff; margin-bottom:20px; max-width:14ch; }
+.hero h1{ color:#fff; margin-bottom:20px; max-width:25ch; }
 .hero-line{ display:block; overflow:hidden; }
 .hero-line-inner{ display:block; transform:translateY(100%); animation:hero-line-reveal .9s var(--ease) forwards; }
 .hero-line:nth-child(2) .hero-line-inner{ animation-delay:.1s; }
 .hero-line:nth-child(3) .hero-line-inner{ animation-delay:.2s; }
 @keyframes hero-line-reveal{ from{ transform:translateY(100%); } to{ transform:translateY(0); } }
-.hero-sub{ max-width:46ch; color:rgba(255,255,255,.88); margin-bottom:34px; }
+.hero-sub{ max-width:70ch; color:rgba(255,255,255,.88); margin-bottom:34px; }
 .hero-ctas{ display:flex; flex-wrap:wrap; gap:14px; }
 
 /* rope signature divider between hero and activities */

@@ -57,14 +57,14 @@ export default async function Home() {
         <div className="container hero-inner">
           <div className="hero-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 8.5L21 9.5L16 14L17.5 21L12 17.5L6.5 21L8 14L3 9.5L9.5 8.5L12 2Z" fill="var(--accent-on-dark)" /></svg>
-            SATA Gold Winner 2023, 2024 &amp; 2025 — Leading Adventure Sports Operator, South Asia
+            SOUTH ASIA'S SATA GOLD WINNER-2023, 2024 & 2025
           </div>
           <h1>
-            <span className="hero-line"><span className="hero-line-inner">Chase Freedom.</span></span>
-            <span className="hero-line"><span className="hero-line-inner">One Extreme Adventure</span></span>
-            <span className="hero-line"><span className="hero-line-inner">at a Time.</span></span>
+            <span className="hero-line"><span className="hero-line-inner">MORE THAN ADVENTURE.</span></span>
+            <span className="hero-line"><span className="hero-line-inner">A JOURNEY OF GROWTH,</span></span>
+            <span className="hero-line"><span className="hero-line-inner">CONFIDENCE AND DISCOVERY.</span></span>
           </h1>
-          <p className="hero-sub body-lg">Abseil untouched waterfalls, raft wild rivers, and trek hidden trails across Sri Lanka — guided by experts who put your safety first.</p>
+          <p className="hero-sub body-lg">Discover Sri Lanka beyond the ordinary with Ceylon Extreme Adventures. From waterfall abseils and wild river expeditions to challenging mountain treks, every journey lets you explore nature and test your limits. Led by experienced professionals, our adventures are built on careful planning, responsible exploration and a strong commitment to safety.</p>
           <div className="hero-ctas">
             <a href="#activities" className="btn btn-primary">Explore Adventures</a>
             <a
@@ -83,8 +83,8 @@ export default async function Home() {
       <section className="activities" id="activities">
         <div className="container">
           <Reveal2 className="section-head">
-            <span className="eyebrow">What we run</span>
-            <h2>Six Ways to Push Your Limits</h2>
+            <span className="eyebrow">OUR ADVENTURES</span>
+            <h2>FIND YOUR NEXT ADVENTURE</h2>
             <p>Every trip is led by certified guides with full safety briefings, gear checks, and small group sizes.</p>
           </Reveal2>
 
@@ -97,9 +97,9 @@ export default async function Home() {
       <section className="events" id="events">
         <div className="container">
           <Reveal2 className="section-head">
-            <span className="eyebrow">Fixed departures</span>
+            <span className="eyebrow">YOUR NEXT ADVENTURE STARTS HERE</span>
             <h2>Upcoming Adventures</h2>
-            <p>Tap a month to browse every scheduled departure and reserve your spot.</p>
+            <p>Explore our upcoming adventure calendar and find your next experience in Sri Lanka. From challenging mountain hikes and waterfall abseiling to white-water rafting and wilderness expeditions, choose your adventure and reserve your place.</p>
           </Reveal2>
 
           {monthlyBanners.length === 0 ? (
@@ -138,9 +138,9 @@ export default async function Home() {
             <FoundersSlider founders={founders} />
           </div>
             <div className="about-text">
-              <span className="eyebrow">Who we are</span>
-              <h2>Adventure Is in Our Nature</h2>
-              <p>We&apos;re a team of young adventure-sports professionals and naturalists who love going to extreme lengths to explore the hidden wonders of Sri Lanka — guiding you safely on a journey of self-discovery, one expedition at a time.</p>
+              <span className="eyebrow">THE PEOPLE BEHIND CEA</span>
+              <h2>LEADERSHIP & EXPERTISE</h2>
+              <p>Meet the people behind Ceylon Extreme Adventures, bringing together adventure leadership, technical knowledge and a shared commitment to meaningful outdoor experiences.</p>
               <div className="stat-strip">
                 <div className="stat"><span className="stat-num">500+</span><span className="stat-label">Guided Down Laxapana</span></div>
                 <div className="stat"><span className="stat-num">0</span><span className="stat-label">Injuries on Record</span></div>
