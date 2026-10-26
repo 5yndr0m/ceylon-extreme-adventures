@@ -53,6 +53,9 @@ function toListItems(experiences: ExperienceCard[]): ListItem[] {
   groups.forEach((members, group) => {
     const ordered = [...members].sort((a, b) => (a.levelOrder ?? 99) - (b.levelOrder ?? 99))
     const first = ordered[0]
+    const levels: Level[] = ordered
+      .filter((m) => m.slug?.current)
+      .map((m) => ({_id: m._id, name: m.levelName || m.title, slug: m.slug!.current!}))
     items.push({
       key: `group-${group}`,
       title: group,
@@ -60,9 +63,10 @@ function toListItems(experiences: ExperienceCard[]): ListItem[] {
       locationName: first.locationName,
       heroImage: ordered.find((m) => m.heroImage)?.heroImage,
       summary: first.levelGroupSummary,
-      levels: ordered
-        .filter((m) => m.slug?.current)
-        .map((m) => ({_id: m._id, name: m.levelName || m.title, slug: m.slug!.current!})),
+      levels,
+      // The card opens the lowest-order level; the other levels are switched
+      // from the level switcher on that experience page.
+      slug: levels[0]?.slug,
     })
   })
   return items.sort((a, b) => a.title.localeCompare(b.title))
@@ -72,7 +76,7 @@ function ExperienceCard({exp}: {exp: ListItem}) {
   const image = exp.heroImage ? (
     <Image
       src={urlFor(exp.heroImage).width(700).height(525).url()}
-      alt={exp.levels ? '' : exp.title}
+      alt={exp.title}
       fill
       sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
       className="object-cover"
@@ -96,33 +100,14 @@ function ExperienceCard({exp}: {exp: ListItem}) {
       )}
       {exp.summary && <p className="exp-card-summary">{exp.summary}</p>}
 
-      {exp.levels ? (
-        <div className="exp-card-footer">
-          <p className="exp-card-levels-label">Choose your level</p>
-          <div className="exp-level-chips" role="group" aria-label={`${exp.title} levels`}>
-            {exp.levels.map((level) => (
-              <Link key={level._id} href={`/experiences/${level.slug}`} className="exp-level-chip">
-                {level.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="exp-card-footer">
-          <span className="view-link">View Details</span>
-        </div>
-      )}
+      <div className="exp-card-footer">
+        <span className="view-link">View Details</span>
+        {exp.levels && exp.levels.length > 1 && (
+          <span className="exp-card-levels-label">{exp.levels.length} levels available</span>
+        )}
+      </div>
     </div>
   )
-
-  if (exp.levels) {
-    return (
-      <article className="exp-card">
-        <div className="exp-card-img">{image}</div>
-        {body}
-      </article>
-    )
-  }
 
   return (
     <Link href={exp.slug ? `/experiences/${exp.slug}` : '#'} className="exp-card">

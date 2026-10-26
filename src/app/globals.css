@@ -661,15 +661,8 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 .exp-card-body h3{ color:var(--basalt-black); }
 .exp-card-location{ font-size:13px; color:var(--stone-gray); display:flex; align-items:center; gap:5px; }
 .exp-card-summary{ font-size:13px; color:var(--stone-gray); }
-.exp-card-footer{ margin-top:auto; padding-top:10px; }
-.exp-card-levels-label{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-gray); margin-bottom:10px; }
-.exp-level-chips{ display:flex; flex-wrap:wrap; gap:8px; }
-.exp-level-chip{
-  display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border-radius:var(--radius-pill);
-  border:1px solid var(--cloud-gray); background:var(--mist-white); color:var(--basalt-black); font-size:13px; font-weight:600;
-  transition:border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
-}
-.exp-level-chip:hover{ border-color:var(--accent-ink); color:var(--accent-ink); background:#fff; }
+.exp-card-footer{ margin-top:auto; padding-top:10px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.exp-card-levels-label{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-gray); }
 
 .exp-empty{
   grid-column:1/-1; text-align:center; padding:48px 24px; color:var(--stone-gray);
