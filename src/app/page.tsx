@@ -15,8 +15,9 @@ const TRIPADVISOR_URL = 'https://www.tripadvisor.com/Attraction_Review-g304138-d
 // repo, so it doesn't bloat the git history. Compressed harder than a first pass would
 // suggest (1280x720, crf 27) since the hero's own dark gradient overlay sits on top of it —
 // full 1080p/crf21 sharpness is wasted once that overlay darkens most of the frame.
-const HERO_VIDEO_URL = 'https://cdn.sanity.io/files/b5qf24u0/production/74e0b2b382fa75dd1a8a2758c928f2cd484872b4.webm'
 const HERO_VIDEO_POSTER_URL = 'https://cdn.sanity.io/images/b5qf24u0/production/46954f34b5ab2329f047649049a22172cc2d8ecd-1280x720.jpg'
+const HERO_VIDEO_URL = 'https://cdn.sanity.io/files/b5qf24u0/production/74e0b2b382fa75dd1a8a2758c928f2cd484872b4.webm'
+const HERO_VIDEO_MP4_URL = 'https://cdn.sanity.io/files/b5qf24u0/production/0e9e83d7a28f720c31ae1fcc1275ecc3a149c38f.mp4'
 
 export const revalidate = 60 // ISR: re-fetch from Sanity at most once a minute
 
@@ -54,7 +55,7 @@ export default async function Home() {
     <main>
 
       <section className="hero" id="top">
-        <HeroMedia posterUrl={HERO_VIDEO_POSTER_URL} videoUrl={HERO_VIDEO_URL} />
+        <HeroMedia posterUrl={HERO_VIDEO_POSTER_URL} videoUrl={HERO_VIDEO_URL} videoMp4Url={HERO_VIDEO_MP4_URL} />
         <div className="container hero-inner">
           <div className="hero-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 8.5L21 9.5L16 14L17.5 21L12 17.5L6.5 21L8 14L3 9.5L9.5 8.5L12 2Z" fill="var(--accent-on-dark)" /></svg>
