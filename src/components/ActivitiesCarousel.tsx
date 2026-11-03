@@ -102,8 +102,6 @@ export default function ActivitiesCarousel() {
     stopAutoplay()
     setActiveIndex(((i % activities.length) + activities.length) % activities.length)
   }
-  const prev = () => goTo(activeIndex - 1)
-  const next = () => goTo(activeIndex + 1)
 
   // swipe with live drag feedback
   const onTouchStart = (e: React.TouchEvent) => {
@@ -143,9 +141,6 @@ export default function ActivitiesCarousel() {
 
   return (
     <div className="activities-carousel-wrap">
-      <button className="activities-nav prev" onClick={prev} aria-label="Previous activity">
-        ‹
-      </button>
 
       <div className="card-scroller">
         <div
@@ -177,9 +172,6 @@ export default function ActivitiesCarousel() {
         </div>
       </div>
 
-      <button className="activities-nav next" onClick={next} aria-label="Next activity">
-        ›
-      </button>
 
       <div className="activities-dots">
         {activities.map((_, i) => (
