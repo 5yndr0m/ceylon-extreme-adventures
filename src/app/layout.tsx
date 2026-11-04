@@ -56,7 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             and Speed Insights enabled in its dashboard settings — safe to ship always on. */}
         <Analytics />
         <SpeedInsights />
-      </body>
+      {/* impeccable-live-start */}
+<script src="http://localhost:8400/live.js?token=76d31448-4589-4760-8fa6-070876a9cb1f"></script>
+{/* impeccable-live-end */}
+</body>
     </html>
   );
 }

@@ -1,5 +1,9 @@
 // schemaTypes/experienceType.ts
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity'
+
+const CATEGORY_LIST = [
+'Hiking','Rafting','Canyoning','Abseiling','Kayaking','River Expedition','Camping & Trekking',
+]
 
 export const experienceType = defineType({
   name: 'experience',
@@ -32,25 +36,23 @@ export const experienceType = defineType({
       initialValue: 'active',
       description: 'Lifecycle status — use "New" for experiences just added and awaiting a full review (photos, description), and "Retired" for ones no longer offered instead of deleting them outright.',
     }),
-    defineField({
-      name: 'category',
-      type: 'string',
-      options: {
-        list: [
-          'Hiking',
-          'Rafting',
-          'Canyoning',
-          'Abseiling',
-          'Kayaking',
-          'River Expedition',
-          // Added when backfilling the Camping & Trekking Adventures section from the
-          // CEA Experience Guide PDF (Devil's Staircase, Baker's Bend) — these are
-          // multi-day trek+camp routes that don't fit any of the categories above.
-          'Camping & Trekking',
-        ],
-      },
-      validation: (rule) => rule.required(),
-    }),
+
+
+defineField({
+  name: 'categories',
+  title: 'Categories',
+  type: 'array',
+  of: [{type: 'string'}],
+  options: {list: CATEGORY_LIST}, // renders as checkboxes in Studio
+  validation: (rule) => rule.required().min(1).unique(),
+}),
+defineField({
+  name: 'category',
+  title: 'Category (deprecated)',
+  type: 'string',
+  hidden: true,
+  readOnly: true,
+}),
     defineField({
       name: 'shortDescription',
       type: 'text',

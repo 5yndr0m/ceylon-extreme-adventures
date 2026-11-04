@@ -18,9 +18,9 @@ async function run() {
   })
   console.log('Poster:', poster.url)
 
-  const video = await sanity.assets.upload('file', fs.createReadStream('./hero-video.webm'), {
-    filename: 'hero-video.webm',
-    contentType: 'video/webm',
+  const video = await sanity.assets.upload('file', fs.createReadStream('./hero-video2.mp4'), {
+    filename: 'hero-video2.mp4',
+    contentType: 'video/mp4',
   })
   console.log('Video: ', video.url)
 }
