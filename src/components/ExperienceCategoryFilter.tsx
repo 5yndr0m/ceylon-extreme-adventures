@@ -10,7 +10,7 @@ type ExperienceCard = {
   _id: string
   title: string
   slug?: { current?: string }
-  category?: string | null
+  categories?: string[] | null
   locationName?: string | null
   heroImage?: any
   levelGroup?: string | null
@@ -25,7 +25,7 @@ type Level = {_id: string; name: string; slug: string}
 type ListItem = {
   key: string
   title: string
-  category?: string | null
+  categories?: string[]
   locationName?: string | null
   heroImage?: any
   summary?: string | null
@@ -43,7 +43,7 @@ function toListItems(experiences: ExperienceCard[]): ListItem[] {
       items.push({
         key: exp._id,
         title: exp.title,
-        category: exp.category,
+        categories: exp.categories ?? [],
         locationName: exp.locationName,
         heroImage: exp.heroImage,
         slug: exp.slug?.current,
@@ -59,7 +59,8 @@ function toListItems(experiences: ExperienceCard[]): ListItem[] {
     items.push({
       key: `group-${group}`,
       title: group,
-      category: first.category,
+      // a level group shows every category any of its levels belongs to
+      categories: Array.from(new Set(ordered.flatMap((m) => m.categories ?? []))),
       locationName: first.locationName,
       heroImage: ordered.find((m) => m.heroImage)?.heroImage,
       summary: first.levelGroupSummary,
@@ -87,7 +88,7 @@ function ExperienceCard({exp}: {exp: ListItem}) {
 
   const body = (
     <div className="exp-card-body">
-      <span className="tag">{exp.category || 'Adventure'}</span>
+      <span className="tag">{exp.categories?.length ? exp.categories.join(' · ') : 'Adventure'}</span>
       <h3>{exp.title}</h3>
       {exp.locationName && (
         <span className="exp-card-location">
@@ -146,7 +147,7 @@ export default function ExperienceCategoryFilter({
   const categories = useMemo(() => {
     const uniqueCategories = new Set(
       experiences
-        .map((experience) => experience.category)
+        .flatMap((experience) => experience.categories ?? [])
         .filter((category): category is string => Boolean(category))
     )
 
@@ -174,7 +175,7 @@ export default function ExperienceCategoryFilter({
 
   const filteredExperiences = listItems
     .filter((experience) =>
-      selectedCategory === 'All' ? true : !!experience.category && selectedCategories.includes(experience.category)
+      selectedCategory === 'All' ? true : (experience.categories ?? []).some((c) => selectedCategories.includes(c))
     )
     .filter((experience) =>
       searchQuery.trim()

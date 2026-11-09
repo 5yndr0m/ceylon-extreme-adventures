@@ -58,7 +58,7 @@ export default async function EventDetailPage({
         </div>
         <h1 className="bp-title">{event.title}</h1>
         <div className="bp-subline">
-          {exp?.category && <span className="bp-tag">{exp.category}</span>}
+          {exp?.categories?.map((c: string) => <span className="bp-tag" key={c}>{c}</span>)}
           <span className="bp-sub-item">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             {dateLabel}

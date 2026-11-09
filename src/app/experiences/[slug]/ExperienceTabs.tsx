@@ -35,7 +35,9 @@ const RATING_LABEL: Record<string, string> = {best: 'Best', ok: 'Ok', worst: 'Wo
 type TabKey = 'overview' | 'facts' | 'gallery' | 'included' | 'guide'
 
 export default function ExperienceTabs({exp}: {exp: any}) {
-  const fullGallery = exp.gallery || []
+  // Drop any gallery entry without a real image asset (a half-failed upload, a deleted asset).
+  // urlFor() throws on those, which crashed the whole page when the Gallery tab rendered.
+  const fullGallery = (exp.gallery || []).filter((img: {asset?: {_ref?: string}}) => !!img?.asset?._ref)
   const hasQuickFacts = exp.quickFacts && exp.quickFacts.length > 0
   const hasFactsTab = hasQuickFacts || exp.suitableMonths
 
@@ -164,6 +166,7 @@ export default function ExperienceTabs({exp}: {exp: any}) {
                       return (
                         <div key={key} className={`bp-month-cell bp-month-${rating}`}>
                           {label}
+                          <span className="sr-only"> – {RATING_LABEL[rating]}</span>
                         </div>
                       )
                     })}
@@ -189,18 +192,27 @@ export default function ExperienceTabs({exp}: {exp: any}) {
                   // Real aspect ratio per photo (falls back to a 4:3 guess for the rare
                   // asset with no metadata) instead of forcing every tile to the same
                   // shape — portrait and landscape shots now each keep their own frame.
-                  const ratio = img.dims ? img.dims.width / img.dims.height : 4 / 3
+                  const rawRatio = img.dims ? img.dims.width / img.dims.height : 4 / 3
+                  const ratio = Number.isFinite(rawRatio) && rawRatio > 0 ? rawRatio : 4 / 3
+                  // Never let one bad image take the whole tab down.
+                  let fullUrl: string, thumbUrl: string
+                  try {
+                    fullUrl = urlFor(img).width(1600).url()
+                    thumbUrl = urlFor(img).width(700).url()
+                  } catch {
+                    return null
+                  }
                   return (
                     <a
-                      key={img._key ?? i}
-                      href={urlFor(img).width(1600).url()}
+                      key={`${img._key ?? 'img'}-${i}`} // _key alone isn't unique for bulk-imported photos
+                      href={fullUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bp-gallery-item"
                       style={{aspectRatio: ratio}}
                     >
                       <Image
-                        src={urlFor(img).width(700).url()}
+                        src={thumbUrl}
                         alt={img.alt || `${exp.title} photo ${i + 1}`}
                         fill
                         sizes="(min-width: 768px) 33vw, 50vw"

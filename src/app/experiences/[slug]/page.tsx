@@ -13,7 +13,7 @@ export async function generateMetadata({params}: {params: Promise<{slug: string}
   if (!exp) return {}
 
   const description =
-    exp.shortDescription || `${exp.category ?? 'Adventure'} experience${exp.locationName ? ` in ${exp.locationName}` : ''} with Ceylon Extreme Adventures.`
+    exp.shortDescription || `${exp.categories?.length ? exp.categories.join(' / ') : 'Adventure'} experience${exp.locationName ? ` in ${exp.locationName}` : ''} with Ceylon Extreme Adventures.`
   const image = exp.heroImage ? urlFor(exp.heroImage).width(1200).height(630).url() : undefined
 
   return {
@@ -61,7 +61,7 @@ export default async function ExperienceDetailPage({
           </nav>
         )}
         <div className="bp-subline">
-          {exp.category && <span className="bp-tag">{exp.category}</span>}
+          {exp.categories?.map((c: string) => <span className="bp-tag" key={c}>{c}</span>)}
           {exp.status === 'new' && <span className="bp-new-badge">New</span>}
           {exp.locationName && (
             <span className="bp-sub-item">

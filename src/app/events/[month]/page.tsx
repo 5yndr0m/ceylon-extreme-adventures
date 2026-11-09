@@ -21,7 +21,7 @@ type MonthEvent = {
   includes?: string[]
   shortDescription?: string
   registrationOpen?: boolean
-  experience?: {title: string; slug: {current: string}; category?: string}
+  experience?: {title: string; slug: {current: string}; categories?: string[]}
 }
 
 export default async function MonthEventsPage({
@@ -96,7 +96,7 @@ export default async function MonthEventsPage({
                     </span>
                   </div>
                   <div className="event-card-body">
-                    {event.experience?.category && <span className="tag">{event.experience.category}</span>}
+                    {event.experience?.categories?.length ? <span className="tag">{event.experience.categories.join(' · ')}</span> : null}
                     <h3>{event.title}</h3>
                     <div className="event-price">
                       LKR {event.price?.toLocaleString()} <small>/ person</small>

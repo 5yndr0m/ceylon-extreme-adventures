@@ -15,7 +15,7 @@ type Booking = {
   groupSize: number;
   experience: {
     title: string;
-    category: string;
+    categories: string[];
     heroImage: any;
   };
   event?: {
@@ -55,7 +55,7 @@ function PaymentPortalInner() {
       .fetch(
         `*[_type == "booking" && _id == $id][0]{
           _id, fullName, preferredDate, groupSize,
-          experience->{title, category, heroImage},
+          experience->{title, "categories": select(count(categories) > 0 => categories, defined(category) => [category], []), heroImage},
           event->{title, price, flyerImage}
         }`,
         { id: bookingId }
@@ -140,7 +140,7 @@ function PaymentPortalInner() {
         </div>
         <h1 className="bp-title">Review &amp; Pay</h1>
         <div className="bp-subline">
-          <span className="bp-tag">{booking.experience.category}</span>
+          <span className="bp-tag">{(booking.experience.categories ?? []).join(' · ')}</span>
           <span className="bp-sub-item">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             {booking.preferredDate}

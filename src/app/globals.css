@@ -938,9 +938,11 @@ footer{ background:var(--basalt-black); color:rgba(255,255,255,.7); padding:56px
 @media(min-width:640px){ .bp-months-grid{ grid-template-columns:repeat(6,1fr); } }
 @media(min-width:960px){ .bp-months-grid{ grid-template-columns:repeat(12,1fr); } }
 .bp-month-cell{ text-align:center; font-size:13px; font-weight:600; padding:9px 4px; border-radius:6px; }
-.bp-month-best{ background:rgba(58,143,74,.15); color:var(--success-green); }
-.bp-month-ok{ background:rgba(28,86,110,.14); color:var(--accent-dark); }
-.bp-month-worst{ background:rgba(20,24,26,.08); color:var(--stone-gray); }
+/* Solid traffic-light colours with AA text contrast (the old 15%-opacity tints were nearly
+   invisible, and "best" green-on-tint was only ~3.5:1). Same classes style the legend swatches. */
+.bp-month-best{ background:#2E7D32; color:#fff; }   /* 5.1:1 */
+.bp-month-ok{ background:#F6C453; color:#3B2A00; }  /* 8.5:1 */
+.bp-month-worst{ background:#B7412E; color:#fff; }  /* 5.5:1 */
 .bp-months-legend{ display:flex; gap:18px; font-size:12px; color:var(--stone-gray); }
 .bp-months-legend-item{ display:flex; align-items:center; gap:7px; }
 .bp-months-legend-swatch{ width:12px; height:12px; border-radius:3px; display:inline-block; }

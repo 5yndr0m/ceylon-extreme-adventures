@@ -17,7 +17,7 @@ export const RATINGS = ['best', 'ok', 'worst']
 export type Parsed = {
   slug: string
   title: string
-  category: string
+  categories: string[]
   difficulty: string
   durationHours?: number
   price?: number
@@ -103,7 +103,8 @@ export function docToParsed(doc: any): {parsed: Parsed; richDescription: boolean
     parsed: {
       slug: doc.slug?.current ?? '',
       title: doc.title ?? '',
-      category: doc.category ?? '',
+      // `categories` is the real field; unmigrated docs only have the old single `category`
+      categories: doc.categories?.length ? doc.categories : doc.category ? [doc.category] : [],
       difficulty: doc.difficulty ?? '',
       durationHours: doc.durationHours ?? undefined,
       price: doc.price ?? undefined,
@@ -132,7 +133,7 @@ export function renderFile(p: Parsed, richDescription: boolean): string {
   L.push('')
   L.push(`Slug: ${p.slug}`)
   L.push(`Title: ${p.title}`)
-  L.push(`Category: ${p.category}`)
+  L.push(`Categories: ${p.categories.join(', ')}`)  // comma-separated, e.g. Abseiling, Hiking
   L.push(`Difficulty: ${p.difficulty}`)
   L.push(`Duration (hours): ${p.durationHours ?? ''}`)
   L.push(`Price (LKR): ${p.price ?? ''}`)
@@ -182,10 +183,16 @@ export function parseFile(raw: string): {parsed?: Parsed; errors: string[]} {
 
   const slug = field('Slug').split(/\s/)[0]
   const title = field('Title')
-  const category = field('Category')
+  // `Categories:` is comma-separated. Files exported before multi-category support have a
+  // single `Category:` line instead, so accept that too (field() would report it as missing).
+  const hasCategories = head.some((l) => /^Categories:/i.test(l))
+  const categoriesRaw = hasCategories ? field('Categories') : field('Category')
+  const categories = categoriesRaw.split(',').map((c) => c.trim()).filter(Boolean)
   const difficulty = field('Difficulty')
   if (!title) errors.push('Title cannot be blank')
-  if (category && !CATEGORIES.includes(category)) errors.push(`Category "${category}" is not one of: ${CATEGORIES.join(', ')}`)
+  if (categories.length === 0) errors.push('Categories cannot be blank (pick at least one)')
+  for (const c of categories) if (!CATEGORIES.includes(c)) errors.push(`Category "${c}" is not one of: ${CATEGORIES.join(', ')}`)
+  if (new Set(categories).size !== categories.length) errors.push('Categories has a duplicate')
   if (difficulty && !DIFFICULTIES.includes(difficulty)) errors.push(`Difficulty "${difficulty}" is not one of: ${DIFFICULTIES.join(', ')}`)
 
   const bullets = (name: string) =>
@@ -220,7 +227,7 @@ export function parseFile(raw: string): {parsed?: Parsed; errors: string[]} {
   return {
     errors,
     parsed: {
-      slug, title, category, difficulty,
+      slug, title, categories, difficulty,
       durationHours: num('Duration (hours)'),
       price: num('Price (LKR)'),
       maxGroupSize: num('Max group size'),
@@ -235,7 +242,7 @@ export function parseFile(raw: string): {parsed?: Parsed; errors: string[]} {
 // ---------------------------------------------------------------- diff + apply
 
 export function changedFields(oldP: Parsed, newP: Parsed): string[] {
-  const keys: (keyof Parsed)[] = ['title', 'category', 'difficulty', 'durationHours', 'price', 'maxGroupSize',
+  const keys: (keyof Parsed)[] = ['title', 'categories', 'difficulty', 'durationHours', 'price', 'maxGroupSize',
     'locationName', 'shortDescription', 'activityTags', 'quickFacts', 'distancesFrom', 'suitableMonths', 'description']
   return keys.filter((k) => JSON.stringify(oldP[k] ?? '') !== JSON.stringify(newP[k] ?? ''))
 }

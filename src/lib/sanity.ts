@@ -61,13 +61,18 @@ export async function getProfileBySlug(slug: string) {
 // Excludes retired experiences: status != "retired" also matches docs where status was
 // never set (older docs pre-dating this field), so nothing existing silently disappears —
 // only experiences explicitly marked retired are filtered out.
+// An experience can belong to several categories (e.g. Abseiling + Hiking). `categories` is the
+// real field; docs not yet migrated still only have the old single `category`, so fall back to
+// it. Every query below projects this as `categories` so the frontend only deals with one shape.
+const CATEGORIES_FIELD = `"categories": select(count(categories) > 0 => categories, defined(category) => [category], [])`
+
 export async function getAllExperiences() {
   return client.fetch(`
     *[_type == "experience" && status != "retired"] | order(title asc) {
       _id,
       title,
       slug,
-      category,
+      ${CATEGORIES_FIELD},
       difficulty,
       durationHours,
       locationName,
@@ -90,7 +95,7 @@ export async function getExperienceBySlug(slug: string) {
     *[_type == "experience" && slug.current == $slug][0] {
       _id,
       title,
-      category,
+      ${CATEGORIES_FIELD},
       difficulty,
       durationHours,
       locationName,
@@ -108,7 +113,7 @@ export async function getExperienceBySlug(slug: string) {
       quickFacts,
       suitableMonths,
       heroImage,
-      "gallery": gallery[]{..., "dims": asset->metadata.dimensions{width, height}},
+      "gallery": gallery[defined(asset)]{..., "dims": asset->metadata.dimensions{width, height}},
       guide->{name, portraitImage, bio, phone},
       "testimonials": *[_type == "testimonial" && references(^._id)] | order(featured desc) {
         _id, customerName, quote, rating, source, photo
@@ -284,7 +289,7 @@ export async function getEventsForMonthSlug(monthSlug: string) {
       `*[_type == "event" && date >= $start && date < $end] | order(date asc) {
         _id, title, slug, date, durationDays, price, flyerImage, includes, shortDescription,
         registrationOpen,
-        experience->{title, slug, category}
+        experience->{title, slug, ${CATEGORIES_FIELD}}
       }`,
       {start, end}
     ),
@@ -304,7 +309,7 @@ export async function getEventBySlug(slug: string) {
       _id, title, slug, date, durationDays, price, flyerImage, includes, shortDescription,
       registrationOpen, maxSlots,
       "bookedSlots": math::sum(*[_type == "booking" && event._ref == ^._id].groupSize),
-      experience->{_id, title, slug, category, heroImage, difficulty, locationName, maxGroupSize, shortDescription}
+      experience->{_id, title, slug, ${CATEGORIES_FIELD}, heroImage, difficulty, locationName, maxGroupSize, shortDescription}
     }`,
     {slug}
   )
@@ -314,7 +319,7 @@ export async function getEventById(id: string) {
   return client.fetch(
     `*[_type == "event" && _id == $id][0]{
       _id, title, slug, date, durationDays, price, registrationOpen,
-      experience->{_id, title, slug, category}
+      experience->{_id, title, slug, ${CATEGORIES_FIELD}}
     }`,
     {id}
   )
